@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: Blog
 subtitle:
 description:
 keywords:
-author: John Doe
-language: en
+author: bcjohn
+language: tw
 timezone:
 
 # URL
@@ -16,7 +16,8 @@ timezone:
 url: https://bcjohnblue.github.io/blog
 root: /blog/
 # root: /
-permalink: :year/:month/:day/:title/
+permalink: :title/
+# permalink: :year/:month/:day/:title/
 permalink_defaults:
 
 # Directory
