@@ -1,6 +1,7 @@
 ---
 title: THREE.Vector3 三維空間的向量運算
 date: 2023-12-23 23:14:42
+categories: Three.js
 tags:
 mathjax: true
 ---

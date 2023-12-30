@@ -1,6 +1,7 @@
 ---
 title: 理解 THREE.Plane 的平面方程式
 date: 2023-12-19 23:35:23
+categories: Three.js
 tags:
 mathjax: true
 ---

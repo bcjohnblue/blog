@@ -1,6 +1,7 @@
 ---
 title: 向量內積
 date: 2023-12-11 20:55:55
+categories: Math
 tags:
 ---
 

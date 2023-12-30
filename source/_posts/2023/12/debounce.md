@@ -1,7 +1,8 @@
 ---
 title: debounce 中的 this 指向
 date: 2023-12-06 20:42:51
-tags:
+categories: Javascript
+tags: 面試題
 ---
 
 ## 什麼是 debounce ?
@@ -244,7 +245,7 @@ mounted() {
 
 ## 結論
 
-`debounce` 的教學文章有很多，但一直以來都不太懂為什麼有些文章需要執行 `fn.apply` 將 `this` 的指向傳入 `fn` 函式裡，而有些沒有。藉由今天的研究過程，才瞭解原來傳遞 `this` 的指向是有必要性的
+`debounce` 的教學文章有很多，但一直以來都不太懂為什麼有些文章使用 `fn.apply` 將 `this` 的指向傳入 `fn` 函式裡，而有些沒有。今天藉由 vue2 使用 `debounce` 的寫法，才瞭解傳遞 `this` 的指向是必要的
 
 但現在的 vue3 或是 react16 後流行的 hooks 寫法，都幾乎不太會用到 `this`，因此可以放心不會遇到 **寫法 3.** 的這種 bug 了
 

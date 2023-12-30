@@ -8,7 +8,7 @@ mourn_mode: false #哀悼模式
 
 # 主题颜色
 theme_color:
-  primary: teal 
+  primary: teal
   accent: blue
 
 # 搜索
@@ -30,7 +30,7 @@ google_adsense:
 #####文章#####
 # 文末结束语
 passage_end_tag:
-  enabled: true
+  enabled: false
   text: --- 本文结束 <i class="iconfont icon-heartbeat" style="font-size:24px;"></i> The End ---
 
 # 数学公式渲染
@@ -57,10 +57,10 @@ mermaid:
 # 菜单
 menu:
   home: / || icon-home
-  tags: /tags/ || icon-bookmark
-  categories: /categories/ || icon-folder
+  # tags: /tags/ || icon-bookmark
+  # categories: /categories/ || icon-folder
   archives: /archives/ || icon-archive 
-  工具箱: /tools/ || icon-tools
+  # 工具箱: /tools/ || icon-tools
   about: /about/ || icon-user
   #gallery: /categories/图集/ || icon-gallery
 
@@ -82,7 +82,7 @@ links:
 #####页脚#####
 # 页脚
 footer:
-  since: 2015
+  since: 2023
   powered: true
   theme: true
   beian:
