@@ -117,3 +117,8 @@ search:
   field: post
   content: true
   format: html
+
+# Sitemap
+sitemap:
+  path:
+    - sitemap.xml
