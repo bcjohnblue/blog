@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>debounce 中的 this 指向</title>
-    <url>/2023/12/06/debounce-%E4%B8%AD%E7%9A%84-this-%E6%8C%87%E5%90%91/</url>
+    <url>/blog/2023/12/06/debounce-%E4%B8%AD%E7%9A%84-this-%E6%8C%87%E5%90%91/</url>
     <content><![CDATA[<h2 id="什麼是-debounce"><a href="#什麼是-debounce" class="headerlink" title="什麼是 debounce ?"></a>什麼是 debounce ?</h2><p><code>debounce</code> 是一種用於防止事件處理過於頻繁發生的技術，常用於處理使用者輸入，例如按鍵事件或搜尋框的輸入事件。</p>
 <h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p>以文字搜尋功能為例，使用者每次搜尋打的文字都會呼叫後端的 api 拿回資料，但通常使用者想搜尋的是最後打字的結果，而此時就適合使用 <code>debounce</code> 在一定時間過後才去真正的呼叫後端 api</p>
 <p>以下面為例，搜尋框改變時，不會馬上觸發 <code>onInput</code> 方法，而是會等 500ms 後，如果搜尋框的文字沒有任何改變，才呼叫 <code>onInput</code> 方法</p>
@@ -86,7 +86,7 @@
   </entry>
   <entry>
     <title>餘弦定理</title>
-    <url>/2023/12/10/%E9%A4%98%E5%BC%A6%E5%AE%9A%E7%90%86/</url>
+    <url>/blog/2023/12/10/%E9%A4%98%E5%BC%A6%E5%AE%9A%E7%90%86/</url>
     <content><![CDATA[<h2 id="定義"><a href="#定義" class="headerlink" title="定義"></a>定義</h2><p>餘弦定理是三角形中三邊長度與一個角的 <strong>餘弦值(cos)</strong> 的數學式，公式定義如下：</p>
 <img src="三角形.png" width="50%" height="50%">
 <br />
@@ -104,7 +104,7 @@
   </entry>
   <entry>
     <title>理解 THREE.Plane 的平面方程式</title>
-    <url>/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/</url>
+    <url>/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/</url>
     <content><![CDATA[<p><a href="https://threejs.org/docs/index.html?q=Plane#api/en/math/Plane">THREE.Plane</a> 在 <code>threejs</code> 中用來表示數學上的平面</p>
 <h2 id="數學中的平面方程式"><a href="#數學中的平面方程式" class="headerlink" title="數學中的平面方程式"></a>數學中的平面方程式</h2><p><code>a, b, c</code> 代表平面的<strong>法向量</strong>，<code>d</code> 是一個<strong>常數值</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ax + by + cz + d = 0;</span><br></pre></td></tr></table></figure>
@@ -180,7 +180,7 @@
   </entry>
   <entry>
     <title>THREE.Vector3 三維空間的向量運算</title>
-    <url>/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/</url>
+    <url>/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/</url>
     <content><![CDATA[<p><a href="https://threejs.org/docs/#api/en/math/Vector3">THREE.Vector3</a> 是 <code>threejs</code> 中最常用到的基礎類別，代表 3 維向量的運算</p>
 <h2 id="Vector3-的方法"><a href="#Vector3-的方法" class="headerlink" title="Vector3 的方法"></a>Vector3 的方法</h2><h5 id="add-v-Vector3-this"><a href="#add-v-Vector3-this" class="headerlink" title="- add(v: Vector3): this"></a><strong>- add(v: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> addVector3 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">addVector3.<span class="title function_">add</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.add&#x27;</span>, addVector3); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
 
@@ -252,7 +252,7 @@
   </entry>
   <entry>
     <title>向量內積</title>
-    <url>/2023/12/11/%E5%90%91%E9%87%8F%E5%85%A7%E7%A9%8D/</url>
+    <url>/blog/2023/12/11/%E5%90%91%E9%87%8F%E5%85%A7%E7%A9%8D/</url>
     <content><![CDATA[<h2 id="說明"><a href="#說明" class="headerlink" title="說明"></a>說明</h2><p>向量內積代表從其中一個向量投影到另一個向量</p>
 <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Scalarproduct.gif?20050309032222" width="250px" />
 <br />
