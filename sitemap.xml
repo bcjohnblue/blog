@@ -11,24 +11,6 @@
   </url>
   
   <url>
-    <loc>https://bcjohnblue.github.io/blog/2023/12/06/debounce-%E4%B8%AD%E7%9A%84-this-%E6%8C%87%E5%90%91/</loc>
-    
-    <lastmod>2024-01-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bcjohnblue.github.io/blog/2023/12/10/%E9%A4%98%E5%BC%A6%E5%AE%9A%E7%90%86/</loc>
-    
-    <lastmod>2024-01-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://bcjohnblue.github.io/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/</loc>
     
     <lastmod>2024-01-02</lastmod>
@@ -48,6 +30,24 @@
   
   <url>
     <loc>https://bcjohnblue.github.io/blog/2023/12/11/%E5%90%91%E9%87%8F%E5%85%A7%E7%A9%8D/</loc>
+    
+    <lastmod>2024-01-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bcjohnblue.github.io/blog/2023/12/06/debounce-%E4%B8%AD%E7%9A%84-this-%E6%8C%87%E5%90%91/</loc>
+    
+    <lastmod>2024-01-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bcjohnblue.github.io/blog/2023/12/10/%E9%A4%98%E5%BC%A6%E5%AE%9A%E7%90%86/</loc>
     
     <lastmod>2024-01-02</lastmod>
     
