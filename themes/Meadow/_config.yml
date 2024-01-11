@@ -134,7 +134,7 @@ comment:
 # 分析
 analytics:
   google_analytics:
-    tracking_id: 
+    tracking_id: G-HFVMRNT125
     localhost_ignored: true
   baidu_site_id:
   cnzz_site_id:
