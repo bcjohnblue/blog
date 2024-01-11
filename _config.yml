@@ -3,9 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: BC john
+title: bcjohn's blog
 subtitle: ''
-description: ''
+description: bcjohn's blog
 keywords:
 author: bcjohn
 language: zh-TW
@@ -14,6 +14,7 @@ timezone: ''
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://bcjohnblue.github.io/blog
+root: /blog/
 # permalink: :year-:month-:day_:post_title.html
 permalink: :year/:month/:day/:post_title/
 permalink_defaults:
