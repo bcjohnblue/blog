@@ -26,6 +26,8 @@ addScalarVector3.addScalar(2);
 console.log('.addScalar', addScalarVector3); // {x: 3, y: 3, z: 3}
 ```
 
+<!--more-->
+
 ##### **- addScaledVector(v: Vector3, s: Float): this**
 
 ```js

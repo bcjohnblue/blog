@@ -27,6 +27,8 @@ const onInput = (event) => {
 const debounceInput = debounce(onInput, 500);
 ```
 
+<!--more-->
+
 ## 基礎版 - debounce
 
 基礎的 `debounce` 是利用 `setTimeout` 延後 `fn` 函式的執行時間，等到 `delay` 時間過後才會實際呼叫 `fn` 函式執行

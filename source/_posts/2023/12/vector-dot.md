@@ -9,6 +9,9 @@ tags:
 向量內積代表從其中一個向量投影到另一個向量
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Scalarproduct.gif?20050309032222" width="250px" />
+
+<!--more-->
+
 <br />
 <img src="內積定義.png" width="250px" />
 

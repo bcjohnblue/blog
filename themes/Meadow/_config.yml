@@ -105,12 +105,11 @@ busuanzi:
 comment:
   use: 
     - gitalk
-    - livere
   ## Gitalk
-  gitalk_client_id: 
-  gitalk_client_secret: 
-  gitalk_repo: 
-  gitalk_owner: 
+  gitalk_client_id: 5357929866aac623ef96
+  gitalk_client_secret: 6556e0b2614163c853bea7116cc991233350b7be
+  gitalk_repo: gitalk-comments
+  gitalk_owner: bcjohnblue
   gitalk_sid_type:
   gitalk_distractionFreeMode: true
   ## Disqus

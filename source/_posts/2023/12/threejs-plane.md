@@ -22,6 +22,8 @@ console.log("normal", plane.normal); // {x: 0, y: 1, z: 0}
 console.log("constant", plane.constant); // -1
 ```
 
+<!--more-->
+
 這裡需要特別注意的是傳入**法向量**時需要將其轉換為**單位向量**，`[0, 10, 0]` 跟 `[0, 1, 0]` 在向量的定義上是一樣的，都是指向正 x 軸方向，但 `threejs` 要求在牽涉到**法向量**時都必須是**單位向量**，否則在某些運算上會錯誤，所以以上程式碼才刻意加了 [.normalize()](https://threejs.org/docs/index.html?q=vector#api/en/math/Vector3.normalize)
 
 ## Plane 的方法
