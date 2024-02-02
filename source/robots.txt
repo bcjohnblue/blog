@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://bcjohnblue.github.io/blog/sitemap.xml
