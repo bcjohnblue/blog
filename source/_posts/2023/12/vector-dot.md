@@ -17,7 +17,7 @@ tags:
 
 ## [證明](https://www.mathcha.io/editor/m9wOQfkVSxps3Wcz3DN76c9x5ll2tkNZw7vH2OB0rg)
 
-利用 {% post_link law-of-consines 餘弦定理 %} 對內積進行證明
+利用 <a href="/blog/2023/12/10/餘弦定理/" target="_blank" rel="noreferrer noopenner">餘弦定理</a> 對內積進行證明
 
 <img src="三角形.png" width="80%" />
 <br />
