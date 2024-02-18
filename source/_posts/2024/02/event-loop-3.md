@@ -163,7 +163,7 @@ customElement.prototype.getData = (url) => {
 不論有無 cache 應該都會是這個順序，但或許 MDN 上的範例想要的執行順序是 `'Data fetched'` 在 `'Loaded data'` 前執行，如果是這樣的話就的確需要用到 `queueMicrotask` 了
 
 
-## Reference
+## 參考資料
 - [Using microtasks in JavaScript with queueMicrotask()](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide)
 
 {% raw %}

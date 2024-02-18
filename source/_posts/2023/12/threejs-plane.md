@@ -166,6 +166,6 @@ $ d = - (x, y, z) \cdot (a, b, c) $
 ## 版本
 - threejs r159
 
-## Reference
+## 參考資料
 - [three.js 数学方法之Plane](https://www.cnblogs.com/vadim-web/p/13353086.html)
 

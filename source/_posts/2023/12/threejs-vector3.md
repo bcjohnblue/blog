@@ -236,6 +236,5 @@ console.log(".subVectors", subVectors); // {x: 2, y: 2, z: 2}
 ## 版本
 - threejs r159
 
-## Reference
-
+## 參考資料
 [THREE.Vector3](https://threejs.org/docs/#api/en/math/Vector3)

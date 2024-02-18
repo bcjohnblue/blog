@@ -228,7 +228,7 @@ window.requestAnimationFrame(animation);
 
 4. 渲染畫面後重新回到 步驟 1. 循環執行這一整圈的 **event loop**
 
-## Reference
+## 參考資料
 - [請說明瀏覽器中的事件循環 (Event Loop)](https://www.explainthis.io/zh-hant/swe/what-is-event-loop)
 - [[筆記]-JavaScript Event Loop是什麼?Event Loop的3個重點](https://jianline.com/javascript-event-loop/)
 簡短的文章幫助快速的了解 event loop

@@ -18,5 +18,5 @@ tags:
 
 <img src="證明.png">
 
-## Reference
+## 參考資料
 - [wiki - 餘弦定理](https://zh.wikipedia.org/zh-tw/%E9%A4%98%E5%BC%A6%E5%AE%9A%E7%90%86)

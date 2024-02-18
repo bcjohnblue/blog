@@ -251,7 +251,7 @@ mounted() {
 
 但現在的 vue3 或是 react16 後流行的 hooks 寫法，都幾乎不太會用到 `this`，因此可以放心不會遇到 **寫法 3.** 的這種 bug 了
 
-## Reference
+## 參考資料
 [Day 21：箭頭函數 (Arrow Functions) 的 this 和你想的不一樣 (1)](https://something-about-js-book.onejar99.com/day21)
 [淺談 JavaScript 頭號難題 this：絕對不完整，但保證好懂](https://blog.huli.tw/2019/02/23/javascript-what-is-this/)
 [What's THIS in JavaScript ? [上]](https://kuro.tw/posts/2017/10/12/What-is-THIS-in-JavaScript-%E4%B8%8A/)

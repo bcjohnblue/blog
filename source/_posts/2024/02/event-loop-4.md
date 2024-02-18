@@ -271,7 +271,7 @@ nextTick(function cb1() {
 ```
 `cb1` 的子層巢狀用到了 `cb2`，如果不複製 `callbacks` 陣列的話，`cb2` 也會被加入到當輪要執行的 `callbacks` 陣列裡，導致 `cb1` 與 `cb2` 都在同一次的 **更新時機(nextTick)** 中執行，而複製了 `callbacks` 陣列後，`flushCallbacks` 會將這一次該執行完的 `callbacks` 都跑完，而 `cb2` 被加入到的是下一次的 `callbacks` 陣列，也就是在下一次的 **更新時機(nextTick)** 才會執行 
 
-## Reference
+## 參考資料
 - [vue中$nextTick的实现原理](https://jiuto.github.io/jiuto_blog/guide/vue/nextTick.html#vue%E4%B8%AD-nexttick%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86)
 - [面试官：Vue中的$nextTick有什么作用？](https://vue3js.cn/interview/vue/nexttick.html)
 - [Vue源码详解之nextTick：MutationObserver只是浮云，microtask才是核心！](https://github.com/Ma63d/vue-analysis/issues/6)

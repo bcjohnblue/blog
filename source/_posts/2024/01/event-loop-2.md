@@ -323,7 +323,7 @@ longTask();
 2. 第 30 行其實沒有任何作用，因為在頁面渲染前會執行到第 20 行，將原本第 30 行覆蓋過去
 3. 第 19 行可以看到 `requestAnimationFrame` 的執行時機在長時間任務執行下，有可能會被延遲到 500ms 後，不會再是每 17ms 都執行一次
 
-## Reference
+## 參考資料
 - [要就来45道Promise面试题一次爽到底](https://github.com/LinDaiDai/niubility-coding-js/blob/master/JavaScript/%E5%BC%82%E6%AD%A5/%E8%A6%81%E5%B0%B1%E6%9D%A545%E9%81%93Promise%E9%9D%A2%E8%AF%95%E9%A2%98%E4%B8%80%E6%AC%A1%E7%88%BD%E5%88%B0%E5%BA%95.md#51-%E9%A2%98%E7%9B%AE%E4%B8%80)
 這篇文章的大部分範例都引用這裡，看完這裡面的 45 道題後，一定對於整個 event loop 的執行順序更為熟悉
 

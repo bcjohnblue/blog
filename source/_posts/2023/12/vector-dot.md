@@ -23,6 +23,6 @@ tags:
 <br />
 <img src="證明.png" width="60%" />
 
-## Reference
+## 參考資料
 1. [維基百科-內積](https://zh.wikipedia.org/zh-tw/%E7%82%B9%E7%A7%AF)
 2. [證明內積公式](https://mcheng007.pixnet.net/blog/post/24934928)
