@@ -31,7 +31,7 @@ Three.js 裡已經有內建各式各樣的 Geometry (ex. PlaneGeometry, BoxGeome
 
 #### 2. 頂點著色器 (vertex shader)
 
-接著輸入的頂點數據會傳到 **頂點著色器 (vertex shader)** ，**頂點著色器 (vertex shader)** 最終會將這些頂點數據從 **本地座標 (local coordinates)** 轉換成 **螢幕座標 (screen coordinates)**，這個 **螢幕座標 (screen coordinates)** 代表的就是最後在螢幕上使用者看到 3D 物件的樣子
+接著輸入的頂點數據會傳到 **頂點著色器 (vertex shader)** ，**頂點著色器 (vertex shader)** 最終會將這些頂點數據從 **本地座標 (local coordinates)** 轉換成 **螢幕座標 (screen coordinates)** ，這個 **螢幕座標 (screen coordinates)** 代表的就是最後在螢幕上使用者看到 3D 物件的樣子
 
 #### 3. 光柵化 (rasterization)
 
