@@ -40,6 +40,8 @@ gl.linkProgram(shaderProgram); // 6. 連接 program
 gl.useProgram(shaderProgram); // 7. 使用 program
 ```
 
+<!--more-->
+
 在 Three.js 的原始碼裡面也可以看到類似的邏輯，利用 `WebGLShader` 這個函式將寫好的 shader 以 `string` 的變數名稱傳入 `gl.shaderSource`，接著就是往上找看什麼地方用到 `WebGLShader` 並且找到傳入的 `string` 是什麼
 
 [WebGLShader.js](https://github.com/mrdoob/three.js/blob/426c39aa0ea42d4612dcc3fd9e20862af6413a30/src/renderers/webgl/WebGLShader.js)
