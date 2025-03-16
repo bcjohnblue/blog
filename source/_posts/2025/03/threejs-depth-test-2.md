@@ -57,7 +57,7 @@ mathjax: true
 {% raw %}
 
 $$
-P = \begin{pmatrix} x \\ y \\ z \end{pmatrix} \quad => \quad P = \begin{pmatrix} x \\ y \\ z \\ 1 \end{pmatrix}
+P = \begin{bmatrix} x \\ y \\ z \end{bmatrix} \quad => \quad P = \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}
 $$
 
 {% endraw %}
@@ -75,8 +75,8 @@ $$
 \color{blue}{0} & \color{blue}{0} & \color{blue}{1} & \color{blue}{T_z} \\
 \color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
 \end{bmatrix} \cdot
-\begin{pmatrix} x \\ y \\ z \\ 1 \end{pmatrix} =
-\begin{pmatrix} x+\color{red}{T_x} \\ y+\color{green}{T_y} \\ z+\color{blue}{T_z} \\ 1 \end{pmatrix}
+\begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix} =
+\begin{bmatrix} x+\color{red}{T_x} \\ y+\color{green}{T_y} \\ z+\color{blue}{T_z} \\ 1 \end{bmatrix}
 $$
 
 {% endraw %}
@@ -94,8 +94,8 @@ $$
 \color{blue}{0} & \color{blue}{0} & \color{blue}{S_z} & \color{blue}{0} \\
 \color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
 \end{bmatrix} \cdot
-\begin{pmatrix} x \\ y \\ z \\ 1 \end{pmatrix} =
-\begin{pmatrix} \color{red}{S_x} \color{black} \cdot x \\ \color{green}{S_y} \color{black} \cdot y  \\ \color{blue}{S_z} \color{black} \cdot z  \\ 1 \end{pmatrix}
+\begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix} =
+\begin{bmatrix} \color{red}{S_x} \color{black} \cdot x \\ \color{green}{S_y} \color{black} \cdot y  \\ \color{blue}{S_z} \color{black} \cdot z  \\ 1 \end{bmatrix}
 $$
 
 {% endraw %}
@@ -116,16 +116,16 @@ $$
 \color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
 \end{bmatrix}
 \cdot
-\begin{pmatrix}
+\begin{bmatrix}
 x \\ y \\ z \\ 1
-\end{pmatrix}
+\end{bmatrix}
 =
-\begin{pmatrix}
+\begin{bmatrix}
 \color{red}{\cos\theta} \color{black} \cdot x + \color{red}{\sin\theta} \color{black} \cdot z \\
 y \\
 \color{blue}{-\sin\theta} \color{black} \cdot x + \color{blue}{\cos\theta} \color{black} \cdot z \\
 1
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 {% endraw %}
@@ -152,23 +152,23 @@ $$
 \color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
 \end{bmatrix}
 \cdot
-\begin{pmatrix}
+\begin{bmatrix}
 1 \\ 1 \\ 1 \\ 1
-\end{pmatrix}
+\end{bmatrix}
 =
-\begin{pmatrix}
+\begin{bmatrix}
 \color{red}{-1} \color{black} \cdot 1 + \color{red}{0} \color{black} \cdot 1 \\
 1 \\
 \color{blue}{-0} \color{black} \cdot 1 + \color{blue}{1} \color{black} \cdot 1 \\
 1
-\end{pmatrix}
+\end{bmatrix}
 =
-\begin{pmatrix}
+\begin{bmatrix}
 -1 \\
 1 \\
 1 \\
 1
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 {% endraw %}
@@ -188,8 +188,8 @@ $$
 \color{blue}{0} & \color{blue}{0} & \color{blue}{2} & \color{blue}{0} \\
 \color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
 \end{bmatrix} \cdot
-\begin{pmatrix} -1 \\ 1 \\ 1 \\ 1 \end{pmatrix} =
-\begin{pmatrix} -2 \\ 2  \\ 2 \\ 1 \end{pmatrix}
+\begin{bmatrix} -1 \\ 1 \\ 1 \\ 1 \end{bmatrix} =
+\begin{bmatrix} -2 \\ 2  \\ 2 \\ 1 \end{bmatrix}
 $$
 
 {% endraw %}
@@ -209,8 +209,8 @@ $$
 \color{blue}{0} & \color{blue}{0} & \color{blue}{1} & \color{blue}{0} \\
 \color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
 \end{bmatrix} \cdot
-\begin{pmatrix} -2 \\ 2 \\ 2 \\ 1 \end{pmatrix} =
-\begin{pmatrix} -1 \\ 2 \\ 2 \\ 1 \end{pmatrix}
+\begin{bmatrix} -2 \\ 2 \\ 2 \\ 1 \end{bmatrix} =
+\begin{bmatrix} -1 \\ 2 \\ 2 \\ 1 \end{bmatrix}
 $$
 
 {% endraw %}
