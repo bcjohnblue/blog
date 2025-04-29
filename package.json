@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "hexo server -p 5000",
+    "dev": "yarn run clean && hexo server -p 5000",
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
