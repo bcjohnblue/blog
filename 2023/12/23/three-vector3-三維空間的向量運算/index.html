@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+    
+        <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        
+            load: ['[tex]/mhchem'],
+        
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        
+            packages: {'[+]': ['mhchem']},
+        
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+          
+
+
+    
+    
+    <title>
+        
+            THREE.Vector3 三維空間的向量運算 | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/">THREE.Vector3 三維空間的向量運算</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2023-12-23
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=THREE.Vector3 三維空間的向量運算&url=https://bcjohnblue.github.io/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=THREE.Vector3 三維空間的向量運算&url=https://bcjohnblue.github.io/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/&title=THREE.Vector3 三維空間的向量運算" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=THREE.Vector3 三維空間的向量運算&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/&text=THREE.Vector3 三維空間的向量運算" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <p><a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/math/Vector3">THREE.Vector3</a> 是 <code>threejs</code> 中最常用到的基礎類別，代表 3 維向量的運算</p>
+<h2 id="Vector3-的方法"><a href="#Vector3-的方法" class="headerlink" title="Vector3 的方法"></a>Vector3 的方法</h2><h5 id="add-v-Vector3-this"><a href="#add-v-Vector3-this" class="headerlink" title="- add(v: Vector3): this"></a><strong>- add(v: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> addVector3 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">addVector3.<span class="title function_">add</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.add&#x27;</span>, addVector3); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="addScalar-s-Float-this"><a href="#addScalar-s-Float-this" class="headerlink" title="- addScalar(s: Float): this"></a><strong>- addScalar(s: Float): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> addScalarVector3 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">addScalarVector3.<span class="title function_">addScalar</span>(<span class="number">2</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.addScalar&#x27;</span>, addScalarVector3); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h5 id="addScaledVector-v-Vector3-s-Float-this"><a href="#addScaledVector-v-Vector3-s-Float-this" class="headerlink" title="- addScaledVector(v: Vector3, s: Float): this"></a><strong>- addScaledVector(v: Vector3, s: Float): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> addScaledVector3 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">addScaledVector3.<span class="title function_">addScaledVector</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>), <span class="number">3</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.addScaledVector&#x27;</span>, addScaledVector3); <span class="comment">// &#123;x: 4, y: 4, z: 4&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="addVectors-a-Vector3-b-Vector3-this"><a href="#addVectors-a-Vector3-b-Vector3-this" class="headerlink" title="- addVectors(a: Vector3, b: Vector3): this"></a><strong>- addVectors(a: Vector3, b: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> addVectors3 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>();</span><br><span class="line">addVectors3.<span class="title function_">addVectors</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>), <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.addVectors&#x27;</span>, addVectors3); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="clone-Vector3"><a href="#clone-Vector3" class="headerlink" title="- clone(): Vector3"></a><strong>- clone(): Vector3</strong></h5><p>有時候原本的 <code>Vector3</code> 可能是某物件的屬性，為了避免修改到原始 <code>Vector3</code> 的座標，可以執行 <code>clone</code> 方法，複製新的 <code>Vector3</code> 出來</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cloneOriginalVectors = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.clone cloneOriginalVectors before&#x27;</span>, cloneOriginalVectors); <span class="comment">// &#123;x: 1, y: 1, z: 1&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> cloneVectors = cloneOriginalVectors.<span class="title function_">clone</span>();</span><br><span class="line">cloneVectors.<span class="title function_">add</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.clone cloneOriginalVectors after&#x27;</span>, cloneOriginalVectors); <span class="comment">// &#123;x: 1, y: 1, z: 1&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="copy-v-Vector3-this"><a href="#copy-v-Vector3-this" class="headerlink" title="- copy(v: Vector3): this"></a><strong>- copy(v: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> copyVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>();</span><br><span class="line">copyVector.<span class="title function_">copy</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.copy&#x27;</span>, copyVector); <span class="comment">// &#123;x: 1, y: 1, z: 1&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="cross-v-Vector3-this"><a href="#cross-v-Vector3-this" class="headerlink" title="- cross(v: Vector3): this"></a><strong>- cross(v: Vector3): this</strong></h5><p>計算向量外積</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> crossVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">crossVector.<span class="title function_">cross</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.cross&#x27;</span>, crossVector); <span class="comment">// &#123;x: 0, y: 0, z: 1&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="數學公式"><a href="#數學公式" class="headerlink" title="數學公式"></a>數學公式</h6><p>$$<br>\begin{vmatrix}<br>	\hat{i} &amp; \hat{j} &amp; \hat{k} \\<br>	1 &amp; 0 &amp; 0 \\<br>	0 &amp; 1 &amp; 0 \\<br>\end{vmatrix}<br>$$</p>
+<p>$$<br>&#x3D; 0\hat{i} + 0\hat{j} + 1\hat{k}<br>$$</p>
+<h5 id="crossVectors-a-Vector3-b-Vector3-this"><a href="#crossVectors-a-Vector3-b-Vector3-this" class="headerlink" title="- crossVectors(a: Vector3, b: Vector3): this"></a><strong>- crossVectors(a: Vector3, b: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> crossVectors = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>();</span><br><span class="line">crossVectors.<span class="title function_">crossVectors</span>(</span><br><span class="line">  <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">  <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>),</span><br><span class="line">);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.crossVectors&quot;</span>, crossVectors); <span class="comment">// &#123;x: 0, y: 0, z: 1&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="distanceTo-v-Vector3-Float"><a href="#distanceTo-v-Vector3-Float" class="headerlink" title="- distanceTo(v: Vector3): Float"></a><strong>- distanceTo(v: Vector3): Float</strong></h5><p>計算兩個向量之間的距離</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> distance = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">3</span>, <span class="number">0</span>).<span class="title function_">distanceTo</span>(</span><br><span class="line">  <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.distanceTo&quot;</span>, distance); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="divide-v-Vector3-this"><a href="#divide-v-Vector3-this" class="headerlink" title="- divide(v: Vector3): this"></a><strong>- divide(v: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> divideVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">6</span>, <span class="number">6</span>, <span class="number">6</span>);</span><br><span class="line">divideVector.<span class="title function_">divide</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.divideVector&quot;</span>, divideVector); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="divideScalar-s-Float-this"><a href="#divideScalar-s-Float-this" class="headerlink" title="- divideScalar(s: Float): this"></a><strong>- divideScalar(s: Float): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> divideScalarVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">6</span>, <span class="number">6</span>, <span class="number">6</span>);</span><br><span class="line">divideScalarVector.<span class="title function_">divideScalar</span>(<span class="number">2</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.divideScalar&quot;</span>, divideScalarVector); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="dot-v-Vector3-Float"><a href="#dot-v-Vector3-Float" class="headerlink" title="- dot(v: Vector3): Float"></a><strong>- dot(v: Vector3): Float</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dot = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>).<span class="title function_">dot</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">2</span>, <span class="number">3</span>, <span class="number">0</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.dot&quot;</span>, dot); <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<p>參考 <a href="/blog/2023/12/11/向量內積/" target="_blank" rel="noreferrer noopenner">向量內積</a></p>
+<h5 id="equals-v-Vector3-Boolean"><a href="#equals-v-Vector3-Boolean" class="headerlink" title="- equals(v: Vector3): Boolean"></a><strong>- equals(v: Vector3): Boolean</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isEqual = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>).<span class="title function_">equals</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.equals&quot;</span>, isEqual); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="length-Float"><a href="#length-Float" class="headerlink" title="- length(): Float"></a><strong>- length(): Float</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> length = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">3</span>, <span class="number">4</span>, <span class="number">0</span>).<span class="title function_">length</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.length&quot;</span>, length); <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="multiply-v-Vector3-this"><a href="#multiply-v-Vector3-this" class="headerlink" title="- multiply(v: Vector3): this"></a><strong>- multiply(v: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> multiplyVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">multiplyVector.<span class="title function_">multiply</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.multiply&quot;</span>, multiplyVector); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="multiplyScalar-s-Float-this"><a href="#multiplyScalar-s-Float-this" class="headerlink" title="- multiplyScalar(s: Float): this"></a><strong>- multiplyScalar(s: Float): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> multiplyScalarVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">multiplyScalarVector.<span class="title function_">multiplyScalar</span>(<span class="number">3</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.multiplyScalar&quot;</span>, multiplyScalarVector); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="multiplyVectors-a-Vector3-b-Vector3-this"><a href="#multiplyVectors-a-Vector3-b-Vector3-this" class="headerlink" title="- multiplyVectors(a: Vector3, b: Vector3): this"></a><strong>- multiplyVectors(a: Vector3, b: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> multiplyVectors = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>();</span><br><span class="line">multiplyVectors.<span class="title function_">multiplyVectors</span>(</span><br><span class="line">  <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>),</span><br><span class="line">  <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>),</span><br><span class="line">);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.multiplyVectors&quot;</span>, multiplyVectors); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="negate-this"><a href="#negate-this" class="headerlink" title="- negate(): this"></a><strong>- negate(): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> negateVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">negateVector.<span class="title function_">negate</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.negate&quot;</span>, negateVector); <span class="comment">// &#123;x: -1, y: -1, z: -1&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="normalize-this"><a href="#normalize-this" class="headerlink" title="- normalize(): this"></a><strong>- normalize(): this</strong></h5><p>正規化成單位向量</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> normalizeVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">10</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">normalizeVector.<span class="title function_">normalize</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.normalize&quot;</span>, normalizeVector); <span class="comment">// &#123;x: 1, y: 0, z: 0&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="set-x-Float-y-Float-z-Float-this"><a href="#set-x-Float-y-Float-z-Float-this" class="headerlink" title="- set(x: Float, y: Float, z: Float): this"></a><strong>- set(x: Float, y: Float, z: Float): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> setVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>();</span><br><span class="line">setVector.<span class="title function_">set</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.set&quot;</span>, setVector); <span class="comment">// &#123;x: 1, y: 1, z: 1&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="setX-x-Float-this"><a href="#setX-x-Float-this" class="headerlink" title="- setX(x: Float): this"></a><strong>- setX(x: Float): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> setXVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">setXVector.<span class="title function_">setX</span>(<span class="number">1</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.setXVector&quot;</span>, setXVector); <span class="comment">// &#123;x: 1, y: 0, z: 0&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="setY-y-Float-this"><a href="#setY-y-Float-this" class="headerlink" title="- setY(y: Float): this"></a><strong>- setY(y: Float): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> setYVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">setYVector.<span class="title function_">setY</span>(<span class="number">1</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.setYVector&quot;</span>, setYVector); <span class="comment">// &#123;x: 0, y: 1, z: 0&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="setZ-z-Float-this"><a href="#setZ-z-Float-this" class="headerlink" title="- setZ(z: Float): this"></a><strong>- setZ(z: Float): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> setZVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">setZVector.<span class="title function_">setZ</span>(<span class="number">1</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.setZVector&quot;</span>, setZVector); <span class="comment">// &#123;x: 0, y: 0, z: 1&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="sub-v-Vector3-this"><a href="#sub-v-Vector3-this" class="headerlink" title="- sub(v: Vector3): this"></a><strong>- sub(v: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> subVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>);</span><br><span class="line">subVector.<span class="title function_">sub</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.sub&quot;</span>, subVector); <span class="comment">// &#123;x: 2, y: 2, z: 2&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="subScalar-s-Float-this"><a href="#subScalar-s-Float-this" class="headerlink" title="- subScalar(s: Float): this"></a><strong>- subScalar(s: Float): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> subScalarVector = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>);</span><br><span class="line">subScalarVector.<span class="title function_">subScalar</span>(<span class="number">1</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.subScalar&quot;</span>, subScalarVector); <span class="comment">// &#123;x: 2, y: 2, z: 2&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="subVectors-a-Vector3-b-Vector3-this"><a href="#subVectors-a-Vector3-b-Vector3-this" class="headerlink" title="- subVectors(a: Vector3, b: Vector3): this"></a><strong>- subVectors(a: Vector3, b: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> subVectors = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>();</span><br><span class="line">subVectors.<span class="title function_">subVectors</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>), <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;.subVectors&quot;</span>, subVectors); <span class="comment">// &#123;x: 2, y: 2, z: 2&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a><a target="_blank" rel="noopener" href="https://codesandbox.io/p/devbox/threejs-vector3-m4s4rt?file=/src/basic/index.js">Demo</a></h2><h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><ul>
+<li>threejs r159</li>
+</ul>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/math/Vector3">THREE.Vector3</a></p>
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>Javascript 中的 event loop 及瀏覽器渲染機制</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/">
+        <span>理解 THREE.Plane 的平面方程式</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vector3-%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">Vector3 的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#add-v-Vector3-this"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">- add(v: Vector3): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#addScalar-s-Float-this"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">- addScalar(s: Float): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#addScaledVector-v-Vector3-s-Float-this"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">- addScaledVector(v: Vector3, s: Float): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#addVectors-a-Vector3-b-Vector3-this"><span class="toc-number">1.0.0.4.</span> <span class="toc-text">- addVectors(a: Vector3, b: Vector3): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#clone-Vector3"><span class="toc-number">1.0.0.5.</span> <span class="toc-text">- clone(): Vector3</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#copy-v-Vector3-this"><span class="toc-number">1.0.0.6.</span> <span class="toc-text">- copy(v: Vector3): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#cross-v-Vector3-this"><span class="toc-number">1.0.0.7.</span> <span class="toc-text">- cross(v: Vector3): this</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%95%B8%E5%AD%B8%E5%85%AC%E5%BC%8F"><span class="toc-number">1.0.0.7.1.</span> <span class="toc-text">數學公式</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#crossVectors-a-Vector3-b-Vector3-this"><span class="toc-number">1.0.0.8.</span> <span class="toc-text">- crossVectors(a: Vector3, b: Vector3): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#distanceTo-v-Vector3-Float"><span class="toc-number">1.0.0.9.</span> <span class="toc-text">- distanceTo(v: Vector3): Float</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#divide-v-Vector3-this"><span class="toc-number">1.0.0.10.</span> <span class="toc-text">- divide(v: Vector3): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#divideScalar-s-Float-this"><span class="toc-number">1.0.0.11.</span> <span class="toc-text">- divideScalar(s: Float): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#dot-v-Vector3-Float"><span class="toc-number">1.0.0.12.</span> <span class="toc-text">- dot(v: Vector3): Float</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#equals-v-Vector3-Boolean"><span class="toc-number">1.0.0.13.</span> <span class="toc-text">- equals(v: Vector3): Boolean</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#length-Float"><span class="toc-number">1.0.0.14.</span> <span class="toc-text">- length(): Float</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#multiply-v-Vector3-this"><span class="toc-number">1.0.0.15.</span> <span class="toc-text">- multiply(v: Vector3): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#multiplyScalar-s-Float-this"><span class="toc-number">1.0.0.16.</span> <span class="toc-text">- multiplyScalar(s: Float): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#multiplyVectors-a-Vector3-b-Vector3-this"><span class="toc-number">1.0.0.17.</span> <span class="toc-text">- multiplyVectors(a: Vector3, b: Vector3): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#negate-this"><span class="toc-number">1.0.0.18.</span> <span class="toc-text">- negate(): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#normalize-this"><span class="toc-number">1.0.0.19.</span> <span class="toc-text">- normalize(): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#set-x-Float-y-Float-z-Float-this"><span class="toc-number">1.0.0.20.</span> <span class="toc-text">- set(x: Float, y: Float, z: Float): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#setX-x-Float-this"><span class="toc-number">1.0.0.21.</span> <span class="toc-text">- setX(x: Float): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#setY-y-Float-this"><span class="toc-number">1.0.0.22.</span> <span class="toc-text">- setY(y: Float): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#setZ-z-Float-this"><span class="toc-number">1.0.0.23.</span> <span class="toc-text">- setZ(z: Float): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#sub-v-Vector3-this"><span class="toc-number">1.0.0.24.</span> <span class="toc-text">- sub(v: Vector3): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#subScalar-s-Float-this"><span class="toc-number">1.0.0.25.</span> <span class="toc-text">- subScalar(s: Float): this</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#subVectors-a-Vector3-b-Vector3-this"><span class="toc-number">1.0.0.26.</span> <span class="toc-text">- subVectors(a: Vector3, b: Vector3): this</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo"><span class="toc-number">2.</span> <span class="toc-text">Demo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC"><span class="toc-number">3.</span> <span class="toc-text">版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number">4.</span> <span class="toc-text">參考資料</span></a></li></ol>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

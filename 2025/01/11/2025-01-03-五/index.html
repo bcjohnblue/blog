@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+          
+
+
+    
+    
+    <title>
+        
+            2025/01/03 (五) | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/01/11/2025-01-03-%E4%BA%94/">2025/01/03 (五)</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-01-11
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-01-11
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Life/">Life</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=2025/01/03 (五)&url=https://bcjohnblue.github.io/blog/2025/01/11/2025-01-03-%E4%BA%94/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=2025/01/03 (五)&url=https://bcjohnblue.github.io/blog/2025/01/11/2025-01-03-%E4%BA%94/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2025/01/11/2025-01-03-%E4%BA%94/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2025/01/11/2025-01-03-%E4%BA%94/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2025/01/11/2025-01-03-%E4%BA%94/&title=2025/01/03 (五)" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=2025/01/03 (五)&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2025/01/11/2025-01-03-%E4%BA%94/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2025/01/11/2025-01-03-%E4%BA%94/&text=2025/01/03 (五)" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <h5 id="早上-11-00"><a href="#早上-11-00" class="headerlink" title="- 早上 11:00"></a>- 早上 11:00</h5><p>今天一樣來跟爺爺講話，一到病房跟他說從第一天爺爺睡著叫不醒到送去急診室住進加護病房的這一連串事情，之前都還沒跟爺爺說過為什麼他躺在這邊好多天的原因呢，一開始不知道該怎麼講，但最終我覺得還是需要把我們打算進行安寧治療的決定當面跟爺爺說，一到病房我有跟爺爺說他的大女兒、姑丈、大女兒的兩個小孩、小女兒、兒子昨天有視訊，還有我跟我老婆都有在這幾天裡來探望陪他唷，以及你那剛出生的曾孫女小紗寶之前也有去家裡看過你你兩次喔，一次你拿著鳳梨酥的袋子陪他玩、一次他就被抱著在你房間外面盯著你看一直對你笑，很可愛吧</p>
+<p>過了一會住院醫師過來講解爺爺今天的狀況，昨天晚上意外的沒有再發生心臟驟停了，想說覺得不錯，但沒想到醫師說早上的抽血結果，檢驗一個叫做<a target="_blank" rel="noopener" href="https://takecareof.com.tw/articles/myocardial-infarction/">心臟酵素的濃度</a>，濃度越高代表心肌梗塞的機率越高，而醫生說爺爺驗出來的濃度是正常值的五、六十倍高….</p>
+<p>之後再跟爺爺說我們下午三點會開一個安寧治療的討論會議，會決定怎麼做讓爺爺比較輕鬆，跟爺爺說現在這狀況其實就跟他常跟我說的都是年紀的關係啊，慢慢的走路不方便、失智的影響導致同樣的話五秒鐘後就會再問一遍，這都是年紀的關係啊，現在也是一樣，爺爺年紀大了突然叫不醒後查出原因是腦部血管堵塞中風，心臟會有點問題也是年紀大的關係啊，這一切其實都是很自然的，當我活到像爺爺一樣的七八十歲、八九十歲的這種年紀，這種事情也會在在我身上發生的，不用擔心，現在先好好休息吧，因為現在爺爺你也沒有意識，無法知道爺爺你到底想不想打強心針，所以就讓我幫你決定吧，強心針這種東西可以幫助心臟跳動，但他其實也是有副作用的，會讓你心跳加速可能身體不舒服，為了爺爺好，下午的會議我們決定之後會不打強心針，希望爺爺你可以理解，但爺爺你不用擔心我們都會陪在你的身邊，等到百年之後我還會去天上找你聊天陪你玩的，如果你想我的話，我每天都很會做夢，隨時都可以來我的夢中找我喔</p>
+<h5 id="中午"><a href="#中午" class="headerlink" title="- 中午"></a>- 中午</h5><p>回到奶奶家，一看到我他就說很累昨天都沒睡，今天什麼事情都沒辦法做，然後我還是一樣打字給奶奶說爺爺目前的狀況：「今天早上醫生有抽血，說有心肌梗塞的狀況，可能隨時心跳會停止」，沒想到奶奶看完後又變得不相信了，「我覺得不會啊，怎麼可能，我感覺他狀況很好，馬上就會醒過來了，我冥冥中就是有這種感覺」，我也不知道該怎麼繼續說下去，暫時就先這樣吧</p>
+<h5 id="下午三點"><a href="#下午三點" class="headerlink" title="- 下午三點"></a>- 下午三點</h5><p>在加護病房會議室裡招開安寧小組會議，有很多人包括住院醫師、安寧專科醫生、護理長、社工師、心理師等等，一開始由住院醫師說明爺爺的狀況，今天比較嚴重的問題是抽血檢測心臟酵素指數很高，正常值是 50，但抽血出來的結果是 15000…，接著由安寧專科醫生講解關於安寧的三種選擇：安寧病房、安寧居家、安寧共照，安寧病房目前松山醫院沒有所以暫不需考慮，如果要轉院的話最近的內湖三總床位也只有 15 床，並且聽說幾乎都是滿的需要排隊，安寧居家是拔除管子以及其他儀器後回到家裡，每週會有一兩次安寧護理師到家訪視，但因為奶奶之前有告誡過不能拔管，所以這條路也不用考慮了，最後的安寧共照是安寧護理師會在醫院審視爺爺的狀況，提供一些護理的建議，例如：如果有拉肚子現象的話，需要吃什麼藥或做什麼樣的調整，依照目前的狀況我們最終選擇的是安寧共照，希望安寧團隊的加入可以幫助緩和爺爺的痛苦，給予我們資源及支持</p>
+<p>最後我有詢問關於強心針還要不要使用，根據我查到的資料跟護士的說明，強心針是種治標不治本的藥物，雖然打下去可以馬上使人心跳快速，但如果真的是病情末期，或許這也只是拖時間的措施而已，我希望爺爺最後不要太痛苦，所以希望可以簽署不施行強心針的注射，但沒想到安寧專科的邱醫生說他覺得有沒有打強心針對於病人應該沒有太大的差別，畢竟心臟如果到最後無法跳動就是無法跳動了，不管打幾劑強心針都不會有作用。原本下定決心不施打強心針的我，聽到醫生這麼說就也妥協了，關於急救部分我們還是一樣維持原方案，施行藥物注射、插管治療，但不施行電擊跟心臟按摩</p>
+<div style="text-align: right">2025/01/03 筆</div>
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2025/01/11/2025-01-07-%E4%BA%8C/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>2025/01/07 (二)</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2025/01/11/2025-01-02-%E5%9B%9B/">
+        <span>2025/01/02 (四)</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2025/01/11/2025-01-03-%E4%BA%94/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%97%A9%E4%B8%8A-11-00"><span class="toc-number">1.</span> <span class="toc-text">- 早上 11:00</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%AD%E5%8D%88"><span class="toc-number">2.</span> <span class="toc-text">- 中午</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8B%E5%8D%88%E4%B8%89%E9%BB%9E"><span class="toc-number">3.</span> <span class="toc-text">- 下午三點</span></a></li></ol>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

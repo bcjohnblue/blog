@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+          
+
+
+    
+    
+    <title>
+        
+            理解 Three.js 的 shader 架構 | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/">理解 Three.js 的 shader 架構</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-02-08
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-02-12
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=理解 Three.js 的 shader 架構&url=https://bcjohnblue.github.io/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=理解 Three.js 的 shader 架構&url=https://bcjohnblue.github.io/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/&title=理解 Three.js 的 shader 架構" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=理解 Three.js 的 shader 架構&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/&text=理解 Three.js 的 shader 架構" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>繼上一篇 <a href="https://bcjohnblue.github.io/blog/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/">使用 Three.js 操作 shader 畫出國旗</a> 後，這一篇文章希望了解 Three.js 裡的 shader 架構</p>
+<h2 id="WebGL-裡的-shader-綁定"><a href="#WebGL-裡的-shader-綁定" class="headerlink" title="WebGL 裡的 shader 綁定"></a>WebGL 裡的 shader 綁定</h2><p>因為 Three.js 的底層就是 WebGL 所以我們可以先從 WebGL 是如何綁定 shader 來找到 Three.js 中處理 shader 的起始點</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WebGL 綁定 shader 部分片段</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> canvas = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;canvas&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> gl = canvas.<span class="title function_">getContext</span>(<span class="string">&#x27;webgl&#x27;</span>); <span class="comment">// WebGL 1.0</span></span><br><span class="line"><span class="comment">// 或</span></span><br><span class="line"><span class="keyword">const</span> gl = canvas.<span class="title function_">getContext</span>(<span class="string">&#x27;webgl2&#x27;</span>); <span class="comment">// WebGL 2.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 創建 shader</span></span><br><span class="line"><span class="keyword">const</span> vertexShader = gl.<span class="title function_">createShader</span>(gl.<span class="property">VERTEX_SHADER</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 撰寫 shader code</span></span><br><span class="line"><span class="keyword">const</span> vertexShaderSource = <span class="string">`</span></span><br><span class="line"><span class="string">    attribute vec4 aPosition;</span></span><br><span class="line"><span class="string">    void main() &#123;</span></span><br><span class="line"><span class="string">        gl_Position = aPosition;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line">gl.<span class="title function_">shaderSource</span>(vertexShader, vertexShaderSource);</span><br><span class="line"></span><br><span class="line">gl.<span class="title function_">compileShader</span>(vertexShader); <span class="comment">// 3. 編譯 shader</span></span><br><span class="line"><span class="keyword">const</span> shaderProgram = gl.<span class="title function_">createProgram</span>(); <span class="comment">// 4. 創建 program</span></span><br><span class="line">gl.<span class="title function_">attachShader</span>(shaderProgram, vertexShader); <span class="comment">// 5. 附加 shader 到 program</span></span><br><span class="line">gl.<span class="title function_">linkProgram</span>(shaderProgram); <span class="comment">// 6. 連接 program</span></span><br><span class="line">gl.<span class="title function_">useProgram</span>(shaderProgram); <span class="comment">// 7. 使用 program</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>在 Three.js 的原始碼裡面也可以看到類似的邏輯，利用 <code>WebGLShader</code> 這個函式將寫好的 shader 以 <code>string</code> 的變數名稱傳入 <code>gl.shaderSource</code>，接著就是往上找看什麼地方用到 <code>WebGLShader</code> 並且找到傳入的 <code>string</code> 是什麼</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/426c39aa0ea42d4612dcc3fd9e20862af6413a30/src/renderers/webgl/WebGLShader.js">WebGLShader.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">WebGLShader</span>(<span class="params">gl, type, string</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> shader = gl.<span class="title function_">createShader</span>(type);</span><br><span class="line"></span><br><span class="line">  gl.<span class="title function_">shaderSource</span>(shader, string);</span><br><span class="line">  gl.<span class="title function_">compileShader</span>(shader);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> shader;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123; <span class="title class_">WebGLShader</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Three-js-裡預定義的-shaders"><a href="#Three-js-裡預定義的-shaders" class="headerlink" title="Three.js 裡預定義的 shaders"></a>Three.js 裡預定義的 shaders</h2><p>接著可以找到在 <code>WebGLProgram.js</code> 這個檔案裡使用了 <code>WebGLShader</code> 函式，會發現傳入 <code>WebGLShader</code> 函式的 <code>string</code> 實際上是三個變數加起來的字串，因為 <code>vertexGlsl</code> 跟 <code>fragmentGlsl</code> 字串連接的邏輯看起來是類似的，下面我們就只繼續往下看 <code>vertexGlsl</code> 中的 <code>versionString</code>, <code>prefixVertex</code> 跟 <code>vertexShader</code> 這三個變數是什麼東西</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/426c39aa0ea42d4612dcc3fd9e20862af6413a30/src/renderers/webgl/WebGLProgram.js#L895">WebGLProgram.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> vertexGlsl = versionString + prefixVertex + vertexShader;</span><br><span class="line"><span class="keyword">const</span> fragmentGlsl = versionString + prefixFragment + fragmentShader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> glVertexShader = <span class="title class_">WebGLShader</span>(gl, gl.<span class="property">VERTEX_SHADER</span>, vertexGlsl);</span><br><span class="line"><span class="keyword">const</span> glFragmentShader = <span class="title class_">WebGLShader</span>(gl, gl.<span class="property">FRAGMENT_SHADER</span>, fragmentGlsl);</span><br><span class="line"></span><br><span class="line">gl.<span class="title function_">attachShader</span>(program, glVertexShader);</span><br><span class="line">gl.<span class="title function_">attachShader</span>(program, glFragmentShader);</span><br></pre></td></tr></table></figure>
+
+<h3 id="versionString">1. versionString</h3>
+
+<p><code>versionString</code> 標記使用的 <strong>glsl</strong> 版本，<a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/ShaderMaterial.glslVersion">parameters.glslVersion</a> 是可以藉由 <strong>ShaderMaterial</strong> 傳入的其中一個參數</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> versionString = parameters.<span class="property">glslVersion</span></span><br><span class="line">  ? <span class="string">&#x27;#version &#x27;</span> + parameters.<span class="property">glslVersion</span> + <span class="string">&#x27;\n&#x27;</span></span><br><span class="line">  : <span class="string">&#x27;&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="prefixVertex">2. prefixVertex</h3>
+
+<p><code>prefixVertex</code> 會隨著 <code>parameters.isRawShaderMaterial</code> 的有無，串接不同的字串</p>
+<p>首先來看 <code>parameters.isRawShaderMaterial = true</code> 的狀況，這裡定義了兩個 shader 變數 <code>SHADER_TYPE</code> 跟 <code>SHADER_NAME</code> 分別是從 <strong>material</strong> 來的 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=material#api/en/materials/Material.type">type</a> 跟 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=material#api/en/materials/Material.name">name</a>，而 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/ShaderMaterial.defines">parameters.defines</a> 則是 <code>ShaderMaterial</code> 中傳進來自定義的數值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> defines = parameters.<span class="property">defines</span>;</span><br><span class="line"><span class="keyword">const</span> customDefines = <span class="title function_">generateDefines</span>(defines);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (parameters.<span class="property">isRawShaderMaterial</span>) &#123;</span><br><span class="line">  prefixVertex = [</span><br><span class="line">    <span class="string">&#x27;#define SHADER_TYPE &#x27;</span> + parameters.<span class="property">shaderType</span>,</span><br><span class="line">    <span class="string">&#x27;#define SHADER_NAME &#x27;</span> + parameters.<span class="property">shaderName</span>,</span><br><span class="line"></span><br><span class="line">    customDefines</span><br><span class="line">  ]</span><br><span class="line">    .<span class="title function_">filter</span>(filterEmptyLine)</span><br><span class="line">    .<span class="title function_">join</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (prefixVertex.<span class="property">length</span> &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    prefixVertex += <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而另一個狀況是 <code>parameters.isRawShaderMaterial = false</code>，可以看到相比上面這邊定義了很多 <code>#define</code> 開頭的數值，全部大約有一兩百多個吧，因為太多的關係所以下面的程式碼只節錄了前面的幾個</p>
+<p>目前為止會發現在 <code>isRawShaderMaterial = false</code> 的狀況下，Three.js 偷偷在 shader 程式碼的開頭塞了很多東西，這也是前一篇文章提出的疑問 - <a href="https://bcjohnblue.github.io/blog/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/#:~:text=THREE.RawShaderMaterial%20%E8%88%87%20THREE.ShaderMaterial%20%E7%9A%84%E5%B7%AE%E5%88%A5">THREE.RawShaderMaterial 與 THREE.ShaderMaterial 的差別</a> ，當使用 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/RawShaderMaterial">RawShaderMaterial</a> 時 <code>isRawShaderMaterial</code> 會設成 <code>true</code>，前面就不會偷塞一堆 <code>#define</code> 的東西，但當使用 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/ShaderMaterial">ShaderMaterial</a> 時 Three.js 偷塞入的東西就是下面這一堆</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">prefixVertex = [</span><br><span class="line">  <span class="title function_">generatePrecision</span>(parameters),</span><br><span class="line"></span><br><span class="line">  <span class="string">&#x27;#define SHADER_TYPE &#x27;</span> + parameters.<span class="property">shaderType</span>,</span><br><span class="line">  <span class="string">&#x27;#define SHADER_NAME &#x27;</span> + parameters.<span class="property">shaderName</span>,</span><br><span class="line"></span><br><span class="line">  customDefines,</span><br><span class="line"></span><br><span class="line">  parameters.<span class="property">extensionClipCullDistance</span> ? <span class="string">&#x27;#define USE_CLIP_DISTANCE&#x27;</span> : <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  parameters.<span class="property">batching</span> ? <span class="string">&#x27;#define USE_BATCHING&#x27;</span> : <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  parameters.<span class="property">batchingColor</span> ? <span class="string">&#x27;#define USE_BATCHING_COLOR&#x27;</span> : <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  parameters.<span class="property">instancing</span> ? <span class="string">&#x27;#define USE_INSTANCING&#x27;</span> : <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  parameters.<span class="property">instancingColor</span> ? <span class="string">&#x27;#define USE_INSTANCING_COLOR&#x27;</span> : <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  parameters.<span class="property">instancingMorph</span> ? <span class="string">&#x27;#define USE_INSTANCING_MORPH&#x27;</span> : <span class="string">&#x27;&#x27;</span>,</span><br><span class="line"></span><br><span class="line">  parameters.<span class="property">useFog</span> &amp;&amp; parameters.<span class="property">fog</span> ? <span class="string">&#x27;#define USE_FOG&#x27;</span> : <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  parameters.<span class="property">useFog</span> &amp;&amp; parameters.<span class="property">fogExp2</span> ? <span class="string">&#x27;#define FOG_EXP2&#x27;</span> : <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 以下略 ...</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p>接著讓我們來看看 Three.js 偷塞的這一堆東西會有什麼樣的影響，我們先找一個比較簡單的例子看起 <code>parameters.useFog &amp;&amp; parameters.fog ? &#39;#define USE_FOG&#39; : &#39;&#39;,</code> 這一行看起來就是開啟霧氣效果的特效，而當我們搜尋 <code>USE_FOG</code> 這個關鍵字的時候發現有四個檔案分別都用到了這個變數 - <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/fog_fragment.glsl.js">fog_fragment.glsl.js</a>, <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/fog_pars_fragment.glsl.js">fog_pars_fragment.glsl.js</a>, <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/fog_pars_vertex.glsl.js">fog_pars_vertex.glsl.js</a>, <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/fog_vertex.glsl.js">fog_vertex.glsl.js</a>，而且這四個檔案都放在 <code>src/renderers/shaders/ShaderChunk</code> 的這個資料夾底下，看來 <code>ShaderChunk</code> 資料夾下放的就是專門處理 three.js 預定義的這些 shader 邏輯，但到底 <code>ShaderChunk</code> 資料夾底下的這些 shader 檔案是怎麼實際套用到 shader 裡的呢？</p>
+<p>讓我們先往下看 <code>vertexGlsl</code> 變數中串接的第三個 <code>vertexShader</code> 字串是從哪裡來的後，再回頭總結講這些 <code>ShaderChunk</code> 資料夾底下的 shader 們會比較全面</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/fog_fragment.glsl.js">fog_fragment.glsl.js</a> - 看起來就是處理 fog 的相關 shader 程式碼</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">#ifdef USE_FOG</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  #ifdef FOG_EXP2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    float fogFactor = 1.0 - exp( - fogDensity * fogDensity * vFogDepth * vFogDepth );</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  #else</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    float fogFactor = smoothstep( fogNear, fogFar, vFogDepth );</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  #endif</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="glsl-的版本程式碼轉換"><a href="#glsl-的版本程式碼轉換" class="headerlink" title="glsl 的版本程式碼轉換"></a>glsl 的版本程式碼轉換</h3><p>另外這邊額外想講的是 <code>prefixVertex</code> 這個變數最後還做了一個 glsl 的版本程式碼轉換，看起來是把舊版本的一些關鍵字轉成新版本的 (例如：<code>attribute</code> 變成 <code>in</code>)，這邊這樣寫看起來是使用非 <code>RawShaderMaterial</code> 的 <code>Material</code> 時，一律都認為瀏覽器可以支援 WebGL 2.0，所以 shader 的關鍵字可以轉換為 <code>in</code>, <code>out</code> 這些 glsl 較新的文法</p>
+<p>推測是因為 WebGL 2.0 2016 年就推出了，現在瀏覽器的支援率也達到 <a target="_blank" rel="noopener" href="https://caniuse.com/webgl2">96% 以上</a>，所以預設的 <code>Material</code> 都直接使用 WebGL 2.0 文法就好，而需要兼容舊 glsl (WebGL 1.0) 的人就需要使用 <code>RawShaderMaterial</code> 撰寫自己的 shader 並設定 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/ShaderMaterial.glslVersion">glslVersion</a></p>
+<p>關於 glsl 程式碼關鍵字新舊版本的差異，請看 <a target="_blank" rel="noopener" href="https://shaderfans.com/post/ban-ben-shu-li/index.html">OpenGL ES 与 GLSL ES 版本的对应关系</a> 及 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/George1994/p/6418013.html">OpenGL 和 GLSL 版本更迭</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (parameters.<span class="property">isRawShaderMaterial</span> !== <span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="comment">// GLSL 3.0 conversion for built-in materials and ShaderMaterial</span></span><br><span class="line"></span><br><span class="line">  versionString = <span class="string">&#x27;#version 300 es\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  prefixVertex =</span><br><span class="line">    [</span><br><span class="line">      customVertexExtensions,</span><br><span class="line">      <span class="string">&#x27;#define attribute in&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;#define varying out&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;#define texture2D texture&#x27;</span></span><br><span class="line">    ].<span class="title function_">join</span>(<span class="string">&#x27;\n&#x27;</span>) +</span><br><span class="line">    <span class="string">&#x27;\n&#x27;</span> +</span><br><span class="line">    prefixVertex;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ... 下略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="vertexShader">3. vertexShader</h3>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> vertexShader = parameters.<span class="property">vertexShader</span>;</span><br><span class="line"></span><br><span class="line">vertexShader = <span class="title function_">resolveIncludes</span>(vertexShader);</span><br><span class="line">vertexShader = <span class="title function_">replaceLightNums</span>(vertexShader, parameters);</span><br><span class="line">vertexShader = <span class="title function_">replaceClippingPlaneNums</span>(vertexShader, parameters);</span><br><span class="line"></span><br><span class="line">vertexShader = <span class="title function_">unrollLoops</span>(vertexShader);</span><br></pre></td></tr></table></figure>
+
+<p>來到最後 <code>vertexShader</code> 的部分了，首先這裡最重要的函式是 <code>resolveIncludes</code>，這會講的比較冗長，所以我們先把其他三個函式看完後再回頭來看 <code>resolveIncludes</code> 的作用</p>
+<p><code>replaceLightNums</code>, <code>replaceClippingPlaneNums</code> 及 <code>unrollLoops</code> 這三個函式其實做的事情都類似，把接進來 <code>vertexShader</code> 的特定字串替換成 <code>parameters</code> 裡的數值就這樣，以下只節錄 <code>replaceLightNums</code> 函式部分讓大家有點感覺</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">replaceLightNums</span>(<span class="params">string, parameters</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> numSpotLightCoords =</span><br><span class="line">    parameters.<span class="property">numSpotLightShadows</span> +</span><br><span class="line">    parameters.<span class="property">numSpotLightMaps</span> -</span><br><span class="line">    parameters.<span class="property">numSpotLightShadowsWithMaps</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> string</span><br><span class="line">    .<span class="title function_">replace</span>(<span class="regexp">/NUM_DIR_LIGHTS/g</span>, parameters.<span class="property">numDirLights</span>)</span><br><span class="line">    .<span class="title function_">replace</span>(<span class="regexp">/NUM_SPOT_LIGHTS/g</span>, parameters.<span class="property">numSpotLights</span>)</span><br><span class="line">    .<span class="title function_">replace</span>(<span class="regexp">/NUM_SPOT_LIGHT_MAPS/g</span>, parameters.<span class="property">numSpotLightMaps</span>);</span><br><span class="line">  <span class="comment">// ... 下略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接著的 <code>resolveIncludes</code> 就是一切關鍵的鑰匙了，這個函式串連了我們上面所有講的部分，以及也解釋了 Three.js 這些預定義的 <code>#define</code> 字串是如何變成實際的 shader 程式碼而做出類似霧氣這些效果的，其實 <code>resolveIncludes</code> 做的事情意外的簡單，實際上就是在傳進來的 <code>vertexShader</code> 這一長串的字串中，找到 <code>#include</code> 開頭的字串，並替換成 <code>ShaderChunk</code> 資料夾底下各檔案實際撰寫的 shader 程式碼</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Resolve Includes</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> includePattern = <span class="regexp">/^[ \t]*#include +&lt;([\w\d./]+)&gt;/gm</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">resolveIncludes</span>(<span class="params">string</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> string.<span class="title function_">replace</span>(includePattern, includeReplacer);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> shaderChunkMap = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">includeReplacer</span>(<span class="params">match, include</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> string = <span class="title class_">ShaderChunk</span>[include];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (string === <span class="literal">undefined</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> newInclude = shaderChunkMap.<span class="title function_">get</span>(include);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (newInclude !== <span class="literal">undefined</span>) &#123;</span><br><span class="line">      string = <span class="title class_">ShaderChunk</span>[newInclude];</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">warn</span>(</span><br><span class="line">        <span class="string">&#x27;THREE.WebGLRenderer: Shader chunk &quot;%s&quot; has been deprecated. Use &quot;%s&quot; instead.&#x27;</span>,</span><br><span class="line">        include,</span><br><span class="line">        newInclude</span><br><span class="line">      );</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;Can not resolve #include &lt;&#x27;</span> + include + <span class="string">&#x27;&gt;&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">resolveIncludes</span>(string);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這麼講好像還是有點模糊，讓我們舉一個實際的例子就會很簡單了，我們以 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=basic#api/en/materials/MeshBasicMaterial">MeshBasicMaterial</a> 當作範例解釋：</p>
+<p>在 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/webgl/WebGLPrograms.js">WebGLPrograms.js</a> 裡，注意！這個檔案是 <strong>“s”</strong> 結尾的，跟上面最一開始提到的 <code>WebGLProgram.js</code> 檔案是處理完全不一樣的東西，在 <code>WebGLPrograms.js</code> 這個檔案裡會根據不同的 <code>Material</code> 種類產出 <code>parameter.vertexShader</code> 而這個 <code>parameter.vertexShader</code> 變數會傳到 <code>WebGLProgram.js</code> 去，對應到的就是一開始提到的 <code>vertexGlsl</code> 變數中的第三個變數 <code>vertexShader</code></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/webgl/WebGLPrograms.js">WebGLPrograms.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">ShaderLib</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;../shaders/ShaderLib.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> shaderIDs = &#123;</span><br><span class="line">  <span class="title class_">MeshBasicMaterial</span>: <span class="string">&#x27;basic&#x27;</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getParameters</span>(<span class="params">material, lights, shadows, scene, object</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> shaderID = shaderIDs[material.<span class="property">type</span>];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (shaderID) &#123;</span><br><span class="line">    <span class="keyword">const</span> shader = <span class="title class_">ShaderLib</span>[shaderID];</span><br><span class="line"></span><br><span class="line">    vertexShader = shader.<span class="property">vertexShader</span>;</span><br><span class="line">    fragmentShader = shader.<span class="property">fragmentShader</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> parameters = &#123;</span><br><span class="line">    vertexShader,</span><br><span class="line">    fragmentShader</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib.js">ShaderLib.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">ShaderChunk</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./ShaderChunk.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">ShaderLib</span> = &#123;</span><br><span class="line">  <span class="attr">basic</span>: &#123;</span><br><span class="line">    <span class="attr">uniforms</span>: <span class="comment">/*@__PURE__*/</span> <span class="title function_">mergeUniforms</span>([</span><br><span class="line">      <span class="title class_">UniformsLib</span>.<span class="property">common</span>,</span><br><span class="line">      <span class="title class_">UniformsLib</span>.<span class="property">specularmap</span>,</span><br><span class="line">      <span class="title class_">UniformsLib</span>.<span class="property">envmap</span>,</span><br><span class="line">      <span class="title class_">UniformsLib</span>.<span class="property">aomap</span>,</span><br><span class="line">      <span class="title class_">UniformsLib</span>.<span class="property">lightmap</span>,</span><br><span class="line">      <span class="title class_">UniformsLib</span>.<span class="property">fog</span></span><br><span class="line">    ]),</span><br><span class="line"></span><br><span class="line">    <span class="attr">vertexShader</span>: <span class="title class_">ShaderChunk</span>.<span class="property">meshbasic_vert</span>,</span><br><span class="line">    <span class="attr">fragmentShader</span>: <span class="title class_">ShaderChunk</span>.<span class="property">meshbasic_frag</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk.js">ShaderChunk.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> meshbasic <span class="keyword">from</span> <span class="string">&#x27;./ShaderLib/meshbasic.glsl.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title class_">ShaderChunk</span> = &#123;</span><br><span class="line">  <span class="attr">meshbasic_vert</span>: meshbasic.<span class="property">vertex</span>,</span><br><span class="line">  <span class="attr">meshbasic_frag</span>: meshbasic.<span class="property">fragment</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>所有 Three.js 定義的 <code>Material</code> 都有自己的一個 shader 模板，為什麼我稱它叫做 shader 模板呢？因為它有一堆字串，並且這些字串包含著許多 <code>#include ...</code> 的關鍵字，每一行的 <code>#include ...</code> 之後都會被替換成可以實際執行 shader 的程式碼，以 <code>MeshBasicMaterial</code> 來說在 <code>WebGLPrograms.js</code> 檔案中 <code>getParameters</code> 函式傳出來的 <code>vertexShader</code> 及 <code>fragmentShader</code>，其來源的 shader 模板就是 <code>./ShaderLib/meshbasic.glsl.js</code></p>
+<ul>
+<li><code>vertexShader</code> 實際的值就是 <code>meshbasic.glsl.js</code> 匯出的 <code>vertex</code></li>
+<li><code>fragmentShader</code> 實際的值就是 <code>meshbasic.glsl.js</code> 匯出的 <code>fragment</code></li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderLib/meshbasic.glsl.js">meshbasic.glsl.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> vertex = <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">#include &lt;common&gt;</span></span><br><span class="line"><span class="string">#include &lt;batching_pars_vertex&gt;</span></span><br><span class="line"><span class="string">#include &lt;uv_pars_vertex&gt;</span></span><br><span class="line"><span class="string">#include &lt;envmap_pars_vertex&gt;</span></span><br><span class="line"><span class="string">#include &lt;color_pars_vertex&gt;</span></span><br><span class="line"><span class="string">#include &lt;fog_pars_vertex&gt;</span></span><br><span class="line"><span class="string">#include &lt;morphtarget_pars_vertex&gt;</span></span><br><span class="line"><span class="string">#include &lt;skinning_pars_vertex&gt;</span></span><br><span class="line"><span class="string">#include &lt;logdepthbuf_pars_vertex&gt;</span></span><br><span class="line"><span class="string">#include &lt;clipping_planes_pars_vertex&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">void main() &#123;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  #include &lt;uv_vertex&gt;</span></span><br><span class="line"><span class="string">  #include &lt;color_vertex&gt;</span></span><br><span class="line"><span class="string">  #include &lt;morphinstance_vertex&gt;</span></span><br><span class="line"><span class="string">  #include &lt;morphcolor_vertex&gt;</span></span><br><span class="line"><span class="string">  #include &lt;batching_vertex&gt;</span></span><br><span class="line"><span class="string">  // ...</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> fragment = <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">uniform vec3 diffuse;</span></span><br><span class="line"><span class="string">uniform float opacity;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#ifndef FLAT_SHADED</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  varying vec3 vNormal;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">void main() &#123;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  vec4 diffuseColor = vec4( diffuse, opacity );</span></span><br><span class="line"><span class="string">  #include &lt;clipping_planes_fragment&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  #include &lt;logdepthbuf_fragment&gt;</span></span><br><span class="line"><span class="string">  #include &lt;map_fragment&gt;</span></span><br><span class="line"><span class="string">  #include &lt;color_fragment&gt;</span></span><br><span class="line"><span class="string">  #include &lt;alphamap_fragment&gt;</span></span><br><span class="line"><span class="string">  #include &lt;alphatest_fragment&gt;</span></span><br><span class="line"><span class="string">  #include &lt;alphahash_fragment&gt;</span></span><br><span class="line"><span class="string">  #include &lt;specularmap_fragment&gt;</span></span><br><span class="line"><span class="string">  // ...</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<p>所以讓我們來看看以第 ７ 行 <code>#include &lt;fog_pars_vertex&gt;</code> 來說，這一行字串最後會藉由 <code>resolveIncludes</code> 這個函式，將 <code>#include</code> 後面的 <code>&lt;fog_pars_vertex&gt;</code> 字串挑出並替換成 <code>ShaderChunk</code> 資料夾底下同名的檔案 <code>fog_pars_vertex.glsl.js</code> 引入真正的 shader 程式碼</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/fog_pars_vertex.glsl.js">fog_pars_vertex.glsl.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">#ifdef USE_FOG</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  varying float vFogDepth;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><p>到此我們終於搞清楚了 Three.js 裡整個 shader 的架構，首先是判斷是不是使用 <code>RawShaderMaterial</code>，如果是的話，就代表整個 shader 的程式碼使用者自己輸入，而如果是使用 <code>ShaderMaterial</code> 的話，Three.js 會幫你引用一堆預定義好的 shader 功能，例如: fog，而這整個套用預定義 shader 的流程會從每個各自的 Material shader 模板出發 (ex. <code>meshbasic.glsl.js</code>)，這個 shader 模板裡面寫有一堆 <code>#include ...</code> 開頭的字串，之後藉由 <code>resolveIncludes</code> 函式解析出 <code>#include</code> 後的字串是代表要開啟什麼樣的 shader 效果 (ex. <code>#include &lt;fog_pars_vertex&gt;</code>)，並引用 <code>ShaderChunk</code> 資料夾底下相對應的 shader 檔案替換成真正的 shader 程式碼 (ex. <code>fog_pars_vertex.glsl.js</code>)</p>
+<p><strong>P.S. fog shader 廢除</strong><br>這裡我們用 fog 當作範例來講解 shader 的架構，但在看原始碼時我發現 fog 的 shader 使用方式應該是已經廢除了，原因是下面這一部分的程式會判斷 <code>parameters.useFog</code> 為 <code>true</code> 時才開啟 <code>USE_FOG</code> 的功能，但可以發現 <code>parameters.useFog = material.fog === true</code>, 而在官方的 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=Material#api/en/materials/Material">Material</a> 文件裡已經沒有 <code>fog</code> 的屬性了，看樣子 <code>fog</code> 之類的功能已經額外移出來到 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=fog#api/en/scenes/Fog">Fog
+</a> 跟 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/scenes/FogExp2">FogExp2</a> 了</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/dev/src/renderers/webgl/WebGLProgram.js">WebGLProgram.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">prefixVertex = [</span><br><span class="line">  parameters.<span class="property">useFog</span> &amp;&amp; parameters.<span class="property">fog</span> ? <span class="string">&#x27;#define USE_FOG&#x27;</span> : <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">  parameters.<span class="property">useFog</span> &amp;&amp; parameters.<span class="property">fogExp2</span> ? <span class="string">&#x27;#define FOG_EXP2&#x27;</span> : <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 以下略 ...</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p><strong>P.S. ShaderLib 與 ShaderChunk 資料夾</strong><br>藉由以上的討論可以知道 <code>ShaderLib</code> 底下放的就是所謂的 shader 模板 (許多 <code>#include ...</code> 開頭的字串)，而 <code>ShaderChunk</code> 底下則是放實際可以執行 shader 的程式碼 (ex. <code>fog_pars_vertex.glsl.js</code>)，這其實對應的就是官方文件的 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/renderers/shaders/ShaderChunk">ShaderChunk</a> 與 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/renderers/shaders/ShaderLib">ShaderLib</a> 頁面</p>
+<hr>
+<h2 id="改變-Three-js-內建的-shader-程式碼"><a href="#改變-Three-js-內建的-shader-程式碼" class="headerlink" title="改變 Three.js 內建的 shader 程式碼"></a>改變 Three.js 內建的 shader 程式碼</h2><p>上面我們搞清楚了整個 Three.js 中 shader 的架構，下面想要分享的是開發者可以透過 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/Material.onBeforeCompile">Material.onBeforeCompile</a> 這個函式塞入自己寫的 shader 邏輯，下面我們直接拿 Three.js 官方的範例 - <a target="_blank" rel="noopener" href="https://threejs.org/examples/#webgl_materials_modified">webgl_materials_modified</a> 來做例子</p>
+<p>首先在這個範例中使用 <code>GLTFLoader</code> 載入了一個叫做 <code>LeePerrySmith.glb</code> 的 3D 模型並創建了兩個人臉的 mesh，兩個 mesh 所使用的 material 是藉由 <code>buildTwistMaterial</code> 這個函式產生出來的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loader = <span class="keyword">new</span> <span class="title class_">GLTFLoader</span>();</span><br><span class="line">loader.<span class="title function_">load</span>(<span class="string">&#x27;models/gltf/LeePerrySmith/LeePerrySmith.glb&#x27;</span>, <span class="keyword">function</span> (<span class="params">gltf</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> geometry = gltf.<span class="property">scene</span>.<span class="property">children</span>[<span class="number">0</span>].<span class="property">geometry</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> mesh = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Mesh</span>(geometry, <span class="title function_">buildTwistMaterial</span>(<span class="number">2.0</span>));</span><br><span class="line">  mesh.<span class="property">position</span>.<span class="property">x</span> = -<span class="number">3.5</span>;</span><br><span class="line">  mesh.<span class="property">position</span>.<span class="property">y</span> = -<span class="number">0.5</span>;</span><br><span class="line">  scene.<span class="title function_">add</span>(mesh);</span><br><span class="line"></span><br><span class="line">  mesh = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Mesh</span>(geometry, <span class="title function_">buildTwistMaterial</span>(-<span class="number">2.0</span>));</span><br><span class="line">  mesh.<span class="property">position</span>.<span class="property">x</span> = <span class="number">3.5</span>;</span><br><span class="line">  mesh.<span class="property">position</span>.<span class="property">y</span> = -<span class="number">0.5</span>;</span><br><span class="line">  scene.<span class="title function_">add</span>(mesh);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>buildTwistMaterial</code> 中使用了 <code>Material.onBeforeCompile</code> 更改 Three.js 內置的 shader 達到人臉左右扭曲的效果</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">buildTwistMaterial</span>(<span class="params">amount</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> material = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">MeshNormalMaterial</span>();</span><br><span class="line">  material.<span class="property">onBeforeCompile</span> = <span class="keyword">function</span> (<span class="params">shader</span>) &#123;</span><br><span class="line">    shader.<span class="property">uniforms</span>.<span class="property">time</span> = &#123; <span class="attr">value</span>: <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line">    shader.<span class="property">vertexShader</span> = <span class="string">&#x27;uniform float time;\n&#x27;</span> + shader.<span class="property">vertexShader</span>;</span><br><span class="line">    shader.<span class="property">vertexShader</span> = shader.<span class="property">vertexShader</span>.<span class="title function_">replace</span>(</span><br><span class="line">      <span class="string">&#x27;#include &lt;begin_vertex&gt;&#x27;</span>,</span><br><span class="line">      [</span><br><span class="line">        <span class="string">`float theta = sin( time + position.y ) / <span class="subst">$&#123;amount.toFixed(<span class="number">1</span>)&#125;</span>;`</span>,</span><br><span class="line">        <span class="string">&#x27;float c = cos( theta );&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;float s = sin( theta );&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;mat3 m = mat3( c, 0, s, 0, 1, 0, -s, 0, c );&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;vec3 transformed = vec3( position ) * m;&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;vNormal = vNormal * m;&#x27;</span></span><br><span class="line">      ].<span class="title function_">join</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    material.<span class="property">userData</span>.<span class="property">shader</span> = shader;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Make sure WebGLRenderer doesn&#x27;t reuse a single program</span></span><br><span class="line"></span><br><span class="line">  material.<span class="property">customProgramCacheKey</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> amount.<span class="title function_">toFixed</span>(<span class="number">1</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> material;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先來看第 3 行 <code>onBeforeCompile</code> 中取得的 <code>shader</code> 是什麼？可以從 three.js 的原始碼中找到在 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/e0b7bd9ca547889d6a57dfcd32596317f2ccf28c/src/renderers/WebGLRenderer.js#L1693">WebGLRenderer.js</a> 中呼叫了 <code>material.onBeforeCompile</code> 並把 <code>parameters</code> 傳進去</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/e0b7bd9ca547889d6a57dfcd32596317f2ccf28c/src/renderers/WebGLRenderer.js#L1693">WebGLRenderer.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">parameters.<span class="property">uniforms</span> = programCache.<span class="title function_">getUniforms</span>(material);</span><br><span class="line"></span><br><span class="line">material.<span class="title function_">onBeforeCompile</span>(parameters, _this);</span><br><span class="line"></span><br><span class="line">program = programCache.<span class="title function_">acquireProgram</span>(parameters, programCacheKey);</span><br><span class="line">programs.<span class="title function_">set</span>(programCacheKey, program);</span><br></pre></td></tr></table></figure>
+
+<p>接著會發現 <code>parameters</code> 是從 <code>programCache.getParameters</code> 來的，而 <code>programCache</code> 是 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/7b4b9ff3f75ac97054b0f9e60bb5fe17815fde8d/src/renderers/webgl/WebGLPrograms.js#L9">WebGLPrograms.js</a> 產生出來的實例</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/e0b7bd9ca547889d6a57dfcd32596317f2ccf28c/src/renderers/WebGLRenderer.js#L1652">WebGLRenderer.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">programCache = <span class="keyword">new</span> <span class="title class_">WebGLPrograms</span>(</span><br><span class="line">  _this,</span><br><span class="line">  cubemaps,</span><br><span class="line">  cubeuvmaps,</span><br><span class="line">  extensions,</span><br><span class="line">  capabilities,</span><br><span class="line">  bindingStates,</span><br><span class="line">  clipping</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> parameters = programCache.<span class="title function_">getParameters</span>(</span><br><span class="line">  material,</span><br><span class="line">  lights.<span class="property">state</span>,</span><br><span class="line">  shadowsArray,</span><br><span class="line">  scene,</span><br><span class="line">  object</span><br><span class="line">);</span><br><span class="line"><span class="keyword">const</span> programCacheKey = programCache.<span class="title function_">getProgramCacheKey</span>(parameters);</span><br></pre></td></tr></table></figure>
+
+<p>最終在 <code>WebGLPrograms.js</code> 檔案裡終於找到了定義 <code>parameters</code> 變數的地方，看到這裡有沒有覺得熟悉了起來，這裡的 <code>vertexShader</code> 跟 <code>fragmentShader</code>，這兩個東西就是剛剛上面在探討的 <a href="#vertexShader">3. vertexShader</a>，所以這裡的 <code>vertexShader</code> 跟 <code>fragmentShader</code> 都是從 <code>ShaderLib</code> 資料夾底下的 shader 模板來的</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/7b4b9ff3f75ac97054b0f9e60bb5fe17815fde8d/src/renderers/webgl/WebGLPrograms.js#L177">WebGLPrograms.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (shaderID) &#123;</span><br><span class="line">  <span class="keyword">const</span> shader = <span class="title class_">ShaderLib</span>[shaderID];</span><br><span class="line"></span><br><span class="line">  vertexShader = shader.<span class="property">vertexShader</span>;</span><br><span class="line">  fragmentShader = shader.<span class="property">fragmentShader</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> parameters = &#123;</span><br><span class="line">  <span class="attr">shaderID</span>: shaderID,</span><br><span class="line">  <span class="attr">shaderType</span>: material.<span class="property">type</span>,</span><br><span class="line">  <span class="attr">shaderName</span>: material.<span class="property">name</span>,</span><br><span class="line"></span><br><span class="line">  <span class="attr">vertexShader</span>: vertexShader,</span><br><span class="line">  <span class="attr">fragmentShader</span>: fragmentShader,</span><br><span class="line">  <span class="attr">defines</span>: material.<span class="property">defines</span></span><br><span class="line">  <span class="comment">// ... 下略</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>回到上面 <code>buildTwistMaterial</code> 函式中用到的是 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/MeshNormalMaterial">MeshNormalMaterial</a>，對應到的 shader 模板是 <code>ShaderLib</code> 資料夾底下的 <code>meshnormal.glsl.js</code></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/7b4b9ff3f75ac97054b0f9e60bb5fe17815fde8d/src/renderers/shaders/ShaderLib/meshnormal.glsl.js">meshnormal.glsl.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line"></span><br><span class="line">  #include &lt;uv_vertex&gt;</span><br><span class="line">  #include &lt;batching_vertex&gt;</span><br><span class="line"></span><br><span class="line">  #include &lt;beginnormal_vertex&gt;</span><br><span class="line">  #include &lt;morphinstance_vertex&gt;</span><br><span class="line">  #include &lt;morphnormal_vertex&gt;</span><br><span class="line">  #include &lt;skinbase_vertex&gt;</span><br><span class="line">  #include &lt;skinnormal_vertex&gt;</span><br><span class="line">  #include &lt;defaultnormal_vertex&gt;</span><br><span class="line">  #include &lt;normal_vertex&gt;</span><br><span class="line"></span><br><span class="line">  #include &lt;begin_vertex&gt;</span><br><span class="line">  #include &lt;morphtarget_vertex&gt;</span><br><span class="line">  #include &lt;skinning_vertex&gt;</span><br><span class="line">  #include &lt;displacementmap_vertex&gt;</span><br><span class="line">  #include &lt;project_vertex&gt;</span><br><span class="line">  #include &lt;logdepthbuf_vertex&gt;</span><br><span class="line">  #include &lt;clipping_planes_vertex&gt;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ... 下略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以在 <code>buildTwistMaterial</code> 函式中是將第 14 行的 <code>#include &lt;begin_vertex&gt;</code> 這一行程式碼替換為自己所撰寫的 shader，關鍵的一行是 <code>mat3 m = mat3( c, 0, s, 0, 1, 0, -s, 0, c );</code> 這裡創建了一個繞 Y 軸的旋轉矩陣，將原本的 vertex 位置 <code>vec3( position )</code> 及法線向量 <code>vNormal</code> 都乘上這個旋轉矩陣，做到模型圍繞著 Y 軸進行旋轉的效果</p>
+<p>至於為什麼 <code>mat3( c, 0, s, 0, 1, 0, -s, 0, c )</code> 是圍繞著 Y 軸的旋轉矩陣呢？請參考這兩篇文章 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/MetaWang/p/10094784.html">旋轉矩陣</a> 以及 <a target="_blank" rel="noopener" href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/07%20Transformations/">变换</a></p>
+<p><code>buildTwistMaterial</code> 函式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">material.<span class="property">onBeforeCompile</span> = <span class="keyword">function</span> (<span class="params">shader</span>) &#123;</span><br><span class="line">  shader.<span class="property">uniforms</span>.<span class="property">time</span> = &#123; <span class="attr">value</span>: <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line">  shader.<span class="property">vertexShader</span> = <span class="string">&#x27;uniform float time;\n&#x27;</span> + shader.<span class="property">vertexShader</span>;</span><br><span class="line">  shader.<span class="property">vertexShader</span> = shader.<span class="property">vertexShader</span>.<span class="title function_">replace</span>(</span><br><span class="line">    <span class="string">&#x27;#include &lt;begin_vertex&gt;&#x27;</span>,</span><br><span class="line">    [</span><br><span class="line">      <span class="string">`float theta = sin( time + position.y ) / <span class="subst">$&#123;amount.toFixed(<span class="number">1</span>)&#125;</span>;`</span>,</span><br><span class="line">      <span class="string">&#x27;float c = cos( theta );&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;float s = sin( theta );&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;mat3 m = mat3( c, 0, s, 0, 1, 0, -s, 0, c );&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;vec3 transformed = vec3( position ) * m;&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;vNormal = vNormal * m;&#x27;</span></span><br><span class="line">    ].<span class="title function_">join</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  material.<span class="property">userData</span>.<span class="property">shader</span> = shader;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>另外還有一個問題是為什麼最後改變的變數名稱是 <code>transformed</code> 跟 <code>vNormal</code> 呢？原因是要看後面套用的 shader 程式碼，<code>transformed</code> 這個變數之後會在 <code>project_vertex.glsl.js</code> 裡最終傳遞給 <code>gl_Position</code>，而 <code>vNormal</code> 則是會在 <code>normal_fragment_begin.glsl.js</code> 檔案中轉換成 <code>normal</code>，<code>normal</code> 最終會在 <code>meshnormal.glsl.js</code> 檔案中傳給 <code>gl_FragColor</code> 決定每個像素點的顏色</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/7b4b9ff3f75ac97054b0f9e60bb5fe17815fde8d/src/renderers/shaders/ShaderChunk/project_vertex.glsl.js">project_vertex.glsl.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">vec4 mvPosition = vec4( transformed, 1.0 );</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#ifdef USE_BATCHING</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  mvPosition = batchingMatrix * mvPosition;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#ifdef USE_INSTANCING</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  mvPosition = instanceMatrix * mvPosition;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">mvPosition = modelViewMatrix * mvPosition;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">gl_Position = projectionMatrix * mvPosition;</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/7b4b9ff3f75ac97054b0f9e60bb5fe17815fde8d/src/renderers/shaders/ShaderChunk/normal_fragment_begin.glsl.js">normal_fragment_begin.glsl.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#ifdef <span class="variable constant_">FLAT_SHADED</span></span><br><span class="line"></span><br><span class="line">  vec3 fdx = <span class="title function_">dFdx</span>( vViewPosition );</span><br><span class="line">  vec3 fdy = <span class="title function_">dFdy</span>( vViewPosition );</span><br><span class="line">  vec3 normal = <span class="title function_">normalize</span>( <span class="title function_">cross</span>( fdx, fdy ) );</span><br><span class="line"></span><br><span class="line">#<span class="keyword">else</span></span><br><span class="line"></span><br><span class="line">  vec3 normal = <span class="title function_">normalize</span>( vNormal );</span><br><span class="line"></span><br><span class="line">  #ifdef <span class="variable constant_">DOUBLE_SIDED</span></span><br><span class="line"></span><br><span class="line">    normal *= faceDirection;</span><br><span class="line"></span><br><span class="line">  #endif</span><br><span class="line"></span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/7b4b9ff3f75ac97054b0f9e60bb5fe17815fde8d/src/renderers/shaders/ShaderLib/meshnormal.glsl.js">meshnormal.glsl.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> fragment = <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">  void main() &#123;</span></span><br><span class="line"><span class="string">    gl_FragColor = vec4( packNormalToRGB( normal ), diffuseColor.a );</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="customProgramCacheKey"><a href="#customProgramCacheKey" class="headerlink" title="customProgramCacheKey"></a>customProgramCacheKey</h3><p>最後的最後還有個小問題，不知道大家有沒有注意到除了 <code>onBeforeCompile</code>，另外還定義了一個 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/Material">customProgramCacheKey</a>，這似乎是因為 Three.js 會覆用一個叫做 <code>program</code> 的變數，而每個 <code>program</code> 的變數是用一個叫做 <code>programCacheKey</code> 去記錄這個 <code>program</code> 唯一的 key 值</p>
+<p><code>buildTwistMaterial</code> 函式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Make sure WebGLRenderer doesn&#x27;t reuse a single program</span></span><br><span class="line"></span><br><span class="line">material.<span class="property">customProgramCacheKey</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> amount.<span class="title function_">toFixed</span>(<span class="number">1</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/7b4b9ff3f75ac97054b0f9e60bb5fe17815fde8d/src/renderers/WebGLRenderer.js#L1653">WebGLRenderer.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> programCacheKey = programCache.<span class="title function_">getProgramCacheKey</span>(parameters);</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/7b4b9ff3f75ac97054b0f9e60bb5fe17815fde8d/src/renderers/webgl/WebGLPrograms.js#L377">WebGLPrograms</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getProgramCacheKey</span>(<span class="params">parameters</span>) &#123;</span><br><span class="line">  <span class="comment">// ... 上略</span></span><br><span class="line">  array.<span class="title function_">push</span>(parameters.<span class="property">customProgramCacheKey</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> array.<span class="title function_">join</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而預設的 <code>Material.customProgramCacheKey()</code> 只會將 <code>onBeforeCompile</code> 函數整個 <code>toString()</code> 當作唯一的 cacheKey</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/7b4b9ff3f75ac97054b0f9e60bb5fe17815fde8d/src/materials/Material.js#L109">Material.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">customProgramCacheKey</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">onBeforeCompile</span>.<span class="title function_">toString</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以在 <code>buildTwistMaterial</code> 函式才需要根據 <code>amount</code> 的值去定義不同的 cacheKey，如果沒有自定義 <code>material.customProgramCacheKey</code> 這一段的話，兩個人臉 mesh 因為 <code>onBeforeCompile</code> 的函數一樣就會變成他們的 <code>programCacheKey</code> 也都相同了</p>
+<p>最後關於這個範例，我也照樣複製了一個 <a target="_blank" rel="noopener" href="https://codesandbox.io/p/github/bcjohnblue/threejs-onBeforeCompile-example/main">線上版本</a> 出來，有興趣的人可以去更改自定義的 shader 讓整個變形的方向改成是圍繞 x 軸或是 z 軸旋轉</p>
+<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><p>這篇研究 shader 架構採用的版本是 three.js r173</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6850418117509414925">通过方法 onBeforeCompile 为 three.js 现有材质增加功能</a><br><a target="_blank" rel="noopener" href="http://www.webgl3d.cn/pages/b7b8ff/">threejs 材质的 shader 代码</a></p>
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2025/01/23/2025-01-23-%E5%9B%9B/">
+        <span>2025/01/23 (四)</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WebGL-%E8%A3%A1%E7%9A%84-shader-%E7%B6%81%E5%AE%9A"><span class="toc-number">2.</span> <span class="toc-text">WebGL 裡的 shader 綁定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Three-js-%E8%A3%A1%E9%A0%90%E5%AE%9A%E7%BE%A9%E7%9A%84-shaders"><span class="toc-number">3.</span> <span class="toc-text">Three.js 裡預定義的 shaders</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#versionString"><span class="toc-number">3.1.</span> <span class="toc-text">1. versionString</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#prefixVertex"><span class="toc-number">3.2.</span> <span class="toc-text">2. prefixVertex</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#glsl-%E7%9A%84%E7%89%88%E6%9C%AC%E7%A8%8B%E5%BC%8F%E7%A2%BC%E8%BD%89%E6%8F%9B"><span class="toc-number">3.3.</span> <span class="toc-text">glsl 的版本程式碼轉換</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vertexShader"><span class="toc-number">3.4.</span> <span class="toc-text">3. vertexShader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%B5%90"><span class="toc-number">3.5.</span> <span class="toc-text">小結</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%B9%E8%AE%8A-Three-js-%E5%85%A7%E5%BB%BA%E7%9A%84-shader-%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="toc-number">4.</span> <span class="toc-text">改變 Three.js 內建的 shader 程式碼</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#customProgramCacheKey"><span class="toc-number">4.1.</span> <span class="toc-text">customProgramCacheKey</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC"><span class="toc-number">5.</span> <span class="toc-text">版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">參考資料</span></a></li></ol>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+          
+
+
+    
+    
+    <title>
+        
+            CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/">CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-04-17
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-04-22
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error&url=https://bcjohnblue.github.io/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error&url=https://bcjohnblue.github.io/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/&title=CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/&text=CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <h6 id="此為-CORS-Debug-系列文章-第-2-篇："><a href="#此為-CORS-Debug-系列文章-第-2-篇：" class="headerlink" title="此為 CORS Debug 系列文章 - 第 2 篇："></a>此為 <strong>CORS Debug</strong> 系列文章 - 第 2 篇：</h6><ol>
+<li><a href="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">CORS Debug (1) - 網頁快取導致的 CORS 問題</a></li>
+<li><a href="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/" target="_blank">CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</a></li>
+</ol>
+<h2 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h2><p>在上一篇文章 - <a href="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">網頁快取導致的 CORS 問題</a> 中，最終採用了 <code>crossOrigin=&#39;anonymous&#39;</code> 這樣的方式解決網頁快取導致的 CORS 錯誤，原本以為這樣已經萬無一失，但沒想到更悲劇的事情發生了 &#x3D;&gt; 在 Safari 瀏覽器有時候會發現網頁上的圖片都不見了</p>
+<div style="display: flex; justify-content: center;">
+  <img src="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/safari-image-disappear.png" />
+</div>
+
+<span id="more"></span>
+
+<h2 id="什麼情況下圖片會消失不見"><a href="#什麼情況下圖片會消失不見" class="headerlink" title="什麼情況下圖片會消失不見"></a>什麼情況下圖片會消失不見</h2><p>經過一些測試後，發現圖片不見的關鍵因素有以下幾點：</p>
+<ol>
+<li><p>只有 Safari 瀏覽器會出現這個問題，Chrome 瀏覽器正常</p>
+</li>
+<li><p>第一次從伺服器取得圖片時一定都正常，但重整頁面下一次拿快取圖片的時候<strong>有機率</strong>圖片會消失不見</p>
+</li>
+<li><p>當圖片消失不見後，即使不斷重整頁面圖片一樣回不來</p>
+</li>
+</ol>
+<p>此時點開 Safari 的 DevTools 來看，又見到了熟悉的 CORS 錯誤</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./safari-cors-error.png" />
+</div>
+
+<h2 id="CORS-錯誤出現-查看網路請求"><a href="#CORS-錯誤出現-查看網路請求" class="headerlink" title="CORS 錯誤出現 - 查看網路請求"></a>CORS 錯誤出現 - 查看網路請求</h2><p>第一步先看看 CORS 錯誤發生時的網路請求，打開 Safari DevTools 的網路部分會發現奇怪的事，每張圖片都發出了兩次請求，其中一個是黑色沒有錯誤的請求、另一個是紅色的 CORS 錯誤請求</p>
+<ul>
+<li>沒有錯誤的請求</li>
+</ul>
+<p>可以看到來源是<strong>磁碟快取</strong>，但奇怪的地方是明明就已經在 <code>&lt;img /&gt;</code> 加上 <code>crossOrigin=&#39;anonymous&#39;</code> 了，但 Response headers 為什麼卻沒有 <code>Access-Control-Allow-Origin: *</code> &#x3D;&gt; 這代表之前快取到的是 <strong>非跨域請求</strong> ?</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./cors-error-request-good.png" />
+</div>
+
+<ul>
+<li>出現 CORS 錯誤的請求</li>
+</ul>
+<p>可以看到 Request headers 帶有 <code>Origin</code> 欄位，代表這送出的是 <strong>跨域請求</strong>，而現在出現 CORS 錯誤了，對照上面的結果，看來可以確定之前快取到的是 <strong>非跨域請求</strong></p>
+<div style="display: flex; justify-content: center;">
+  <img src="./cors-error-request-bad.png" />
+</div>
+
+<h2 id="第一次載入圖片-查看網路請求"><a href="#第一次載入圖片-查看網路請求" class="headerlink" title="第一次載入圖片 - 查看網路請求"></a>第一次載入圖片 - 查看網路請求</h2><p>接著我們來看看第一次載入圖片時，是否有可能快取到 <strong>非跨域請求</strong> 呢？</p>
+<p>打開 DevTools 看會發現第一次載入圖片時，每張圖片一樣也都發出了兩個請求，其中一個是 <strong>跨域請求</strong> 而另一個是 <strong>非跨域請求</strong></p>
+<ul>
+<li>跨域請求</li>
+</ul>
+<p>可以看到第一個請求是 <strong>跨域請求</strong>，Request headers 帶有 <code>Origin</code> 欄位而 Response headers 也帶有 <code>Access-Control-Allow-Origin: *</code>，由於我們在 <code>img</code> 元素上帶了 <code>crossOrigin=&#39;anonymous&#39;</code>，所以發出 <strong>跨域請求</strong> 是合理的</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./first-request-cors.png" />
+</div>
+
+<ul>
+<li>非跨域請求</li>
+</ul>
+<p>而莫名出現的第二個請求是 <strong>非跨域請求</strong>，Request headers 沒有 <code>Origin</code> 欄位，所以 Response headers 也就沒有回傳 <code>Access-Control-Allow-Origin: *</code>，這是不合理的</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./first-request-no-cors.png" />
+</div>
+
+<h2 id="推測-CORS-錯誤出現的原因"><a href="#推測-CORS-錯誤出現的原因" class="headerlink" title="推測 CORS 錯誤出現的原因"></a>推測 CORS 錯誤出現的原因</h2><p>根據以上的觀察，我們知道第一次進入頁面從伺服器獲取圖片時，Safari 不知道為什麼發出了兩個請求，一個是 <strong>跨域請求</strong> 而另一個是 <strong>非跨域請求</strong>，圖片回傳後 Safari 會將圖片快取，但這時候似乎會出現兩個可能性：一個是快取到 <strong>跨域請求</strong> 而另一個是快取到 <strong>非跨域請求</strong></p>
+<ul>
+<li>快取到 <strong>跨域請求</strong></li>
+</ul>
+<p>這就沒什麼問題了，之後對於同一張圖片的請求都會覆用 <strong>跨域請求</strong> 的快取</p>
+<ul>
+<li>快取到 <strong>非跨域請求</strong></li>
+</ul>
+<p>這就是問題的所在，由於一開始快取到 <strong>非跨域請求</strong>，之後對於同一張圖片的請求也都會讀取到 <strong>非跨域請求</strong> 的快取，但因為 <code>img</code> 元素加上 <code>crossOrigin=&#39;anonymous&#39;</code> 代表送出的是 <strong>跨域請求</strong>，而此時 Safari 卻使用到之前快取到的 <strong>非跨域請求</strong>，就導致了 CORS 錯誤再次出現</p>
+<p>所以關鍵點就是：為什麼 Safari 瀏覽器對於同一張圖片會送出兩次請求，而且一次是 <strong>跨域請求</strong> 另一次是 <strong>非跨域請求</strong> ？</p>
+<h2 id="Safari-crossOrigin-anonymous-擺放的次序是重要的"><a href="#Safari-crossOrigin-anonymous-擺放的次序是重要的" class="headerlink" title="Safari crossOrigin=&#39;anonymous&#39; 擺放的次序是重要的"></a>Safari <code>crossOrigin=&#39;anonymous&#39;</code> 擺放的次序是重要的</h2><p>在經過許久的鬼打牆後，我偶然發現了一篇救命稻草 - <a target="_blank" rel="noopener" href="https://github.com/sveltejs/svelte/issues/7454">crossorigin and src attribute order matter</a>，這篇文章提到 <code>crossOrigin=&#39;anonymous&#39;</code> 擺放的次序在 Safari 瀏覽器中是很重要的</p>
+<ul>
+<li><code>src</code> 擺在 <code>crossOrigin=&#39;anonymous&#39;</code> 前面</li>
+</ul>
+<p>這種方式就會導致我們上面遇到的那些問題，同一張圖片的請求發出兩次，一次是 <strong>跨域請求</strong> 另一次是 <strong>非跨域請求</strong>，而我們無法控制 Safari 瀏覽器會快取哪個請求，當運氣不好快取到的是 <strong>非跨域請求</strong> 時那就慘了，在快取圖片有效的期間都會出現 CORS 錯誤，因此不管使用者怎麼刷新頁面圖片都是消失不見的</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">  <span class="attr">src</span>=<span class="string">&quot;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">crossorigin</span>=<span class="string">&quot;anonymous&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">alt</span>=<span class="string">&quot;building&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>crossOrigin=&#39;anonymous&#39;</code> 擺在 <code>src</code> 前面</li>
+</ul>
+<p>實測這種方式 Safari 會運作正常，同一張圖片只會發出一次 <strong>跨域請求</strong>，並正確被快取</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">  <span class="attr">crossorigin</span>=<span class="string">&quot;anonymous&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">src</span>=<span class="string">&quot;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">alt</span>=<span class="string">&quot;building&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="各大前端框架的-issues"><a href="#各大前端框架的-issues" class="headerlink" title="各大前端框架的 issues"></a>各大前端框架的 issues</h2><p>除了上面那篇是 <code>svelte</code> 發的 issue 外，我發現 <code>React</code>, <code>vue</code> 的使用者從大約在 2018 年到 今日(2025&#x2F;04) 都一樣面對著這奇怪的問題</p>
+<ul>
+<li>svelte - <a target="_blank" rel="noopener" href="https://github.com/sveltejs/svelte/issues/7454">crossorigin and src attribute order matter</a></li>
+<li>react - <a target="_blank" rel="noopener" href="https://github.com/facebook/react/issues/14035">crossOrigin attribute needs to be applied before <code>&lt;img src&gt;</code> attribute</a></li>
+<li>vue - <a target="_blank" rel="noopener" href="https://github.com/vuejs/core/issues/4680">Safari loads image twice if crossorigin attribute goes after src</a></li>
+</ul>
+<p>P.S. 在後面 <a href="/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/#React-JSX-%E7%B7%A8%E8%AD%AF%E7%B5%90%E6%9E%9C">研究 React 原始碼的過程中</a>，我發現 React 其實已經修復此 Safari 特定的 CORS 問題了</p>
+<h2 id="排除前端框架的影響"><a href="#排除前端框架的影響" class="headerlink" title="排除前端框架的影響"></a>排除前端框架的影響</h2><p>雖然看過上面的 issues，把 <code>crossOrigin=&#39;anonymous&#39;</code> 擺在 <code>src</code> 前面避免掉 Safari 瀏覽器這個特有的 CORS 錯誤就沒問題了，但我很好奇這有沒有可能是使用 React, Vue 這些前端框架而導致的結果，如果改為使用純 HTML, JavaScript 會是一樣的嗎？所以我只用了 HTML, JavaScript 寫了幾個範例試試，下面來看看哪些寫法會引起 CORS 錯誤，首先是 Chrome 的部分</p>
+<h4 id="Chrome-瀏覽器"><a href="#Chrome-瀏覽器" class="headerlink" title="Chrome 瀏覽器"></a>Chrome 瀏覽器</h4><p>對於 <code>crossOrigin=&#39;anonymous&#39;</code> 的順序完全不在乎，各種寫法都正常送出 <strong>跨域請求</strong>，並且 <strong>跨域請求</strong> 回來的結果也都正常被快取，以下只列出其中一個正常的範例寫法</p>
+<p><a href="https://bcjohnblue.github.io/browser-cors-error/chrome-good-1" target="_blank">範例 - chrome-good-1</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> img = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;img&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      img.<span class="title function_">setAttribute</span>(</span></span><br><span class="line"><span class="language-javascript">        <span class="string">&#x27;src&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">        <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span></span></span><br><span class="line"><span class="language-javascript">      );</span></span><br><span class="line"><span class="language-javascript">      img.<span class="title function_">setAttribute</span>(<span class="string">&#x27;crossOrigin&#x27;</span>, <span class="string">&#x27;anonymous&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(img);</span></span><br><span class="line"><span class="language-javascript">    &#125;, <span class="number">0</span>);</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Safari-瀏覽器"><a href="#Safari-瀏覽器" class="headerlink" title="Safari 瀏覽器"></a>Safari 瀏覽器</h4><p>Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：</p>
+<h4 id="1-正常寫法"><a href="#1-正常寫法" class="headerlink" title="1. 正常寫法"></a>1. 正常寫法</h4><p>這是 Safari 唯一一個正常 CORS 的範例，將 <code>crossorigin=&quot;anonymous&quot;</code> 寫在 <code>&lt;img /&gt;</code> 元素上可以正常送出 <strong>跨域請求</strong></p>
+<p><a href="https://bcjohnblue.github.io/browser-cors-error/safari-good-1" target="_blank">範例 - safari-good-1</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">    <span class="attr">src</span>=<span class="string">&quot;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">crossorigin</span>=<span class="string">&quot;anonymous&quot;</span></span></span><br><span class="line"><span class="tag">  /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>稍微提及一下，這裡的寫法跟我們一開始使用前端框架(React, Vue)的寫法是不一樣的，在前端框架裡我們寫的是類似 <a target="_blank" rel="noopener" href="https://www.explainthis.io/zh-hant/swe/what-is-jsx">JSX</a> 的語法，而這些 JSX 最終編譯成 HTML 後，不一定會長得跟這裡的寫法一樣，至於 React, Vue 將 JSX 編譯後的 HTML 會長什麼樣子，我們在後面會提到</p>
+<h4 id="2-不好的寫法"><a href="#2-不好的寫法" class="headerlink" title="2. 不好的寫法"></a>2. 不好的寫法</h4><p>以下兩種寫法，同一張圖片都會送出兩次請求 - <strong>跨域請求</strong> 與 <strong>非跨域請求</strong>，但請求完後的圖片<strong>不會</strong>被瀏覽器快取</p>
+<p>為什麼我認為是不好的寫法？發出兩次請求很怪，更怪的是竟然不會被快取起來，這種寫法主要是性能不太好，因為每張圖片都會去伺服器要求資源，而且之後也都無法覆用快取，但好處是因為每次請求後都不會儲存快取，所以不會導致 CORS 問題進而讓圖片消失不見 </p>
+<p><a href="https://bcjohnblue.github.io/browser-cors-error/safari-bad-1" target="_blank">範例 - safari-bad-1</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> img = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;img&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    img.<span class="property">src</span> =</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">    img.<span class="property">crossOrigin</span> = <span class="string">&#x27;anonymous&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(img);</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://bcjohnblue.github.io/browser-cors-error/safari-bad-2" target="_blank">範例 - safari-bad-2</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> img = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;img&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    img.<span class="title function_">setAttribute</span>(</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&#x27;src&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span></span></span><br><span class="line"><span class="language-javascript">    );</span></span><br><span class="line"><span class="language-javascript">    img.<span class="title function_">setAttribute</span>(<span class="string">&#x27;crossOrigin&#x27;</span>, <span class="string">&#x27;anonymous&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(img);</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-非常糟的寫法"><a href="#3-非常糟的寫法" class="headerlink" title="3. 非常糟的寫法"></a>3. 非常糟的寫法</h4><p>以下兩種寫法，同一張圖片都會送出兩次請求 - <strong>跨域請求</strong> 與 <strong>非跨域請求</strong>，而請求完後的圖片<strong>會</strong>被瀏覽器快取</p>
+<p>為什麼我認為這是非常糟的寫法呢？原因是這個寫法會被瀏覽器快取啊，而且還無法確定被快取的是 <strong>跨域請求</strong> 或是 <strong>非跨域請求</strong>，當快取到的是 <strong>非跨域請求</strong> 時就會遇到我們開頭的那個圖片消失不見的問題</p>
+<p><a href="https://bcjohnblue.github.io/browser-cors-error/safari-very-bad-1" target="_blank">範例 - safari-very-bad-1</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> img = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;img&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      img.<span class="property">src</span> =</span></span><br><span class="line"><span class="language-javascript">        <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">      img.<span class="property">crossOrigin</span> = <span class="string">&#x27;anonymous&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(img);</span></span><br><span class="line"><span class="language-javascript">    &#125;, <span class="number">0</span>);</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://bcjohnblue.github.io/browser-cors-error/safari-very-bad-2" target="_blank">範例 - safari-very-bad-2</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> img = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;img&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      img.<span class="title function_">setAttribute</span>(</span></span><br><span class="line"><span class="language-javascript">        <span class="string">&#x27;src&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">        <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span></span></span><br><span class="line"><span class="language-javascript">      );</span></span><br><span class="line"><span class="language-javascript">      img.<span class="title function_">setAttribute</span>(<span class="string">&#x27;crossOrigin&#x27;</span>, <span class="string">&#x27;anonymous&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(img);</span></span><br><span class="line"><span class="language-javascript">    &#125;, <span class="number">0</span>);</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-非常好的寫法"><a href="#4-非常好的寫法" class="headerlink" title="4. 非常好的寫法"></a>4. 非常好的寫法</h4><p>只是想強調這個寫法跟上面 <a href="/blog/2025/04/17/cors-debug-%E7%B3%BB%E5%88%97%E6%96%87-2-crossorigin-anonymous-%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/#3-%E9%9D%9E%E5%B8%B8%E7%B3%9F%E7%9A%84%E5%AF%AB%E6%B3%95">3. 非常糟的寫法</a> 很類似，差別只在把 <code>crossOrigin=&#39;anonymous&#39;</code> 的順序提前到 <code>src</code> 之前，但結果會跟 <a href="/blog/2025/04/17/cors-debug-%E7%B3%BB%E5%88%97%E6%96%87-2-crossorigin-anonymous-%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/#1-%E6%AD%A3%E5%B8%B8%E5%AF%AB%E6%B3%95">1. 正常寫法</a> 一樣，每張圖片只會送出一個 <strong>跨域請求</strong>，並且請求完後的圖片也<strong>會</strong>被快取</p>
+<p><a href="https://bcjohnblue.github.io/browser-cors-error/safari-very-good-1" target="_blank">範例 - safari-very-good-1</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> img = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;img&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      img.<span class="property">crossOrigin</span> = <span class="string">&#x27;anonymous&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">      img.<span class="property">src</span> =</span></span><br><span class="line"><span class="language-javascript">        <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(img);</span></span><br><span class="line"><span class="language-javascript">    &#125;, <span class="number">0</span>);</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://bcjohnblue.github.io/browser-cors-error/safari-very-good-2" target="_blank">範例 - safari-very-good-2</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> img = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;img&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      img.<span class="title function_">setAttribute</span>(<span class="string">&#x27;crossOrigin&#x27;</span>, <span class="string">&#x27;anonymous&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      img.<span class="title function_">setAttribute</span>(</span></span><br><span class="line"><span class="language-javascript">        <span class="string">&#x27;src&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">        <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span></span></span><br><span class="line"><span class="language-javascript">      );</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(img);</span></span><br><span class="line"><span class="language-javascript">    &#125;, <span class="number">0</span>);</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="前端框架對應到的是哪種寫法？"><a href="#前端框架對應到的是哪種寫法？" class="headerlink" title="前端框架對應到的是哪種寫法？"></a>前端框架對應到的是哪種寫法？</h2><p>上面分析完純 HTML, Javascript 的幾種寫法最終如何影響請求以及快取的方式，接著讓我們回頭來看，現今大家常用的前端框架 JSX 的語法最終編譯出來後對應到的是哪種寫法</p>
+<h4 id="React-or-Vue-中類-JSX-的寫法"><a href="#React-or-Vue-中類-JSX-的寫法" class="headerlink" title="React or Vue 中類 JSX 的寫法"></a>React or Vue 中類 JSX 的寫法</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">  <span class="attr">src</span>=<span class="string">&quot;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">crossorigin</span>=<span class="string">&quot;anonymous&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">alt</span>=<span class="string">&quot;building&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="React-JSX-編譯結果"><a href="#React-JSX-編譯結果" class="headerlink" title="- React JSX 編譯結果"></a>- React JSX 編譯結果</h4><p>以上 React JSX 的寫法會藉由 babel 編譯成 <a target="_blank" rel="noopener" href="https://react.dev/reference/react/createElement">React.createElement</a> 的形式：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">React</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;img&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">src</span>: <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span>,</span><br><span class="line">  <span class="attr">crossOrigin</span>: <span class="string">&#x27;anonymous&#x27;</span>,</span><br><span class="line">  <span class="attr">alt</span>: <span class="string">&#x27;building&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>而根據 <a target="_blank" rel="noopener" href="https://juejin.cn/post/7431122270641094675">React 源码解析 (四) —— Fiber 树初次构造</a> 這篇文章的分析，元素在賦予 <code>props</code> 屬性時會執行到 <a target="_blank" rel="noopener" href="https://github.com/facebook/react/blob/bc6184dd993e6ea0efdee7553293676db774c3ca/packages/react-dom-bindings/src/client/ReactFiberConfigDOM.js#L584">finalizeInitialChildren</a> 函式，而其中的 <a target="_blank" rel="noopener" href="https://github.com/facebook/react/blob/bc6184dd993e6ea0efdee7553293676db774c3ca/packages/react-dom-bindings/src/client/ReactDOMComponent.js#L1045">setInitialProperties</a> 就處理了 <code>img</code> 元素賦予 <code>props</code> 的邏輯：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (tag) &#123;</span><br><span class="line">  <span class="comment">// img tags previously were implemented as void elements with non delegated events however Safari (and possibly Firefox)</span></span><br><span class="line">  <span class="comment">// begin fetching the image as soon as the `src` or `srcSet` property is set and if we set these before other properties</span></span><br><span class="line">  <span class="comment">// that can modify the request (such as crossorigin) or the resource fetch (such as sizes) then the browser will load</span></span><br><span class="line">  <span class="comment">// the wrong thing or load more than one thing. This implementation ensures src and srcSet are set on the instance last</span></span><br><span class="line">  <span class="keyword">case</span> <span class="string">&#x27;img&#x27;</span>: &#123;</span><br><span class="line">    <span class="title function_">listenToNonDelegatedEvent</span>(<span class="string">&#x27;error&#x27;</span>, domElement);</span><br><span class="line">    <span class="title function_">listenToNonDelegatedEvent</span>(<span class="string">&#x27;load&#x27;</span>, domElement);</span><br><span class="line">    <span class="comment">// Mostly a port of Void Element logic with special casing to ensure srcset and src are set last</span></span><br><span class="line">    <span class="keyword">let</span> hasSrc = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">let</span> hasSrcSet = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> propKey <span class="keyword">in</span> props) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!props.<span class="title function_">hasOwnProperty</span>(propKey)) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">const</span> propValue = props[propKey];</span><br><span class="line">      <span class="keyword">if</span> (propValue == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">switch</span> (propKey) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;src&#x27;</span>:</span><br><span class="line">          hasSrc = <span class="literal">true</span>;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;srcSet&#x27;</span>:</span><br><span class="line">          hasSrcSet = <span class="literal">true</span>;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;children&#x27;</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;dangerouslySetInnerHTML&#x27;</span>: &#123;</span><br><span class="line">          <span class="comment">// <span class="doctag">TODO:</span> Can we make this a DEV warning to avoid this deny list?</span></span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(</span><br><span class="line">            <span class="string">`<span class="subst">$&#123;tag&#125;</span> is a void element tag and must neither have \`children\` nor `</span> +</span><br><span class="line">              <span class="string">&#x27;use `dangerouslySetInnerHTML`.&#x27;</span></span><br><span class="line">          );</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// defaultChecked and defaultValue are ignored by setProp</span></span><br><span class="line">        <span class="attr">default</span>: &#123;</span><br><span class="line">          <span class="title function_">setProp</span>(domElement, tag, propKey, propValue, props, <span class="literal">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (hasSrcSet) &#123;</span><br><span class="line">      <span class="title function_">setProp</span>(domElement, tag, <span class="string">&#x27;srcSet&#x27;</span>, props.<span class="property">srcSet</span>, props, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (hasSrc) &#123;</span><br><span class="line">      <span class="title function_">setProp</span>(domElement, tag, <span class="string">&#x27;src&#x27;</span>, props.<span class="property">src</span>, props, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>wait 等等！這裡看起來不太正常，為什麼在 <code>case &#39;img&#39;</code> 上面的註解提到了 Safari crossorigin 的順序問題，我一直以為根據這篇 <a target="_blank" rel="noopener" href="https://github.com/facebook/react/issues/14035">crossOrigin attribute needs to be applied before <img src> attribute</a> 最後的留言在 2021 年 9 月，這個順序的 bug 在 React 中應該還是存在：</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./react-issue.png" />
+</div>
+
+<p>但從 React 原始碼中才發現原來這個 Safari 特定的 bug 已經被修復了啊！後來利用 git blame 找到了修改的 PR - <a target="_blank" rel="noopener" href="https://github.com/facebook/react/pull/30340">[Fiber] Ensure srcset and src are assigned last on img instances</a> 是在 2024 年 7 月，從 React releases 可以發現對應到的是 <a target="_blank" rel="noopener" href="https://github.com/facebook/react/releases/tag/v19.0.0">19.0.0 版本</a></p>
+<p>這時趕快把我在上一篇文章用 React 所寫的範例，版本用的是 React 18.3.1，切換成 19.0.0 後，哇！發現 React 編譯後真的把 <code>crossOrigin</code> 移到 <code>src</code> 前面了！</p>
+<h4 id="Vue-JSX-編譯結果"><a href="#Vue-JSX-編譯結果" class="headerlink" title="- Vue JSX 編譯結果"></a>- Vue JSX 編譯結果</h4><p>Vue 的類 JSX 語法叫做 <a target="_blank" rel="noopener" href="https://cn.vuejs.org/guide/essentials/template-syntax.html">模板语法</a>，之後會藉由 <a target="_blank" rel="noopener" href="https://cn.vuejs.org/guide/extras/render-function">h</a> 函式轉化爲 <a target="_blank" rel="noopener" href="https://cn.vuejs.org/guide/extras/rendering-mechanism#virtual-dom">vnode</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; h &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> vnode = <span class="title function_">h</span>(<span class="string">&#x27;img&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">src</span>: <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span>,</span><br><span class="line">  <span class="attr">crossorigin</span>: <span class="string">&#x27;anonymous&#x27;</span>,</span><br><span class="line">  <span class="attr">alt</span>: <span class="string">&#x27;building&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>根據 <a target="_blank" rel="noopener" href="https://juejin.cn/post/7312353149813342249">Vue3 源码解析之 render（一）</a>，<code>vnode</code> 會傳入 <a target="_blank" rel="noopener" href="https://github.com/vuejs/core/blob/4f792535e25af6941d1eb267fe16e4121623a006/packages/runtime-core/src/renderer.ts#L633">mountElement</a> 函式，其中的 <a target="_blank" rel="noopener" href="https://github.com/vuejs/core/blob/4f792535e25af6941d1eb267fe16e4121623a006/packages/runtime-core/src/renderer.ts#L680">hostPatchProp</a> 負責處理傳入的 <code>props</code> 屬性，而 <code>hostPatchProp</code> 的函式實際上使用的是 <code>packages/runtime-dom/src/patchProp.ts</code> 檔案中的 <a target="_blank" rel="noopener" href="https://github.com/vuejs/core/blob/4f792535e25af6941d1eb267fe16e4121623a006/packages/runtime-dom/src/patchProp.ts#L25">patchProp</a> 函式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="attr">patchProp</span>: <span class="title class_">DOMRendererOptions</span>[<span class="string">&#x27;patchProp&#x27;</span>] = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  el,</span></span></span><br><span class="line"><span class="params"><span class="function">  key,</span></span></span><br><span class="line"><span class="params"><span class="function">  prevValue,</span></span></span><br><span class="line"><span class="params"><span class="function">  nextValue,</span></span></span><br><span class="line"><span class="params"><span class="function">  namespace,</span></span></span><br><span class="line"><span class="params"><span class="function">  parentComponent,</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> isSVG = namespace === <span class="string">&#x27;svg&#x27;</span></span><br><span class="line">  <span class="keyword">if</span> (key === <span class="string">&#x27;class&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">patchClass</span>(el, nextValue, isSVG)</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key === <span class="string">&#x27;style&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_">patchStyle</span>(el, prevValue, nextValue)</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="title function_">isOn</span>(key)) &#123;</span><br><span class="line">    <span class="comment">// ignore v-model listeners</span></span><br><span class="line">    <span class="keyword">if</span> (!<span class="title function_">isModelListener</span>(key)) &#123;</span><br><span class="line">      <span class="title function_">patchEvent</span>(el, key, prevValue, nextValue, parentComponent)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (</span><br><span class="line">    key[<span class="number">0</span>] === <span class="string">&#x27;.&#x27;</span></span><br><span class="line">      ? ((key = key.<span class="title function_">slice</span>(<span class="number">1</span>)), <span class="literal">true</span>)</span><br><span class="line">      : key[<span class="number">0</span>] === <span class="string">&#x27;^&#x27;</span></span><br><span class="line">        ? ((key = key.<span class="title function_">slice</span>(<span class="number">1</span>)), <span class="literal">false</span>)</span><br><span class="line">        : <span class="title function_">shouldSetAsProp</span>(el, key, nextValue, isSVG)</span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="title function_">patchDOMProp</span>(el, key, nextValue, parentComponent)</span><br><span class="line">    <span class="comment">// #6007 also set form state as attributes so they work with</span></span><br><span class="line">    <span class="comment">// &lt;input type=&quot;reset&quot;&gt; or libs / extensions that expect attributes</span></span><br><span class="line">    <span class="comment">// #11163 custom elements may use value as an prop and set it as object</span></span><br><span class="line">    <span class="keyword">if</span> (</span><br><span class="line">      !el.<span class="property">tagName</span>.<span class="title function_">includes</span>(<span class="string">&#x27;-&#x27;</span>) &amp;&amp;</span><br><span class="line">      (key === <span class="string">&#x27;value&#x27;</span> || key === <span class="string">&#x27;checked&#x27;</span> || key === <span class="string">&#x27;selected&#x27;</span>)</span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="title function_">patchAttr</span>(el, key, nextValue, isSVG, parentComponent, key !== <span class="string">&#x27;value&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (</span><br><span class="line">    <span class="comment">// #11081 force set props for possible async custom element</span></span><br><span class="line">    (el <span class="keyword">as</span> <span class="title class_">VueElement</span>).<span class="property">_isVueCE</span> &amp;&amp;</span><br><span class="line">    (<span class="regexp">/[A-Z]/</span>.<span class="title function_">test</span>(key) || !<span class="title function_">isString</span>(nextValue))</span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="title function_">patchDOMProp</span>(el, <span class="title function_">camelize</span>(key), nextValue, parentComponent, key)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// special case for &lt;input v-model type=&quot;checkbox&quot;&gt; with</span></span><br><span class="line">    <span class="comment">// :true-value &amp; :false-value</span></span><br><span class="line">    <span class="comment">// store value as dom properties since non-string values will be</span></span><br><span class="line">    <span class="comment">// stringified.</span></span><br><span class="line">    <span class="keyword">if</span> (key === <span class="string">&#x27;true-value&#x27;</span>) &#123;</span><br><span class="line">      ;(el <span class="keyword">as</span> any).<span class="property">_trueValue</span> = nextValue</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key === <span class="string">&#x27;false-value&#x27;</span>) &#123;</span><br><span class="line">      ;(el <span class="keyword">as</span> any).<span class="property">_falseValue</span> = nextValue</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">patchAttr</span>(el, key, nextValue, isSVG, parentComponent)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>從 <code>patchProp</code> 函式中的註解發現原來的底層程式碼對 <code>props</code> 做了各種處理，但都與我們想找的 <code>img</code> 元素無關，看起來 <code>img</code> 元素最終會走到第 52 行的 <code>patchAttr</code>，而 <code>patchAttr</code> 是從 <code>packages/runtime-dom/src/modules/attrs.ts</code> 檔案裡來的</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/vuejs/core/blob/4f792535e25af6941d1eb267fe16e4121623a006/packages/runtime-dom/src/modules/attrs.ts#L16">patchAttr</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">patchAttr</span>(<span class="params"></span></span><br><span class="line"><span class="params">  el: Element,</span></span><br><span class="line"><span class="params">  key: string,</span></span><br><span class="line"><span class="params">  value: any,</span></span><br><span class="line"><span class="params">  isSVG: boolean,</span></span><br><span class="line"><span class="params">  instance?: ComponentInternalInstance | <span class="literal">null</span>,</span></span><br><span class="line"><span class="params">  isBoolean: boolean = isSpecialBooleanAttr(key)</span></span><br><span class="line"><span class="params"></span>): <span class="keyword">void</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (isSVG &amp;&amp; key.<span class="title function_">startsWith</span>(<span class="string">&#x27;xlink:&#x27;</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (value == <span class="literal">null</span>) &#123;</span><br><span class="line">      el.<span class="title function_">removeAttributeNS</span>(xlinkNS, key.<span class="title function_">slice</span>(<span class="number">6</span>, key.<span class="property">length</span>));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      el.<span class="title function_">setAttributeNS</span>(xlinkNS, key, value);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (__COMPAT__ &amp;&amp; <span class="title function_">compatCoerceAttr</span>(el, key, value, instance)) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// note we are only checking boolean attributes that don&#x27;t have a</span></span><br><span class="line">    <span class="comment">// corresponding dom prop of the same name here.</span></span><br><span class="line">    <span class="keyword">if</span> (value == <span class="literal">null</span> || (isBoolean &amp;&amp; !<span class="title function_">includeBooleanAttr</span>(value))) &#123;</span><br><span class="line">      el.<span class="title function_">removeAttribute</span>(key);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// attribute value is a string https://html.spec.whatwg.org/multipage/dom.html#attributes</span></span><br><span class="line">      el.<span class="title function_">setAttribute</span>(</span><br><span class="line">        key,</span><br><span class="line">        isBoolean ? <span class="string">&#x27;&#x27;</span> : <span class="title function_">isSymbol</span>(value) ? <span class="title class_">String</span>(value) : value</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這個 <code>patchAttr</code> 函式看起來是最後賦予屬性的地方了，所以在 vue 中 <code>img</code> 的模板語法：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">  <span class="attr">src</span>=<span class="string">&quot;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">crossorigin</span>=<span class="string">&quot;anonymous&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">alt</span>=<span class="string">&quot;building&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>最終在 <code>patchAttr</code> 函式中會將 <code>props</code> 屬性用 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/setAttribute">setAttribute</a> 的方式設置在 <code>img</code> 元素上，如同這樣的寫法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> img = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;img&#x27;</span>);</span><br><span class="line">img.<span class="title function_">setAttribute</span>(</span><br><span class="line">  <span class="string">&#x27;src&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span></span><br><span class="line">);</span><br><span class="line">img.<span class="title function_">setAttribute</span>(<span class="string">&#x27;crossOrigin&#x27;</span>, <span class="string">&#x27;anonymous&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="前端框架寫法總結"><a href="#前端框架寫法總結" class="headerlink" title="前端框架寫法總結"></a>前端框架寫法總結</h4><p>在研究 React 原始碼的過程中意外發現原來 19.0.0 版本就特別為 <code>img</code> 元素 <code>crossorigin</code> 的順序做了特殊處理，所以目前的 React 即使你把 <code>crossorigin</code> 放在 <code>src</code> 前面也不會遇到我們今天這篇文章 Safari 圖片消失不見的問題</p>
+<p>但 Vue 中並沒有對 <code>img</code> 元素進行特殊處理，最終是以 <code>setAttribute</code> 的方式將 <code>props</code> 依序設置在 <code>img</code> 元素上，而這種方式就如同 <a href="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/#3-非常糟的寫法" target="_blank">3. 非常糟的寫法</a>，最終出現 Safari 圖片偶然消失不見的問題</p>
+<h2 id="後續"><a href="#後續" class="headerlink" title="後續"></a>後續</h2><p>我在 <a target="_blank" rel="noopener" href="https://bugs.webkit.org/">webkit bug report</a> 的網頁上似乎找不到之前有回報類似的問題，根據各大前端框架 issues 回報問題的時間點來看，最早從 2018 年問題就存在了，但到今日 Safari 都沒有進行修復，雖然感覺回報 bug 也很難等到修復的那一天，但反正都花時間研究這麼多了，乾脆送個 <a target="_blank" rel="noopener" href="https://bugs.webkit.org/show_bug.cgi?id=291793">bug 單回報</a> 看之後有沒有進一步的消息了</p>
+<h2 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h2><p>在一開始看到 <a target="_blank" rel="noopener" href="https://github.com/sveltejs/svelte/issues/7454">crossorigin and src attribute order matter</a> 這篇 issue 時，其實我是非常驚訝的，第一次知道 HTML attribute 的順序原來是有影響的，好奇大家是不是也都曾經知道或遇過這件事呢？</p>
+<p>而且以我們這篇文章遇到的問題來說，我覺得是非常嚴重的，如果不知道順序會有影響，而將 <code>src</code> 屬性放在 <code>crossorigin</code> 前，由於 Safari 有機率快取到 <strong>非跨域請求</strong> 所以導致圖片消失不見，重點是我在測試的過程中覺得這個機率也不低，感覺至少有 10% 的機率會看不到圖片</p>
+<p>另外一方面當圖片不見發生時，即使使用者不斷重整畫面，但只要快取沒有過期圖片就會一直出現 CORS 錯誤拿不到，而且通常圖片快取的時間都會設的比較長一個禮拜、一個月或甚至是一年，在這麼長的時間裡圖片永遠看不到會讓人覺得這是一個壞掉的網站</p>
+<h2 id="延伸閱讀"><a href="#延伸閱讀" class="headerlink" title="延伸閱讀"></a>延伸閱讀</h2><h4 id="1-如何清除快取？"><a href="#1-如何清除快取？" class="headerlink" title="1. 如何清除快取？"></a>1. 如何清除快取？</h4><p>由於這篇文章有很多部分的操作都需要保證清完瀏覽器的快取，所以這邊稍微簡介一下我在 Chrome 跟 Safari 清除快取的方式</p>
+<ul>
+<li>Chrome</li>
+</ul>
+<p>按下 F12 打開 DevTools &#x3D;&gt; 在網頁重整鍵上方按下滑鼠右鍵 &#x3D;&gt; 選擇 <strong>清除快取並強制重新載入</strong></p>
+<div style="display: flex; justify-content: center; margin-top: -1.2em">
+  <img src="./chrome-clear-cache.png" />
+</div>
+
+<ul>
+<li>Safari</li>
+</ul>
+<p>將 <strong>網頁開發者功能</strong> 開啟 &#x3D;&gt; 點擊開發 Tab &#x3D;&gt; 點擊 <strong>清除快取資料</strong></p>
+<div style="display: flex; justify-content: center;">
+  <img src="./safari-clear-cache.png" />
+</div>
+
+<h4 id="2-Chrome-瀏覽器為什麼不會出現-CORS-錯誤？"><a href="#2-Chrome-瀏覽器為什麼不會出現-CORS-錯誤？" class="headerlink" title="2. Chrome 瀏覽器為什麼不會出現 CORS 錯誤？"></a>2. Chrome 瀏覽器為什麼不會出現 CORS 錯誤？</h4><p>同樣的一個寫法在 Safari 會導致 CORS 錯誤但為什麼 Chrome 是正常的呢？</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> img = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;img&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      img.<span class="title function_">setAttribute</span>(</span></span><br><span class="line"><span class="language-javascript">        <span class="string">&#x27;src&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">        <span class="string">&#x27;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&#x27;</span></span></span><br><span class="line"><span class="language-javascript">      );</span></span><br><span class="line"><span class="language-javascript">      img.<span class="title function_">setAttribute</span>(<span class="string">&#x27;crossOrigin&#x27;</span>, <span class="string">&#x27;anonymous&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(img);</span></span><br><span class="line"><span class="language-javascript">    &#125;, <span class="number">0</span>);</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我有找到 chromium 曾經發出的一個 PR - <a target="_blank" rel="noopener" href="https://chromium-review.googlesource.com/c/chromium/src/+/2102992">Image Loading: <code>crossorigin</code> mutations should queue a microtask</a>，裡面提供了一個 doc 檔案 - <a target="_blank" rel="noopener" href="https://docs.google.com/document/d/1Xp34FIbbZnJILl0PNd1sfs_3z1HSriUVyRUgnAesGZk/edit?tab=t.0#heading=h.1amk7w8s8dxx">Image Loading: Relevant Mutations</a> 似乎對這部分有解釋，以下為原文摘要：</p>
+<h5 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h5><p>As per the HTML Standard, an image element has a set of relevant mutations. When a relevant mutation occurs, the standard’s #updating-the-image-data algorithm is fired. This algorithm, at a high-level, does:</p>
+<ol>
+<li>Some basic processing of an image’s properties: ImageLoader::UpdateFromElement</li>
+<li>Queues a microtask to continue the rest of the image fetching process: ImageLoader::EnqueueImageLoadingMicroTask</li>
+<li>Continues the image loading process, where the resolved URL is parsed, the request is configured and made: ImageLoader::DoUpdateFromElement.</li>
+</ol>
+<div style="display: flex; justify-content: center;">
+  <img src="./doc-1.png" />
+</div>
+
+<h5 id="解釋-Context"><a href="#解釋-Context" class="headerlink" title="解釋 - Context"></a>解釋 - Context</h5><p><code>img</code> 元素在 spec 裡有定義一個叫做 <a target="_blank" rel="noopener" href="https://html.spec.whatwg.org/multipage/images.html#relevant-mutations">relevant mutations</a> 的東西，當觸發 <strong>relevant mutations</strong> 時，就會執行一個叫做 <strong>#updating-the-image-data</strong> 的算法</p>
+<p>那什麼時候會觸發 <strong>relevant mutations</strong> 呢？ Spec 裡有寫到當 <code>src</code> 被設置、改變、移除時或是 <code>crossorigin</code> 屬性改變的時候都會引起 <strong>relevant mutations</strong></p>
+<p>當 <code>relevant mutations</code> 被觸發後，接著就會執行 <strong>#updating-the-image-data</strong> 的算法，而這個算法對應到 Spec 裡的規範 - <a target="_blank" rel="noopener" href="https://html.spec.whatwg.org/multipage/images.html#updating-the-image-data">4.8.4.3.5 Updating the image data</a>，點進去看會發現總共有 Step 1 一直到 Step 27 這麼多步驟</p>
+<p>這麼多的步驟實在令人眼花撩亂，我稍微看完後認為最重要的是 Step 8 及 Step 9</p>
+<blockquote>
+<ol start="8">
+<li>Queue a microtask to perform the rest of this algorithm, allowing the task that invoked this algorithm to continue.</li>
+</ol>
+</blockquote>
+<p>Step 8 表明了，從 Step 9 開始一直到最後的 Step 27 都會由一個算法執行，而這個算法對應到的是 <code>DoUpdateFromElement()</code>，但 <code>DoUpdateFromElement()</code> 並不是馬上執行的喔，而是放在 <a target="_blank" rel="noopener" href="https://zh.javascript.info/microtask-queue">microtask 的 queue</a> 裡等待之後再執行</p>
+<blockquote>
+<ol start="9">
+<li>If another instance of this algorithm for this img element was started after this instance (even if it aborted and is no longer running), then return.</li>
+</ol>
+</blockquote>
+<p>接著 Step 9 說如果同一張圖片又執行了一次這個 <strong>#updating-the-image-data</strong> 的算法，那步驟 9 之後要處理的邏輯就都捨棄 return 掉囉</p>
+<p>我想了一下覺得 <strong>Context</strong> 這個段落要表達的意思應該是這樣的，假設現在有一段程式寫成這樣：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> img = <span class="keyword">new</span> <span class="title class_">Image</span>();</span><br><span class="line">img.<span class="property">src</span> = <span class="string">&#x27;...&#x27;</span>;</span><br><span class="line">img.<span class="property">crossOrigin</span> = <span class="string">&#x27;anonymous&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>當執行到第二行 <code>img.src = &quot;...&quot;</code> 時，因為 <code>src</code> 被指定了某個 url，會觸發 <strong>relevant mutations</strong> 並接著執行 <strong>#updating-the-image-data</strong> 算法，而執行到 Step 8 時會將 Step 9 到最後 Step 27 該執行的邏輯，都先放在一個 <strong>microtask queue</strong> 裡等待之後執行</p>
+<p>接著執行到第三行 <code>img.crossOrigin = &#39;anonymous&#39;</code>，因為 <code>crossOrigin</code> 的值改變了，觸發 <strong>relevant mutations</strong>，又執行了 <strong>#updating-the-image-data</strong> 算法，當執行到 Step 8 時又創建了一個 <strong>microtask</strong> 並放在 <strong>queue</strong> 裡等待之後執行</p>
+<p><strong>queue</strong> 的執行是先進先出的，所以第二行 <code>img.src = &quot;...&quot;</code> 的這個 <strong>microtask</strong> 會先被執行，此時執行到的是 Step 9，發現對同一個 <code>img</code> 元素來說<strong>後面</strong>有另外一個由 <code>img.crossOrigin = &#39;anonymous&#39;</code> 所創建的 <strong>microtask</strong>，因此 <code>img.src = &quot;...&quot;</code> 的 <strong>microtask</strong> 就只會執行到 Step 9 就 return 掉了</p>
+<p>下一個執行到的是由 <code>img.crossOrigin = &#39;anonymous&#39;</code> 所創建的 <strong>microtask</strong>，此時執行到的是 Step 9，發現後面已經沒有同一個算法所創建的 <strong>microtask</strong> 了，所以接著就是一路執行到最後的 Step 27</p>
+<p>可以發現這個 <strong>microtask queue</strong> 的過程中，前面被加入 <strong>queue</strong> 的 <strong>microtask</strong> 都會在 Step 9 被 return 掉，只有最後加入的 <strong>microtask</strong> 會繼續往下走到 Step 26 - Fetch the image 實際發出請求，而此時也因為知道 <code>img</code> 元素上有屬性 <code>crossOrigin</code> 了，所以可以正確的發出 <strong>跨域請求</strong>，這對應到 Spec 規範中特別 highlight 的一段話</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./sepc-avoid-multiple-request.png" />
+</div>
+
+<br />
+
+<p>藉由這種 <strong>microtask queue</strong> 的方式，可以將 <code>img</code> 元素的屬性都收集起來，並且最後只發出一個網路請求</p>
+<h2 id="附錄"><a href="#附錄" class="headerlink" title="附錄"></a>附錄</h2><ol>
+<li><p>範例 Repo 放在此 - <a target="_blank" rel="noopener" href="https://github.com/bcjohnblue/browser-cors-error">browser-cors-error</a>，有興趣的人可以自己試看看</p>
+</li>
+<li><p>本篇文章測試的瀏覽器為：</p>
+</li>
+</ol>
+<ul>
+<li>Chrome 135</li>
+<li>Safari 18.3</li>
+</ul>
+<ol start="3">
+<li>本篇文章分析前端框架原始碼的版本為：</li>
+</ol>
+<ul>
+<li><p>React 19.1.0</p>
+</li>
+<li><p>Vue 3.5.13</p>
+</li>
+</ul>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6965462394286014471">React 源码解析-虚拟 DOM</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/7177517711486877756">React 源码分析 1-jsx 转换及 React.createElement</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/7308289054029250599">Vue3 源码解析之 runtime</a></p>
+<!-- [揭开 JSX 面纱 ： jsx 代码是如何一步步解析变成最后的 html 元素的](https://blog.csdn.net/Dou_Hua6/article/details/142518814) -->
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/">
+        <span>CORS Debug (1) - 網頁快取導致的 CORS 問題</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%AD%A4%E7%82%BA-CORS-Debug-%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-%E7%AC%AC-2-%E7%AF%87%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">此為 CORS Debug 系列文章 - 第 2 篇：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B0%A1%E4%BB%8B"><span class="toc-number"></span> <span class="toc-text">簡介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E9%BA%BC%E6%83%85%E6%B3%81%E4%B8%8B%E5%9C%96%E7%89%87%E6%9C%83%E6%B6%88%E5%A4%B1%E4%B8%8D%E8%A6%8B"><span class="toc-number"></span> <span class="toc-text">什麼情況下圖片會消失不見</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CORS-%E9%8C%AF%E8%AA%A4%E5%87%BA%E7%8F%BE-%E6%9F%A5%E7%9C%8B%E7%B6%B2%E8%B7%AF%E8%AB%8B%E6%B1%82"><span class="toc-number"></span> <span class="toc-text">CORS 錯誤出現 - 查看網路請求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%BC%89%E5%85%A5%E5%9C%96%E7%89%87-%E6%9F%A5%E7%9C%8B%E7%B6%B2%E8%B7%AF%E8%AB%8B%E6%B1%82"><span class="toc-number"></span> <span class="toc-text">第一次載入圖片 - 查看網路請求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A8%E6%B8%AC-CORS-%E9%8C%AF%E8%AA%A4%E5%87%BA%E7%8F%BE%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number"></span> <span class="toc-text">推測 CORS 錯誤出現的原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Safari-crossOrigin-anonymous-%E6%93%BA%E6%94%BE%E7%9A%84%E6%AC%A1%E5%BA%8F%E6%98%AF%E9%87%8D%E8%A6%81%E7%9A%84"><span class="toc-number"></span> <span class="toc-text">Safari crossOrigin&#x3D;&#39;anonymous&#39; 擺放的次序是重要的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%84%E5%A4%A7%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6%E7%9A%84-issues"><span class="toc-number"></span> <span class="toc-text">各大前端框架的 issues</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E9%99%A4%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6%E7%9A%84%E5%BD%B1%E9%9F%BF"><span class="toc-number"></span> <span class="toc-text">排除前端框架的影響</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Chrome-%E7%80%8F%E8%A6%BD%E5%99%A8"><span class="toc-number"></span> <span class="toc-text">Chrome 瀏覽器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Safari-%E7%80%8F%E8%A6%BD%E5%99%A8"><span class="toc-number"></span> <span class="toc-text">Safari 瀏覽器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%AD%A3%E5%B8%B8%E5%AF%AB%E6%B3%95"><span class="toc-number"></span> <span class="toc-text">1. 正常寫法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E4%B8%8D%E5%A5%BD%E7%9A%84%E5%AF%AB%E6%B3%95"><span class="toc-number"></span> <span class="toc-text">2. 不好的寫法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E9%9D%9E%E5%B8%B8%E7%B3%9F%E7%9A%84%E5%AF%AB%E6%B3%95"><span class="toc-number"></span> <span class="toc-text">3. 非常糟的寫法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E9%9D%9E%E5%B8%B8%E5%A5%BD%E7%9A%84%E5%AF%AB%E6%B3%95"><span class="toc-number"></span> <span class="toc-text">4. 非常好的寫法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6%E5%B0%8D%E6%87%89%E5%88%B0%E7%9A%84%E6%98%AF%E5%93%AA%E7%A8%AE%E5%AF%AB%E6%B3%95%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">前端框架對應到的是哪種寫法？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#React-or-Vue-%E4%B8%AD%E9%A1%9E-JSX-%E7%9A%84%E5%AF%AB%E6%B3%95"><span class="toc-number"></span> <span class="toc-text">React or Vue 中類 JSX 的寫法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#React-JSX-%E7%B7%A8%E8%AD%AF%E7%B5%90%E6%9E%9C"><span class="toc-number"></span> <span class="toc-text">- React JSX 編譯結果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vue-JSX-%E7%B7%A8%E8%AD%AF%E7%B5%90%E6%9E%9C"><span class="toc-number"></span> <span class="toc-text">- Vue JSX 編譯結果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6%E5%AF%AB%E6%B3%95%E7%B8%BD%E7%B5%90"><span class="toc-number"></span> <span class="toc-text">前端框架寫法總結</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%8C%E7%BA%8C"><span class="toc-number"></span> <span class="toc-text">後續</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%83%E5%BE%97"><span class="toc-number"></span> <span class="toc-text">心得</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E4%BC%B8%E9%96%B1%E8%AE%80"><span class="toc-number"></span> <span class="toc-text">延伸閱讀</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%A6%82%E4%BD%95%E6%B8%85%E9%99%A4%E5%BF%AB%E5%8F%96%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">1. 如何清除快取？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Chrome-%E7%80%8F%E8%A6%BD%E5%99%A8%E7%82%BA%E4%BB%80%E9%BA%BC%E4%B8%8D%E6%9C%83%E5%87%BA%E7%8F%BE-CORS-%E9%8C%AF%E8%AA%A4%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">2. Chrome 瀏覽器為什麼不會出現 CORS 錯誤？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Context"><span class="toc-number"></span> <span class="toc-text">Context</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A7%A3%E9%87%8B-Context"><span class="toc-number"></span> <span class="toc-text">解釋 - Context</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E9%8C%84"><span class="toc-number"></span> <span class="toc-text">附錄</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number"></span> <span class="toc-text">參考資料</span></a>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

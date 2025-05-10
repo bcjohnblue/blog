@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+    
+        <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        
+            load: ['[tex]/mhchem'],
+        
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        
+            packages: {'[+]': ['mhchem']},
+        
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+          
+
+
+    
+    
+    <title>
+        
+            Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標 | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/">Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-02-28
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標&url=https://bcjohnblue.github.io/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標&url=https://bcjohnblue.github.io/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/&title=Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/&text=Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-2-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-2-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 2 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 2 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇系列文中，我們了解深度測試中不同 <strong>像素(fragment)</strong> 是如何藉由比較各自的深度值來決定誰會渲染在畫面上，接著我們將討論深度值在數學上是如何計算出來的，但在那之前需要一些必備的知識幫助我們理解後續的數學推導，所以第二篇的系列文我們來學習這部分 - 左手&#x2F;右手座標系、齊次座標</p>
+<span id="more"></span>
+
+<h2 id="左手-右手座標系"><a href="#左手-右手座標系" class="headerlink" title="左手&#x2F;右手座標系"></a>左手&#x2F;右手座標系</h2><p>3D 圖學中的左手&#x2F;右手座標系統代表了 $ x, y, z $ 軸指向的定義</p>
+<ul>
+<li>左手座標系</li>
+</ul>
+<ol>
+<li>伸出左手使正 y 軸沿著手往上</li>
+<li>使大拇指向右邊</li>
+<li>讓食指指向上方</li>
+<li>向下 90 度彎曲中指</li>
+</ol>
+<p>&#x3D;&gt; 此時大拇指指向正 x 軸方向、食指朝向正 y 軸方向、中指朝向正 z 軸方向，如下左圖所示</p>
+<ul>
+<li>右手座標系</li>
+</ul>
+<ol>
+<li>伸出右手使正 y 軸沿著手往上</li>
+<li>使大拇指向右邊</li>
+<li>讓食指指向上方</li>
+<li>向下 90 度彎曲中指</li>
+</ol>
+<p>&#x3D;&gt; 此時大拇指指向正 x 軸方向、食指朝向正 y 軸方向、中指朝向正 z 軸方向，如下右圖所示</p>
+<p>左&#x2F;右手座標系可以幫助我們之後在不同座標系統進行正確的數值轉換，事實上左&#x2F;手座標軸的數學轉換很簡單就只是將 <strong>+z</strong> 的座標數值變成 <strong>-z</strong></p>
+<img src="https://perry.cz/articles/0C__Martin_Programing_OpenGL-ES_Tutorials_left_right_hand.gif" width="50%" height="50%" >
+
+<p><a target="_blank" rel="noopener" href="https://perry.cz/articles/ProjectionMatrix.xhtml">圖片來源</a></p>
+<p>由於 <strong>Three.js</strong> 的底層 <strong>OpenGL</strong> 採用的是右手座標系，所以使用 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/helpers/AxesHelper">AxesHelper</a> 時，可以看到 <strong>+z</strong> 軸(藍色的線)指向面對我們的方向 (藍色的線可能太細，放大圖片比較好看到)</p>
+<img src="./threejs-coordinate.png" width="50%" height="50%" >
+ 
+<hr>
+<h2 id="齊次座標-Homogeneous-coordinates"><a href="#齊次座標-Homogeneous-coordinates" class="headerlink" title="齊次座標 (Homogeneous coordinates)"></a>齊次座標 (Homogeneous coordinates)</h2><p>一開始聽到 <strong>齊次座標</strong> 這個專有名詞時，真的不懂他是個什麼樣的東西，後來經過一陣子的研究後，我發現 <strong>齊次座標</strong> 一言以蔽之就是 <strong>一種用 N + 1 個位數表示 N 維座標的技巧</strong>，如何理解 <strong>齊次座標</strong> 代表的意義呢？我覺得從實際應用的場景來看就可以體會到他厲害的地方，<strong>齊次座標</strong> 在 3D 圖學中主要應用於兩點，第一點是 <strong>矩陣變換 (Matrix transformations)</strong> ，第二點是 <strong>透視變換 (Perspective transformation)</strong></p>
+<h3 id="1-矩陣變換-Matrix-transformations"><a href="#1-矩陣變換-Matrix-transformations" class="headerlink" title="1. 矩陣變換 (Matrix transformations)"></a>1. 矩陣變換 (Matrix transformations)</h3><p>假設在 3D 空間中有個點 $ P $ 其座標以 $ (x, y, z) $ 表示，我們希望對這個點進行座標轉換，像是平移、縮放、旋轉等，雖然 $ P $ 點是一個三維的座標，但數學家發現如果將這個三維座標以四維表示，而平移、縮放、旋轉這些行為也用一個 4x4 的矩陣來表示，座標轉換都可以用矩陣來表示，這裡我們將原本三維空間中的點 $ P $ 轉換成四維座標：</p>
+
+
+$$
+P = \begin{bmatrix} x \\ y \\ z \end{bmatrix} \quad => \quad P = \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}
+$$
+
+
+
+<h4 id="平移-Translation"><a href="#平移-Translation" class="headerlink" title="平移 (Translation)"></a>平移 (Translation)</h4><p>假設我們想要將 $ P $ 點加上一個平移的向量 $ (\color{red}{T_x}, \color{green}{T_y}, \color{blue}{T_z} \textcolor{black}{)} $，新的向量  $ P' = (x + \color{red}{T_x} \color{black}{,} \;\; y + \color{green}{T_y} \color{black}{,} \;\; z + \color{blue}{T_z} \textcolor{black}{)} $ ，我們可以用一個簡單的 4x4 平移矩陣乘以四維的 $ P $ 點求得平移後的座標</p>
+
+
+$$
+\begin{bmatrix}
+\color{red}{1} & \color{red}{0} & \color{red}{0} & \color{red}{T_x} \\
+\color{green}{0} & \color{green}{1} & \color{green}{0} & \color{green}{T_y} \\
+\color{blue}{0} & \color{blue}{0} & \color{blue}{1} & \color{blue}{T_z} \\
+\color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
+\end{bmatrix} \cdot
+\begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix} =
+\begin{bmatrix} x+\color{red}{T_x} \\ y+\color{green}{T_y} \\ z+\color{blue}{T_z} \\ 1 \end{bmatrix}
+$$
+
+
+
+<h4 id="縮放-Scaling"><a href="#縮放-Scaling" class="headerlink" title="縮放 (Scaling)"></a>縮放 (Scaling)</h4><p>接著我們打算將 $ P $ 點進行縮放 $ (\color{red}{S_x}, \color{green}{S_y}, \color{blue}{S_z} \textcolor{black}{)} $，新的向量  $ P' = (\color{red}{S_x} \color{black} \cdot {x,} \;\; \color{green}{S_y} \color{black} \cdot {y,} \;\; \color{blue}{S_z} \color{black} \cdot {z}\textcolor{black}{)} $ ，一樣我們可以套用以下縮放矩陣求得 $ P $ 點縮放後的座標</p>
+
+
+$$
+\begin{bmatrix}
+\color{red}{S_x} & \color{red}{0} & \color{red}{0} & \color{red}{0} \\
+\color{green}{0} & \color{green}{S_y} & \color{green}{0} & \color{green}{0} \\
+\color{blue}{0} & \color{blue}{0} & \color{blue}{S_z} & \color{blue}{0} \\
+\color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
+\end{bmatrix} \cdot
+\begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix} =
+\begin{bmatrix} \color{red}{S_x} \color{black} \cdot x \\ \color{green}{S_y} \color{black} \cdot y  \\ \color{blue}{S_z} \color{black} \cdot z  \\ 1 \end{bmatrix}
+$$
+
+
+
+<h4 id="旋轉-Rotation"><a href="#旋轉-Rotation" class="headerlink" title="旋轉 (Rotation)"></a>旋轉 (Rotation)</h4><p>最後我們來探討是旋轉矩陣，旋轉矩陣不像平移及縮放矩陣一樣可以直覺的了解，中間牽涉一些座標軸轉換的數學推導，這裡我們跳過複雜的<a target="_blank" rel="noopener" href="https://www.cnblogs.com/MetaWang/p/10094784.html">推導過程</a>，只留下最後的結果</p>
+<p>沿 <strong>y</strong> 軸旋轉的旋轉矩陣長這樣：</p>
+
+
+$$
+\begin{bmatrix}
+\color{red}{\cos\theta} & \color{red}{0} & \color{red}{\sin\theta} & \color{red}{0} \\
+\color{green}{0} & \color{green}{1} & \color{green}{0} & \color{green}{0} \\
+\color{blue}{-\sin\theta} & \color{blue}{0} & \color{blue}{\cos\theta} & \color{blue}{0} \\
+\color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+x \\ y \\ z \\ 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+\color{red}{\cos\theta} \color{black} \cdot x + \color{red}{\sin\theta} \color{black} \cdot z \\
+y \\
+\color{blue}{-\sin\theta} \color{black} \cdot x + \color{blue}{\cos\theta} \color{black} \cdot z \\
+1
+\end{bmatrix}
+$$
+
+
+
+<h4 id="矩陣的組合"><a href="#矩陣的組合" class="headerlink" title="矩陣的組合"></a>矩陣的組合</h4><p>最後我們嘗試混合平移、縮放及旋轉矩陣，希望將原本的點 $ P (1, 1, 1) $ 座標</p>
+<ol>
+<li>沿著 <strong>y</strong> 軸旋轉 $ 180^\circ (\pi) $</li>
+<li>將長度放大為兩倍</li>
+<li>平移座標 $ (1, 0, 0) $</li>
+</ol>
+<br />
+
+<ol>
+<li>點 $ P (1, 1, 1) $，沿著 <strong>y</strong> 軸旋轉 $ 180^\circ &#x3D;&gt; P’ (-1, 1, 1) $</li>
+</ol>
+
+
+$$
+\begin{bmatrix}
+\color{red}{\cos\pi} & \color{red}{0} & \color{red}{\sin\pi} & \color{red}{0} \\
+\color{green}{0} & \color{green}{1} & \color{green}{0} & \color{green}{0} \\
+\color{blue}{-\sin\pi} & \color{blue}{0} & \color{blue}{\cos\pi} & \color{blue}{0} \\
+\color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+1 \\ 1 \\ 1 \\ 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+\color{red}{-1} \color{black} \cdot 1 + \color{red}{0} \color{black} \cdot 1 \\
+1 \\
+\color{blue}{-0} \color{black} \cdot 1 + \color{blue}{1} \color{black} \cdot 1 \\
+1
+\end{bmatrix}
+=
+\begin{bmatrix}
+-1 \\
+1 \\
+1 \\
+1
+\end{bmatrix}
+$$
+
+
+
+<div style="display: flex; justify-content: center;">
+  <img src="./rotate-180.png" width="75%" height="75%" >
+</div>
+
+<ol start="2">
+<li>點 $ P (-1, 1, 1) $，將長度放大為兩倍 $ &#x3D;&gt; P’ (-2, 2, 2) $</li>
+</ol>
+
+
+$$
+\begin{bmatrix}
+\color{red}{2} & \color{red}{0} & \color{red}{0} & \color{red}{0} \\
+\color{green}{0} & \color{green}{2} & \color{green}{0} & \color{green}{0} \\
+\color{blue}{0} & \color{blue}{0} & \color{blue}{2} & \color{blue}{0} \\
+\color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
+\end{bmatrix} \cdot
+\begin{bmatrix} -1 \\ 1 \\ 1 \\ 1 \end{bmatrix} =
+\begin{bmatrix} -2 \\ 2  \\ 2 \\ 1 \end{bmatrix}
+$$
+
+
+
+<div style="display: flex; justify-content: center;">
+  <img src="./scale-2.png" width="75%" height="75%" >
+</div>
+
+<ol start="3">
+<li>點 $ P (-2, 2, 2) $，平移座標 $ (1, 0, 0) &#x3D;&gt; P’ (-1, 2, 2) $</li>
+</ol>
+
+
+$$
+\begin{bmatrix}
+\color{red}{1} & \color{red}{0} & \color{red}{0} & \color{red}{1} \\
+\color{green}{0} & \color{green}{1} & \color{green}{0} & \color{green}{0} \\
+\color{blue}{0} & \color{blue}{0} & \color{blue}{1} & \color{blue}{0} \\
+\color{purple}{0} & \color{purple}{0} & \color{purple}{0} & \color{purple}{1}
+\end{bmatrix} \cdot
+\begin{bmatrix} -2 \\ 2 \\ 2 \\ 1 \end{bmatrix} =
+\begin{bmatrix} -1 \\ 2 \\ 2 \\ 1 \end{bmatrix}
+$$
+
+
+
+<div style="display: flex; justify-content: center;">
+  <img src="./transition.png" width="75%" height="75%" >
+</div>
+
+<p>最後我們可以理解 <strong>齊次座標</strong> 在 <strong>矩陣變換</strong> 中的重要性了，單純只是將三維座標 $ (x, y, z) $ 添加一個額外的維度變成四維座標 $ (x, y, z, 1) $ 後，平移、縮放、旋轉這些複雜的座標轉換都可以輕鬆的用矩陣乘法來解決</p>
+<h3 id="2-透視變換-Perspective-transformation"><a href="#2-透視變換-Perspective-transformation" class="headerlink" title="2. 透視變換 (Perspective transformation)"></a>2. 透視變換 (Perspective transformation)</h3><p><strong>透視 (perspective)</strong> 指的是物體離相機越遠會變得越小的狀況，這跟人眼看到的狀況相符，<strong>Three.js</strong> 中用 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/cameras/PerspectiveCamera">PerspectiveCamera</a> 來代表這種行為，下圖我們可以看到鐵軌兩側的軌道是平行的，但當軌道延伸到無限遠處時，人眼看起來就會匯聚於一點</p>
+<div style="display: flex; justify-content: center;">
+  <img src="https://learnopengl.com/img/getting-started/perspective.png" width="35%" height="35%" >
+  <a target="_blank" rel="noopener" href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/08%20Coordinate%20Systems/"
+    style="align-self: flex-end;">
+  圖片來源
+  </a>
+</div>
+
+<h4 id="如何讓兩條平行線相交"><a href="#如何讓兩條平行線相交" class="headerlink" title="如何讓兩條平行線相交"></a>如何讓兩條平行線相交</h4><p>從小就有學過一般的 <strong>歐幾里得空間(Euclidean space)</strong> 可以用以下方程式表示兩條平行線：</p>
+
+
+$
+
+\left\{
+\begin{array}{l}
+Ax + By + C = 0 \\
+Ax + By + D = 0
+\end{array}
+\right.
+
+$
+
+
+
+<br />
+<br />
+
+<p>由於是兩條不同的平行線，$ C $ 與 $ D $ 的值不同，這種情況下不論 $ x, y $ 的值是多少都無法使等式成立，也代表兩條平行線是不會有交點的</p>
+<p>但以下我們套用 <strong>齊次座標</strong> 的概念來重寫以上兩條等式，將原本的 $ x, y $ 分別替換成 $ \displaystyle \frac{x}{w}, \frac{y}{w} $</p>
+
+
+$
+
+\left\{
+\begin{array}{l}
+\displaystyle
+\frac{A x}{w} + \frac{B y}{w} + C = 0 \\
+\displaystyle
+\frac{A x}{w} + \frac{B y}{w} + D = 0
+\end{array}
+\right.
+\quad \Rightarrow \quad
+\left\{
+\begin{array}{l}
+Ax + By + Cw = 0 \\
+Ax + By + Dw = 0
+\end{array}
+\right.
+\quad \Rightarrow \quad
+Cw - Dw = 0
+\quad \Rightarrow \quad
+(C-D)w = 0
+$
+
+
+
+<br />
+<br />
+
+<p>此時我們獲得一個解當 $ w &#x3D; 0 $ 可以使等式成立，也就是轉換過後的 $ \displaystyle x’ &#x3D; \frac{x}{w} &#x3D; \frac{x}{0} &#x3D; \infty $<br>這意味著兩條平行線會在 $ (x, y, 0) $ 處相交，而這相交點處位在無窮遠的地方</p>
+<h3 id="齊次座標的-w-分量"><a href="#齊次座標的-w-分量" class="headerlink" title="齊次座標的 w 分量"></a>齊次座標的 w 分量</h3><p>我們可以將一個二維的座標 $ (x, y) $ 表示成 <strong>齊次座標</strong> $ (x, y, w) $，反過來也可以將 <strong>齊次座標</strong> $ (x, y, w) $ 轉換回二維的座標 $ \displaystyle (\frac{x}{w}, \frac{y}{w}) $</p>
+<p>當 $ w &#x3D; 0 $ 的時候，轉換回二維座標 $ x, y $ 會變成無窮大，此時 $ (x, y) $ 座標代表的不是點，而是一條延伸到無窮遠處的向量，這就是上面 <a href="./#2-透視變換-Perspective-transformation">透視變換</a> 提到鐵軌兩側的平行線</p>
+<p>當 $ w &gt; 0 $ 的時候，是上面 <a href="./#1-矩陣變換-Matrix-transformations">矩陣變換</a> 的狀況，<strong>齊次座標</strong> $ (1, 1, 1, 1) $ 轉換為三維座標為 $ (1, 1, 1) $ 代表的是三維空間中的點，由於轉換回三維座標是除以 $ w $ 分量，所以其實以下的 <strong>齊次座標</strong> 代表的都對應到三維空間中的同一個點 $ (1, 1, 1) $</p>
+
+
+$
+
+\begin{array}{l}
+(1, 1, 1, 1) \\
+(2, 2, 2, 2) \\
+(3, 3, 3, 3) \\
+... \\
+... \\
+(n, n, n, n)
+\end{array}
+
+$
+
+
+
+<br />
+<br />
+
+<p>這就是 <strong>齊次 (Homogeneous)</strong> 所代表的意義，n + 1 維空間中 <strong>齊次座標</strong> 中的許多點其實都對應到 n 維空間中的同一個點</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/07%20Transformations/">变换</a><br><a target="_blank" rel="noopener" href="https://www.songho.ca/math/homogeneous/homogeneous.html">Homogeneous Coordinates</a><br><a target="_blank" rel="noopener" href="https://www.tomdalling.com/blog/modern-opengl/explaining-homogenous-coordinates-and-projective-geometry/">Explaining Homogeneous Coordinates &amp; Projective Geometry</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/7246334166950527034">一看就懂的OpenGL ES教程——走进3D的世界之坐标系统（下篇）</a></p>
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-3-%E6%B7%B1%E5%BA%A6%E5%80%BC%E7%9A%84%E8%A8%88%E7%AE%97%E6%96%B9%E5%BC%8F/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>Three.js 中物體的遠近關係 (3) - 深度值的計算方式</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/">
+        <span>Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%AD%A4%E7%82%BA-Three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-%E7%AC%AC-2-%E7%AF%87%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">此為 Three.js 中物體的遠近關係 系列文章 - 第 2 篇：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB"><span class="toc-number"></span> <span class="toc-text">左手&#x2F;右手座標系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99-Homogeneous-coordinates"><span class="toc-number"></span> <span class="toc-text">齊次座標 (Homogeneous coordinates)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%9F%A9%E9%99%A3%E8%AE%8A%E6%8F%9B-Matrix-transformations"><span class="toc-number"></span> <span class="toc-text">1. 矩陣變換 (Matrix transformations)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B3%E7%A7%BB-Translation"><span class="toc-number"></span> <span class="toc-text">平移 (Translation)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B8%AE%E6%94%BE-Scaling"><span class="toc-number"></span> <span class="toc-text">縮放 (Scaling)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%8B%E8%BD%89-Rotation"><span class="toc-number"></span> <span class="toc-text">旋轉 (Rotation)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9F%A9%E9%99%A3%E7%9A%84%E7%B5%84%E5%90%88"><span class="toc-number"></span> <span class="toc-text">矩陣的組合</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%80%8F%E8%A6%96%E8%AE%8A%E6%8F%9B-Perspective-transformation"><span class="toc-number"></span> <span class="toc-text">2. 透視變換 (Perspective transformation)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%AE%93%E5%85%A9%E6%A2%9D%E5%B9%B3%E8%A1%8C%E7%B7%9A%E7%9B%B8%E4%BA%A4"><span class="toc-number"></span> <span class="toc-text">如何讓兩條平行線相交</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99%E7%9A%84-w-%E5%88%86%E9%87%8F"><span class="toc-number"></span> <span class="toc-text">齊次座標的 w 分量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number"></span> <span class="toc-text">參考資料</span></a>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

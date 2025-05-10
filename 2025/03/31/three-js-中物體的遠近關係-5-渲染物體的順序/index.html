@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+          
+
+
+    
+    
+    <title>
+        
+            Three.js 中物體的遠近關係 (5) - 渲染物體的順序 | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-03-31
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=Three.js 中物體的遠近關係 (5) - 渲染物體的順序&url=https://bcjohnblue.github.io/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=Three.js 中物體的遠近關係 (5) - 渲染物體的順序&url=https://bcjohnblue.github.io/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/&title=Three.js 中物體的遠近關係 (5) - 渲染物體的順序" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=Three.js 中物體的遠近關係 (5) - 渲染物體的順序&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/&text=Three.js 中物體的遠近關係 (5) - 渲染物體的順序" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-5-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-5-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 5 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 5 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前面幾篇系列文中介紹深度測試運作的原理，而決定畫面上的兩個物體誰遠誰近，除了跟物體之間深度值差異有關，另外也相同重要的是物體間渲染的順序，今天這篇文章就讓我們討論在 Three.js 中是如何根據不同種類的物體決定渲染順序</p>
+<span id="more"></span>
+
+<h2 id="渲染物體的順序"><a href="#渲染物體的順序" class="headerlink" title="渲染物體的順序"></a>渲染物體的順序</h2><p>在 <a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/#Case-1-切換深度測試的開關" target="_blank">切換深度測試的開關</a> 中我們將紅色平面的 <code>depthTest</code> 設為 <code>false</code>，最終藍色平面中的 <strong>像素(fragment)</strong> 都通過深度測試，覆蓋紅色平面繪製到螢幕上</p>
+<img src="./depth-test-red-disabled.png" style="width: 100%" />
+
+<p>接著我們嘗試將紅色平面變成透明物體，在 Three.js 中指的是將 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/zh/materials/Material.transparent">Material.transparent</a> 設為 <code>true</code>，這時神奇的事情發生了原本中間會出現的藍色平面現在不見了，只剩紅色平面顯示在畫面上</p>
+<img src="./red-transparent.png" style="width: 100%" />
+
+<p>造成這個現象的關鍵點其實是因為當物體設爲透明後，渲染物體的順序就會改變，在 Three.js 底層的程式碼中，會將場景中的物體都先分類，其中一類是 <strong>不透明的物體</strong>，而一類是 <strong>透明的物體</strong>，而在將物體繪製到畫面時，一率都先繪製 <strong>不透明的物體</strong>，接著才繪製 <strong>透明的物體</strong>，所以當把<strong>紅色平面設成透明物體後</strong>，繪製物體的順序從原本的 <strong>紅色平面</strong> &#x3D;&gt; <strong>藍色平面</strong> 變為 <strong>藍色平面</strong> &#x3D;&gt; <strong>紅色平面</strong>，而紅色平面因為設定了 <code>depthTest = true</code>，代表在繪製 <strong>紅色平面</strong> 時一律都會將其繪製到畫面上，也因此我們所看到的畫面上只有 <strong>紅色平面</strong></p>
+<h2 id="為什麽需要先繪製不透明物體？"><a href="#為什麽需要先繪製不透明物體？" class="headerlink" title="為什麽需要先繪製不透明物體？"></a>為什麽需要先繪製不透明物體？</h2><p>上面我們知道 Three.js 會先行繪製不透明物體，接著才繪製透明物體，下面我們來講解為什麼需要按照這樣的次序進行渲染，首先我們先反過來看如果先繪製透明物體，會導致什麼問題</p>
+<h4 id="先繪製透明物體-錯誤"><a href="#先繪製透明物體-錯誤" class="headerlink" title="先繪製透明物體 (錯誤)"></a>先繪製透明物體 (錯誤)</h4><p><strong>假設場景中的透明物體在前、不透明物體在後</strong>，第一個繪製的是透明物體並顯示在畫面上，接著第二個繪製不透明物體時，由於不透明物體在透明物體的後面，因此不透明物體的深度測試無法通過，而前面我們提過當深度測試失敗的時候，會完全丟棄這個 <strong>像素(fragment)</strong>，也就是說不透明物體最終不會渲染在畫面上</p>
+<p>下面我們實際來看當先繪製透明物體時，場景會變成怎麼樣，在前面的紅色平面是透明物體（<code>opacity = 0.3</code>），在後面的藍色平面是不透明物體，後面繪製的藍色平面因為無法通過深度測試而整個被丟棄掉，使得最後畫面上只剩下透明的紅色平面</p>
+<p>這樣的畫面很明顯是錯誤的，因為照理來說視線應該要能夠看到透明物體後面的東西，但在這個狀況下，即使透明紅色平面後面有藍色平面，但因為藍色平面的 <strong>像素(fragment)</strong> 都被丟棄掉了，畫面上只看得到前面的透明紅色平面</p>
+<img src="./opaque-first.png" style="width: 100%" />
+
+<h4 id="先繪製不透明物體-正確"><a href="#先繪製不透明物體-正確" class="headerlink" title="先繪製不透明物體 (正確)"></a>先繪製不透明物體 (正確)</h4><p><strong>一樣假設透明物體在前、不透明物體在後</strong>，第一個繪製的是不透明物體並顯示在畫面上，接著第二個繪製透明物體時，由於透明物體在不透明物體的前面，因此透明物體的深度測試通過，而透明物體與不透明物體重疊的區域會以 <a target="_blank" rel="noopener" href="https://learnopengl-cn.readthedocs.io/zh/latest/04%20Advanced%20OpenGL/03%20Blending/">混合(Blending)</a> 方式決定最終畫面上的顏色</p>
+<p>下面我們實際來看當先繪製不透明物體時，場景會變成怎麼樣，在前面的紅色平面是透明物體（<code>opacity = 0.3</code>），在後面的藍色平面是不透明物體，後面繪製的紅色平面會與之前畫面上存在的藍色平面進行 <strong>混合(Blending)</strong>，因此可以看到中間是紅、藍混合後類似紫色的顏色，這代表視線可以穿過透明的紅色平面看到後面的藍色平面，達到正確的效果</p>
+<img src="./transparent-first.png" style="width: 100%" />
+
+<h2 id="物體的渲染順序-Three-js-原始碼"><a href="#物體的渲染順序-Three-js-原始碼" class="headerlink" title="物體的渲染順序 - Three.js 原始碼"></a>物體的渲染順序 - Three.js 原始碼</h2><p>接著讓我們來研究看看 Three.js 原始碼中是如何處理不透明物體與透明物體的渲染順序</p>
+<h4 id="渲染場景"><a href="#渲染場景" class="headerlink" title="渲染場景"></a>渲染場景</h4><p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/e3ee9682fb2c776cd77fd8b89f73c321945fa52c/src/renderers/WebGLRenderer.js#L1824">WebGLRenderer.js 檔案裡的 renderScene 函式</a> 負責渲染場景中的所有物體，在這函式之中可以得知物體渲染的順序為：</p>
+<p><strong>不透明物體(opaqueObjects)</strong> &#x3D;&gt; <strong>透光物體(transmissiveObjects)</strong> &#x3D;&gt; <strong>透明物體(transparentObjects)</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">renderScene</span>(<span class="params">currentRenderList, scene, camera, viewport</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> opaqueObjects = currentRenderList.<span class="property">opaque</span>;</span><br><span class="line">  <span class="keyword">const</span> transmissiveObjects = currentRenderList.<span class="property">transmissive</span>;</span><br><span class="line">  <span class="keyword">const</span> transparentObjects = currentRenderList.<span class="property">transparent</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (opaqueObjects.<span class="property">length</span> &gt; <span class="number">0</span>) <span class="title function_">renderObjects</span>(opaqueObjects, scene, camera);</span><br><span class="line">  <span class="keyword">if</span> (transmissiveObjects.<span class="property">length</span> &gt; <span class="number">0</span>)</span><br><span class="line">    <span class="title function_">renderObjects</span>(transmissiveObjects, scene, camera);</span><br><span class="line">  <span class="keyword">if</span> (transparentObjects.<span class="property">length</span> &gt; <span class="number">0</span>)</span><br><span class="line">    <span class="title function_">renderObjects</span>(transparentObjects, scene, camera);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>renderScene</code> 函式中場景的所有物體在 <code>currentRenderList</code> 中就已經被分為三個種類依序繪製，接著可以順著查到 <code>currentRenderList</code> 這個變數被定義在 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/e3ee9682fb2c776cd77fd8b89f73c321945fa52c/src/renderers/WebGLRenderer.js">WebGLRenderer.js</a> 中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">renderLists = <span class="keyword">new</span> <span class="title class_">WebGLRenderLists</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">currentRenderList = renderLists.<span class="title function_">get</span>(scene, renderListStack.<span class="property">length</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>currentRenderList</code> 是 <code>renderLists.get</code> 函式中所拿出的一個變數，而 <code>renderLists</code> 是 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/c92a3ff1be840824a98470c3307658b98b197155/src/renderers/webgl/WebGLRenderLists.js#L191">WebGLRenderLists</a> 創造的實例，至於 <code>renderLists.get</code> 回傳的會是 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/c92a3ff1be840824a98470c3307658b98b197155/src/renderers/webgl/WebGLRenderLists.js#L50">WebGLRenderList</a> 類別，接著可以在 <code>WebGLRenderList</code> 函式中找到場景中的所有物體是怎麼被分為 <strong>三類(不透明、透光、透明)</strong> 進行處理的</p>
+<h4 id="加入物體"><a href="#加入物體" class="headerlink" title="加入物體"></a>加入物體</h4><p>當把物體加進場景中時，根據 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/zh/materials/MeshPhysicalMaterial.transmission">MeshPhysicalMaterial.transmission</a> 跟 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/zh/materials/Material.transparent">Material.transparent</a> 的設置決定將物體分在哪一類的矩陣中，如果 <code>MeshPhysicalMaterial.transmission</code> 有設置代表是 <strong>透光物體</strong> 加入到 <code>transmissive</code> 矩陣中，或者 <code>Material.transparent</code> 有設置代表是 <strong>透明物體</strong> 加入到 <code>transparent</code> 矩陣中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">WebGLRenderList</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> opaque = [];</span><br><span class="line">  <span class="keyword">const</span> transmissive = [];</span><br><span class="line">  <span class="keyword">const</span> transparent = [];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">push</span>(<span class="params">object, geometry, material, groupOrder, z, group</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> renderItem = <span class="title function_">getNextRenderItem</span>(</span><br><span class="line">      object,</span><br><span class="line">      geometry,</span><br><span class="line">      material,</span><br><span class="line">      groupOrder,</span><br><span class="line">      z,</span><br><span class="line">      group</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (material.<span class="property">transmission</span> &gt; <span class="number">0.0</span>) &#123;</span><br><span class="line">      transmissive.<span class="title function_">push</span>(renderItem);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (material.<span class="property">transparent</span> === <span class="literal">true</span>) &#123;</span><br><span class="line">      transparent.<span class="title function_">push</span>(renderItem);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      opaque.<span class="title function_">push</span>(renderItem);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="排序物體"><a href="#排序物體" class="headerlink" title="排序物體"></a>排序物體</h4><p>加入物體的步驟已經將場景中的所有物體分為三種不同的種類，接著還需要決定每個種類裡的物體渲染的優先順序，所以接著需要對 <code>opaque</code>, <code>transmissive</code>, <code>transparent</code> 這三個矩陣進行排序，在 <code>sort</code> 函式中傳入的 <code>customOpaqueSort</code> 與 <code>customTransparentSort</code> 分別是使用者可以從 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/renderers/WebGLRenderer.setOpaqueSort">WebGLRenderer.setOpaqueSort</a> 與 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/renderers/WebGLRenderer.setTransparentSort">WebGLRenderer.setTransparentSort</a> 帶進來自定義物體排序的函式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">WebGLRenderList</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">sort</span>(<span class="params">customOpaqueSort, customTransparentSort</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (opaque.<span class="property">length</span> &gt; <span class="number">1</span>) opaque.<span class="title function_">sort</span>(customOpaqueSort || painterSortStable);</span><br><span class="line">    <span class="keyword">if</span> (transmissive.<span class="property">length</span> &gt; <span class="number">1</span>)</span><br><span class="line">      transmissive.<span class="title function_">sort</span>(customTransparentSort || reversePainterSortStable);</span><br><span class="line">    <span class="keyword">if</span> (transparent.<span class="property">length</span> &gt; <span class="number">1</span>)</span><br><span class="line">      transparent.<span class="title function_">sort</span>(customTransparentSort || reversePainterSortStable);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而如果沒有帶入自定義排序的函式，就會套用 <strong>Three.js</strong> 預設的排序方式，對於 <strong>不透明物體</strong> 使用的是 <code>painterSortStable</code>，而 <strong>透光物體</strong> 與 <strong>透明物體</strong> 使用的是 <code>reversePainterSortStable</code></p>
+<h6 id="painterSortStable"><a href="#painterSortStable" class="headerlink" title="painterSortStable"></a><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/c92a3ff1be840824a98470c3307658b98b197155/src/renderers/webgl/WebGLRenderLists.js#L1">painterSortStable</a></h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">painterSortStable</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (a.<span class="property">groupOrder</span> !== b.<span class="property">groupOrder</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">groupOrder</span> - b.<span class="property">groupOrder</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a.<span class="property">renderOrder</span> !== b.<span class="property">renderOrder</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">renderOrder</span> - b.<span class="property">renderOrder</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a.<span class="property">material</span>.<span class="property">id</span> !== b.<span class="property">material</span>.<span class="property">id</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">material</span>.<span class="property">id</span> - b.<span class="property">material</span>.<span class="property">id</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a.<span class="property">z</span> !== b.<span class="property">z</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">z</span> - b.<span class="property">z</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">id</span> - b.<span class="property">id</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="reversePainterSortStable"><a href="#reversePainterSortStable" class="headerlink" title="reversePainterSortStable"></a><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/c92a3ff1be840824a98470c3307658b98b197155/src/renderers/webgl/WebGLRenderLists.js#L27">reversePainterSortStable</a></h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">reversePainterSortStable</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (a.<span class="property">groupOrder</span> !== b.<span class="property">groupOrder</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">groupOrder</span> - b.<span class="property">groupOrder</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a.<span class="property">renderOrder</span> !== b.<span class="property">renderOrder</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">renderOrder</span> - b.<span class="property">renderOrder</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a.<span class="property">z</span> !== b.<span class="property">z</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> b.<span class="property">z</span> - a.<span class="property">z</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">id</span> - b.<span class="property">id</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>painterSortStable</code> 跟 <code>reversePainterSortStable</code> 排序函式中用到了 <code>groupOrder</code>, <code>renderOrder</code>, <code>material.id</code>, <code>z</code>, <code>id</code> 這幾個變數來決定物體渲染的順序，下面我們先來了解這些變數代表的意思</p>
+<h6 id="groupOrder"><a href="#groupOrder" class="headerlink" title="- groupOrder"></a>- groupOrder</h6><p>來源於 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/d0d0e1d8600e5b9818e456405a44e2c45e115a27/src/renderers/WebGLRenderer.js#L1710">projectObject 函式</a>，<code>projectObject</code> 的主要目的是將 <code>geometry</code>, <code>material</code> 等參數加入到 <code>currentRenderList</code> 中，這個函式的最後會遞歸遍歷 <code>object.children</code> 底下的所有物體</p>
+<p>所以當某個 <strong>子物體(object)</strong> 的上一層是 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=group#api/zh/objects/Group">Group</a> 時，那麼這個子物體的 <code>groupOrder</code> 指的就是上一層 <code>Group</code> 的 <a target="_blank" rel="noopener" href="https://threejs.org/docs/index.html?q=group#api/zh/core/Object3D.renderOrder">renderOrder</a>，而這個 <code>groupOrder</code> 變數是最優先在排序函式中進行判斷的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">projectObject</span>(<span class="params">object, camera, groupOrder, sortObjects</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (object.<span class="property">visible</span> === <span class="literal">false</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> visible = object.<span class="property">layers</span>.<span class="title function_">test</span>(camera.<span class="property">layers</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (visible) &#123;</span><br><span class="line">    <span class="comment">// 這裡將 Group 的 renderOrder 設為 groupOrder</span></span><br><span class="line">    <span class="keyword">if</span> (object.<span class="property">isGroup</span>) &#123;</span><br><span class="line">      groupOrder = object.<span class="property">renderOrder</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> geometry = objects.<span class="title function_">update</span>(object);</span><br><span class="line">  <span class="keyword">const</span> material = object.<span class="property">material</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將 geometry, material 等參數加入到 currentRenderList 中</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="title class_">Array</span>.<span class="title function_">isArray</span>(material)) &#123;</span><br><span class="line">    <span class="keyword">const</span> groups = geometry.<span class="property">groups</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = groups.<span class="property">length</span>; i &lt; l; i++) &#123;</span><br><span class="line">      <span class="keyword">const</span> group = groups[i];</span><br><span class="line">      <span class="keyword">const</span> groupMaterial = material[group.<span class="property">materialIndex</span>];</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (groupMaterial &amp;&amp; groupMaterial.<span class="property">visible</span>) &#123;</span><br><span class="line">        currentRenderList.<span class="title function_">push</span>(</span><br><span class="line">          object,</span><br><span class="line">          geometry,</span><br><span class="line">          groupMaterial,</span><br><span class="line">          groupOrder,</span><br><span class="line">          _vector4.<span class="property">z</span>,</span><br><span class="line">          group</span><br><span class="line">        );</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (material.<span class="property">visible</span>) &#123;</span><br><span class="line">    currentRenderList.<span class="title function_">push</span>(</span><br><span class="line">      object,</span><br><span class="line">      geometry,</span><br><span class="line">      material,</span><br><span class="line">      groupOrder,</span><br><span class="line">      _vector4.<span class="property">z</span>,</span><br><span class="line">      <span class="literal">null</span></span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 遍歷 object.children 底下的所有物體</span></span><br><span class="line">  <span class="keyword">const</span> children = object.<span class="property">children</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = children.<span class="property">length</span>; i &lt; l; i++) &#123;</span><br><span class="line">    <span class="comment">// groupOrder 來自於上一層 Group 的 object.renderOrder</span></span><br><span class="line">    <span class="title function_">projectObject</span>(children[i], camera, groupOrder, sortObjects);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="renderOrder"><a href="#renderOrder" class="headerlink" title="- renderOrder"></a>- renderOrder</h6><p>指的就是物體的 <a target="_blank" rel="noopener" href="https://threejs.org/docs/index.html?q=group#api/zh/core/Object3D.renderOrder">Object3D.renderOrder</a>，定義這個物體在場景中的渲染順序，在 <code>painterSortStable</code> 跟 <code>reversePainterSortStable</code> 中 <code>renderOrder</code> 對排序的影響是</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> a.<span class="property">renderOrder</span> - b.<span class="property">renderOrder</span>;</span><br></pre></td></tr></table></figure>
+
+<p>也就是說 <code>renderOrder</code> 的值越小，物體就會越先進行渲染</p>
+<h6 id="material-id"><a href="#material-id" class="headerlink" title="- material.id"></a>- material.id</h6><p><a target="_blank" rel="noopener" href="https://threejs.org/docs/index.html?q=material#api/zh/materials/Material.id">Material.id</a> 代表這個材質的唯一 id 值，在 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/4e3db421aef677a668932b221b7dc2fc90ef1dd8/src/materials/Material.js#L41">Material.js</a> 檔案中 <code>id</code> 數值的計算是遞增的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> _materialId = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Material</span> <span class="keyword">extends</span> <span class="title class_ inherited__">EventDispatcher</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>();</span><br><span class="line"></span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(<span class="variable language_">this</span>, <span class="string">&#x27;id&#x27;</span>, &#123; <span class="attr">value</span>: _materialId++ &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這代表越後面創建的 <code>Material</code>，其 <code>material.id</code> 的值就會越大</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> material1 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">MeshBasicMaterial</span>();</span><br><span class="line"><span class="keyword">const</span> material2 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">MeshBasicMaterial</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;material1 id&#x27;</span>, material1.<span class="property">id</span>); <span class="comment">// 1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;material2 id&#x27;</span>, material2.<span class="property">id</span>); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>回過頭來看 <code>painterSortStable</code> 中使用 <code>material.id</code> 排序的方式，代表當兩個物體用到不同的 <code>Material</code> 時，越後面創建的 <code>Material</code> 就會排在越後面進行渲染</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> a.<span class="property">material</span>.<span class="property">id</span> - b.<span class="property">material</span>.<span class="property">id</span>;</span><br></pre></td></tr></table></figure>
+
+<h6 id="z"><a href="#z" class="headerlink" title="- z"></a>- z</h6><p>代表的是深度值的 <code>z</code></p>
+<ul>
+<li><code>painterSortStable</code></li>
+</ul>
+<p><code>painterSortStable</code> 函式計算 <code>z</code> 的排序用的是 <code>return a.z - b.z</code>，這代表比較<strong>近</strong>的物體會先進行渲染</p>
+<ul>
+<li><code>reversePainterSortStable</code></li>
+</ul>
+<p><code>reversePainterSortStable</code> 函式計算 <code>z</code> 的排序用的是 <code>return b.z - a.z</code>，這代表比較<strong>遠</strong>的物體會先進行渲染</p>
+<h6 id="id"><a href="#id" class="headerlink" title="- id"></a>- id</h6><p>指的是 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/zh/core/Object3D.id">Object3D.id</a>，跟 <code>material.id</code> 一樣是一個隨時間增加的變數</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> object1 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Object3D</span>();</span><br><span class="line"><span class="keyword">const</span> object2 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Object3D</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;object1 id&#x27;</span>, object1.<span class="property">id</span>); <span class="comment">// 1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;object2 id&#x27;</span>, object2.<span class="property">id</span>); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="排序函式解釋"><a href="#排序函式解釋" class="headerlink" title="排序函式解釋"></a>排序函式解釋</h4><p>介紹完以上這幾種套用在排序函式裡的變數，下面來解釋這兩個排序函式為什麼是這樣寫的</p>
+<h5 id="painterSortStable-1"><a href="#painterSortStable-1" class="headerlink" title="- painterSortStable"></a>- painterSortStable</h5><p>預設套用在 <strong>不透明物體的</strong> <code>painterSortStable</code> 函式，決定物體渲染次序的優先級分別是：</p>
+<ol>
+<li><p><code>groupOrder</code>: 每個物體 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/zh/core/Object3D.parent">父層(Object3D.parent)</a> 的 <code>renderOrder</code>，最優先會根據父層元素的 <code>renderOrder</code> 來決定渲染順序</p>
+</li>
+<li><p><code>renderOrder</code>: 接著是由物體本身的 <code>renderOrder</code> 決定渲染順序，越低的 <code>renderOrder</code> 代表越先進行渲染</p>
+</li>
+<li><p><code>material.id</code>: 第三個順序是以物體 <code>material</code> 創建的順序決定，如果物體用到的 <code>material</code> 先被創建，那麼就會越先進行渲染，這裡我覺得蠻奇怪的，繪製順序應該跟 <code>material</code> 創建的順序沒什麼關聯才對，我覺得排第三個的順序應該要是深度值 <code>z</code>，物體的渲染順序應該跟物體離相機的距離 <code>z</code> 比較有關係，而不是<code>material</code> 創建的順序</p>
+</li>
+<li><p><code>z</code>: 第四個順序用 <strong>深度值 <code>z</code> - 物體離相機的距離</strong> 決定渲染的順序，深度值 <code>z</code> 越小也就是離相機越近的話，會越先進行渲染，為什麼 <code>z</code> 越小的越先進行渲染，請看後面的 <a href="./#1-%E7%82%BA%E4%BB%80%E9%BA%BC%E4%B8%8D%E9%80%8F%E6%98%8E%E7%89%A9%E9%AB%94%EF%BC%8C%E9%A0%90%E8%A8%AD%E7%9A%84%E6%B8%B2%E6%9F%93%E9%A0%86%E5%BA%8F%E6%98%AF-z-%E8%B6%8A%E5%B0%8F%E7%9A%84%E8%B6%8A%E5%85%88%E9%80%B2%E8%A1%8C%E6%B8%B2%E6%9F%93%EF%BC%9F">延伸閱讀 1. 為什麼不透明物體，預設的渲染順序是 z 越小的越先進行渲染？</a></p>
+</li>
+<li><p><code>id</code>: 最後的 <code>id</code> 代表的是物體本身創建的順序，越先創建的物體就會越先進行渲染</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">painterSortStable</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (a.<span class="property">groupOrder</span> !== b.<span class="property">groupOrder</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">groupOrder</span> - b.<span class="property">groupOrder</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a.<span class="property">renderOrder</span> !== b.<span class="property">renderOrder</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">renderOrder</span> - b.<span class="property">renderOrder</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a.<span class="property">material</span>.<span class="property">id</span> !== b.<span class="property">material</span>.<span class="property">id</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">material</span>.<span class="property">id</span> - b.<span class="property">material</span>.<span class="property">id</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a.<span class="property">z</span> !== b.<span class="property">z</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">z</span> - b.<span class="property">z</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">id</span> - b.<span class="property">id</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="reversePainterSortStable-1"><a href="#reversePainterSortStable-1" class="headerlink" title="- reversePainterSortStable"></a>- reversePainterSortStable</h5><p>預設套用在 <strong>透光物體</strong> 與 <strong>透明物體</strong> 的 <code>reversePainterSortStable</code> 函式，決定物體渲染次序的優先級分別是：</p>
+<ol>
+<li><p><code>groupOrder</code>: 跟上面一樣 <code>groupOrder</code> 越小越先進行渲染</p>
+</li>
+<li><p><code>renderOrder</code>: 跟上面一樣 <code>renderOrder</code> 越小越先進行渲染</p>
+</li>
+<li><p><code>z</code>: 深度值 <code>z</code> 是唯一與 <code>painterSortStable</code> 有所差別的地方，越大的 <code>z</code> 會越先進行渲染跟 <code>painterSortStable</code> 相反，這也是為什麼這個函式叫做 <code>reversePainterSortStable</code> 的原因，至於為什麼 <code>reversePainterSortStable</code> 中越大的 <code>z</code> 越先進行渲染呢？ 請看 <a href="./#2-%E7%82%BA%E4%BB%80%E9%BA%BC%E9%80%8F%E5%85%89%E7%89%A9%E9%AB%94%E3%80%81%E9%80%8F%E6%98%8E%E7%89%A9%E9%AB%94%EF%BC%8C%E9%A0%90%E8%A8%AD%E7%9A%84%E6%B8%B2%E6%9F%93%E9%A0%86%E5%BA%8F%E6%98%AF-z-%E8%B6%8A%E5%A4%A7%E7%9A%84%E8%B6%8A%E5%85%88%E9%80%B2%E8%A1%8C%E6%B8%B2%E6%9F%93%EF%BC%9F">延伸閱讀 2. 為什麼透光物體、透明物體，預設的渲染順序是 z 越大的越先進行渲染？</a></p>
+</li>
+<li><p><code>id</code>: 跟上面一樣 <code>id</code> 越小越先進行渲染</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">reversePainterSortStable</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (a.<span class="property">groupOrder</span> !== b.<span class="property">groupOrder</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">groupOrder</span> - b.<span class="property">groupOrder</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a.<span class="property">renderOrder</span> !== b.<span class="property">renderOrder</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">renderOrder</span> - b.<span class="property">renderOrder</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a.<span class="property">z</span> !== b.<span class="property">z</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> b.<span class="property">z</span> - a.<span class="property">z</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a.<span class="property">id</span> - b.<span class="property">id</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>今天的文章中探討了 <strong>Three.js</strong> 中物體渲染的順序，分別是 <strong>不透明物體(opaqueObjects)</strong> &#x3D;&gt; <strong>透光物體(transmissiveObjects)</strong> &#x3D;&gt; <strong>透明物體(transparentObjects)</strong>，接著也研究了這三類物體各自裡面又是怎麼利用 <a href="#%E6%8E%92%E5%BA%8F%E5%87%BD%E5%BC%8F%E8%A7%A3%E9%87%8B">排序函式</a> 決定物體先後的渲染順序，對於 <strong>不透明物體</strong> 來說預設採用的是 <code>painterSortStable</code> 函式， <code>z</code> 越小的話會越先進行渲染，但 <strong>透光物體及透明物體</strong> 預設的是採用 <code>reversePainterSortStable</code> 函式，<code>z</code> 越大的話會越先進行渲染</p>
+<p>藉由前面幾篇系列文章可以了解深度測試的運作原理，加上今天學習三種不同種類物體的渲染順序，我們就可以清楚的理解在 <strong>Three.js</strong> 裡物體之間的遠近關係，以及當不同物體有前後重疊的關係時，最終畫面上呈現的應該會是哪個物體</p>
+<h2 id="延伸閱讀"><a href="#延伸閱讀" class="headerlink" title="延伸閱讀"></a>延伸閱讀</h2><h4 id="1-為什麼不透明物體，預設的渲染順序是-z-越小的越先進行渲染？"><a href="#1-為什麼不透明物體，預設的渲染順序是-z-越小的越先進行渲染？" class="headerlink" title="1. 為什麼不透明物體，預設的渲染順序是 z 越小的越先進行渲染？"></a>1. 為什麼不透明物體，預設的渲染順序是 <code>z</code> 越小的越先進行渲染？</h4><p>假設畫面上有兩個物體，<strong>紅色平面在前面(深度值較小)</strong> 及 <strong>藍色平面在後面(深度值較大)</strong>，如下圖所示：</p>
+<img src="./two-plane.gif" style="width: 100%" />
+
+<p>渲染 <strong>不透明物體</strong> 的順序有兩種方式，一種是先渲染 <strong>紅色平面</strong>，另一種先渲染 <strong>藍色平面</strong>：</p>
+<h5 id="1-先渲染-紅色平面-z-小的先渲染"><a href="#1-先渲染-紅色平面-z-小的先渲染" class="headerlink" title="1. 先渲染 紅色平面 - z 小的先渲染"></a>1. 先渲染 <strong>紅色平面</strong> - z 小的先渲染</h5><p>先渲染 <strong>紅色平面</strong> 時，會先把整個 <strong>紅色平面</strong> 都畫上去，接著渲染 <strong>藍色平面</strong> 時，<strong>紅色平面</strong> 與 <strong>藍色平面</strong> 重疊的部分由於 <strong>藍色平面</strong> 的深度值較大會被捨棄，而 <strong>藍色平面</strong> 上沒有重疊的部分則是通過深度測試畫上去</p>
+<h5 id="2-先渲染-藍色平面-z-大的先渲染"><a href="#2-先渲染-藍色平面-z-大的先渲染" class="headerlink" title="2. 先渲染 藍色平面 - z 大的先渲染"></a>2. 先渲染 <strong>藍色平面</strong> - z 大的先渲染</h5><p>先渲染 <strong>藍色平面</strong> 時，會把整個 <strong>藍色平面</strong> 都畫上去，接著渲染 <strong>紅色平面</strong> 時，因為整個 <strong>紅色平面</strong> 的深度值都較小所以整塊 <strong>紅色平面</strong> 都會通過深度測試而畫上螢幕</p>
+<p>可以看到不論是先渲染 <strong>紅色平面</strong> 或是 先渲染 <strong>藍色平面</strong>，最後 <strong>紅色平面</strong> 都是在 <strong>藍色平面</strong> 前面的，那為什麼在 <strong>Three.js</strong> 裡渲染不透明物體時，預設使用的 <code>painterSortStable</code> 函式是採用 <code>z</code> 越小的越先進行渲染呢？這主要應該是性能的考量，以上面 <strong>狀況 1. 先渲染紅色平面</strong> 來看，曾經有被繪製到畫面上的有第一步的 <strong>紅色平面</strong> 以及第二步 <strong>不與紅色平面重疊的藍色平面部分</strong>，但如果是 <strong>狀況 2. 先渲染藍色平面</strong> 的話，第一步會繪製整個 <strong>藍色平面</strong>，第二步也會繪製整個 <strong>紅色平面</strong>，跟 <strong>狀況 1.</strong> 相比就多繪製了 <strong>紅色平面與藍色平面重疊的部分</strong></p>
+<p>所以即使 <strong>不透明物體</strong> 先渲染 <code>z</code> 大或 <code>z</code> 小的物體最後在畫面上看起來都一樣，但以繪製畫面的步驟上來看，先渲染 <code>z</code> 小的物體可以避免多餘的渲染增加性能</p>
+<h4 id="2-為什麼透光物體、透明物體，預設的渲染順序是-z-越大的越先進行渲染？"><a href="#2-為什麼透光物體、透明物體，預設的渲染順序是-z-越大的越先進行渲染？" class="headerlink" title="2. 為什麼透光物體、透明物體，預設的渲染順序是 z 越大的越先進行渲染？"></a>2. 為什麼透光物體、透明物體，預設的渲染順序是 <code>z</code> 越大的越先進行渲染？</h4><p>一樣假設畫面上有兩個物體，<strong>透明的紅色平面在前面(深度值較小)</strong> 及 <strong>透明的藍色平面在後面(深度值較大)</strong>，渲染 <strong>透明物體</strong> 一樣有兩種方式，<code>z</code> 小的先渲染或是 <code>z</code> 大的先渲染</p>
+<h5 id="1-先渲染-透明紅色平面-z-小的先渲染"><a href="#1-先渲染-透明紅色平面-z-小的先渲染" class="headerlink" title="1. 先渲染 透明紅色平面 - z 小的先渲染"></a>1. 先渲染 <strong>透明紅色平面</strong> - z 小的先渲染</h5><p>先渲染 <strong>透明紅色平面</strong> 時，會先把整個 <strong>透明紅色平面</strong> 都畫上去，接著渲染 <strong>透明藍色平面</strong> 時，<strong>透明紅色平面</strong> 與 <strong>透明藍色平面</strong> 重疊的部分由於 <strong>透明藍色平面</strong> 的深度值較大會被捨棄，而 <strong>透明藍色平面</strong> 上沒有重疊的部分則是通過深度測試畫上去，最後畫面上呈現為：</p>
+<img src="./transparent-z-order.png" style="width: 100%" />
+
+<p>這時候會發現奇怪的地方是 <strong>透明紅色平面</strong> 因為是 <strong>透明物體</strong> 所以照理來說可以透過去看到後面的物體，但由於重疊部分後面的 <strong>透明藍色平面</strong> 沒有通過深度測試都被捨棄掉，最後在畫面上也就看不到了，因此採用 <code>z</code> 小先渲染的策略是有問題的，會導致透明物體後面的物體沒有渲染在畫面上</p>
+<h5 id="2-先渲染-透明藍色平面-z-大的先渲染"><a href="#2-先渲染-透明藍色平面-z-大的先渲染" class="headerlink" title="2. 先渲染 透明藍色平面 - z 大的先渲染"></a>2. 先渲染 <strong>透明藍色平面</strong> - z 大的先渲染</h5><p>先渲染 <strong>透明藍色平面</strong> 時，會先把整個 <strong>透明藍色平面</strong> 都畫上去，接著渲染 <strong>透明紅色平面</strong> 時，由於 <strong>透明紅色平面</strong> 的深度值都較小所以整塊 <strong>透明紅色平面</strong> 都會通過深度測試而畫上螢幕，最後畫面上呈現為：</p>
+<img src="./transparent-z-order-reverse.png" style="width: 100%" />
+
+<p>這樣採用 <code>z</code> 大先渲染的順序才是對的，有辦法看得到在 <strong>透明物體</strong> 後面的東西</p>
+<h4 id="3-為什麼透光物體的渲染次序放在第二個？"><a href="#3-為什麼透光物體的渲染次序放在第二個？" class="headerlink" title="3. 為什麼透光物體的渲染次序放在第二個？"></a>3. 為什麼透光物體的渲染次序放在第二個？</h4><p><strong>透光物體</strong>是一種類似玻璃的物體，調整 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/zh/materials/MeshPhysicalMaterial.transmission">透光率 MeshPhysicalMaterial.transmission</a> 可以改變透光的程度，官方提供的範例 - <a target="_blank" rel="noopener" href="https://threejs.org/examples/#webgl_materials_physical_transmission">玻璃球</a> 可以看到這種物體在場景中的樣子</p>
+<p>在 <code>renderScene</code> 函式中，<strong>透光物體</strong> 在 <strong>不透明物體</strong> <strong>“之後”</strong> 繪製的原因是，類似玻璃這樣的物質會反射場景中的<strong>不透明物體</strong>，因此需要等 <strong>不透明物體</strong> 在場景中都先渲染好了後，才能知道 <strong>不透明物體</strong> 投影在玻璃上應該呈現什麼樣子。而 <strong>透光物體</strong> 在 <strong>透明物體</strong> <strong>“之前”</strong> 渲染的原因是，在視線穿過 <strong>透明物體</strong> 時一樣有可能看到後面的 <strong>透光物體</strong>，為避免在後面的 <strong>透光物體</strong> 進行深度測試失敗導致 <strong>像素(fragment)</strong> 完全被丟棄，所以 <strong>透光物體</strong> 需要在 <strong>透明物體</strong> 之前進行繪製，這一段的說明我是詢問 chatGPT 得到的解答，乍看之下很有道理，但我覺得有某些部分是違反直覺的，例如：</p>
+<ul>
+<li><strong>透明物體</strong> 在 <strong>透光物體</strong> 後面時無法被看到</li>
+</ul>
+<p>由於 <strong>透明物體</strong> 是在 <strong>透光物體</strong> 之後渲染的，所以這代表只要 <strong>透明物體</strong> 在 <strong>透光物體</strong> 後面時永遠無法通過深度測試，所以就會直接消失，如下圖所示：</p>
+<p><video src="https://bcjohn-public-static.s3.ap-southeast-2.amazonaws.com/threejs-transmissive-order.mp4" autoplay muted loop style="width: 100%"></video></p>
+<p>我覺得這是蠻奇怪的一個行為，<strong>透光物體</strong> 可以設想為玻璃物體，正常來說透過玻璃應該都可以看到後面是什麼東西，不論他是 <strong>不透明物體</strong> 或是 <strong>透明物體</strong>，但在這種渲染次序的安排下，當後面的物體從 <strong>不透明物體</strong> 改變為 <strong>透明物體</strong> 時就會瞬間看不到，似乎不符合真實世界的樣子</p>
+<h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p>本篇文章截圖所使用的 <a target="_blank" rel="noopener" href="https://github.com/bcjohnblue/threejs-render-order">範例 repo</a></p>
+<h2 id="附錄"><a href="#附錄" class="headerlink" title="附錄"></a>附錄</h2><ol>
+<li>本文研究 Three.js 程式碼為 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/releases/tag/r176">r176</a> 版本</li>
+</ol>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000041221932">THREE.js 渲染顺序</a><br><a target="_blank" rel="noopener" href="https://learnopengl-cn.readthedocs.io/zh/latest/04%20Advanced%20OpenGL/03%20Blending/">混合</a></p>
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>CORS Debug (1) - 網頁快取導致的 CORS 問題</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/">
+        <span>Three.js 中物體的遠近關係 (4) - 對數深度值</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%AD%A4%E7%82%BA-Three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-%E7%AC%AC-5-%E7%AF%87%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">此為 Three.js 中物體的遠近關係 系列文章 - 第 5 篇：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F"><span class="toc-number"></span> <span class="toc-text">渲染物體的順序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BD%E9%9C%80%E8%A6%81%E5%85%88%E7%B9%AA%E8%A3%BD%E4%B8%8D%E9%80%8F%E6%98%8E%E7%89%A9%E9%AB%94%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">為什麽需要先繪製不透明物體？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%88%E7%B9%AA%E8%A3%BD%E9%80%8F%E6%98%8E%E7%89%A9%E9%AB%94-%E9%8C%AF%E8%AA%A4"><span class="toc-number"></span> <span class="toc-text">先繪製透明物體 (錯誤)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%88%E7%B9%AA%E8%A3%BD%E4%B8%8D%E9%80%8F%E6%98%8E%E7%89%A9%E9%AB%94-%E6%AD%A3%E7%A2%BA"><span class="toc-number"></span> <span class="toc-text">先繪製不透明物體 (正確)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%A9%E9%AB%94%E7%9A%84%E6%B8%B2%E6%9F%93%E9%A0%86%E5%BA%8F-Three-js-%E5%8E%9F%E5%A7%8B%E7%A2%BC"><span class="toc-number"></span> <span class="toc-text">物體的渲染順序 - Three.js 原始碼</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E5%A0%B4%E6%99%AF"><span class="toc-number"></span> <span class="toc-text">渲染場景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A0%E5%85%A5%E7%89%A9%E9%AB%94"><span class="toc-number"></span> <span class="toc-text">加入物體</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E7%89%A9%E9%AB%94"><span class="toc-number"></span> <span class="toc-text">排序物體</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#painterSortStable"><span class="toc-number">1.</span> <span class="toc-text">painterSortStable</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#reversePainterSortStable"><span class="toc-number">2.</span> <span class="toc-text">reversePainterSortStable</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#groupOrder"><span class="toc-number">3.</span> <span class="toc-text">- groupOrder</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#renderOrder"><span class="toc-number">4.</span> <span class="toc-text">- renderOrder</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#material-id"><span class="toc-number">5.</span> <span class="toc-text">- material.id</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#z"><span class="toc-number">6.</span> <span class="toc-text">- z</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#id"><span class="toc-number">7.</span> <span class="toc-text">- id</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E5%87%BD%E5%BC%8F%E8%A7%A3%E9%87%8B"><span class="toc-number"></span> <span class="toc-text">排序函式解釋</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#painterSortStable-1"><span class="toc-number"></span> <span class="toc-text">- painterSortStable</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#reversePainterSortStable-1"><span class="toc-number"></span> <span class="toc-text">- reversePainterSortStable</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B5%90%E8%AB%96"><span class="toc-number"></span> <span class="toc-text">結論</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E4%BC%B8%E9%96%B1%E8%AE%80"><span class="toc-number"></span> <span class="toc-text">延伸閱讀</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%82%BA%E4%BB%80%E9%BA%BC%E4%B8%8D%E9%80%8F%E6%98%8E%E7%89%A9%E9%AB%94%EF%BC%8C%E9%A0%90%E8%A8%AD%E7%9A%84%E6%B8%B2%E6%9F%93%E9%A0%86%E5%BA%8F%E6%98%AF-z-%E8%B6%8A%E5%B0%8F%E7%9A%84%E8%B6%8A%E5%85%88%E9%80%B2%E8%A1%8C%E6%B8%B2%E6%9F%93%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">1. 為什麼不透明物體，預設的渲染順序是 z 越小的越先進行渲染？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%85%88%E6%B8%B2%E6%9F%93-%E7%B4%85%E8%89%B2%E5%B9%B3%E9%9D%A2-z-%E5%B0%8F%E7%9A%84%E5%85%88%E6%B8%B2%E6%9F%93"><span class="toc-number"></span> <span class="toc-text">1. 先渲染 紅色平面 - z 小的先渲染</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%85%88%E6%B8%B2%E6%9F%93-%E8%97%8D%E8%89%B2%E5%B9%B3%E9%9D%A2-z-%E5%A4%A7%E7%9A%84%E5%85%88%E6%B8%B2%E6%9F%93"><span class="toc-number"></span> <span class="toc-text">2. 先渲染 藍色平面 - z 大的先渲染</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%82%BA%E4%BB%80%E9%BA%BC%E9%80%8F%E5%85%89%E7%89%A9%E9%AB%94%E3%80%81%E9%80%8F%E6%98%8E%E7%89%A9%E9%AB%94%EF%BC%8C%E9%A0%90%E8%A8%AD%E7%9A%84%E6%B8%B2%E6%9F%93%E9%A0%86%E5%BA%8F%E6%98%AF-z-%E8%B6%8A%E5%A4%A7%E7%9A%84%E8%B6%8A%E5%85%88%E9%80%B2%E8%A1%8C%E6%B8%B2%E6%9F%93%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">2. 為什麼透光物體、透明物體，預設的渲染順序是 z 越大的越先進行渲染？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%85%88%E6%B8%B2%E6%9F%93-%E9%80%8F%E6%98%8E%E7%B4%85%E8%89%B2%E5%B9%B3%E9%9D%A2-z-%E5%B0%8F%E7%9A%84%E5%85%88%E6%B8%B2%E6%9F%93"><span class="toc-number"></span> <span class="toc-text">1. 先渲染 透明紅色平面 - z 小的先渲染</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%85%88%E6%B8%B2%E6%9F%93-%E9%80%8F%E6%98%8E%E8%97%8D%E8%89%B2%E5%B9%B3%E9%9D%A2-z-%E5%A4%A7%E7%9A%84%E5%85%88%E6%B8%B2%E6%9F%93"><span class="toc-number"></span> <span class="toc-text">2. 先渲染 透明藍色平面 - z 大的先渲染</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%82%BA%E4%BB%80%E9%BA%BC%E9%80%8F%E5%85%89%E7%89%A9%E9%AB%94%E7%9A%84%E6%B8%B2%E6%9F%93%E6%AC%A1%E5%BA%8F%E6%94%BE%E5%9C%A8%E7%AC%AC%E4%BA%8C%E5%80%8B%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">3. 為什麼透光物體的渲染次序放在第二個？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AF%84%E4%BE%8B"><span class="toc-number"></span> <span class="toc-text">範例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E9%8C%84"><span class="toc-number"></span> <span class="toc-text">附錄</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number"></span> <span class="toc-text">參考資料</span></a>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

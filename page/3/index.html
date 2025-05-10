@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+    
+        <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        
+            load: ['[tex]/mhchem'],
+        
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        
+            packages: {'[+]': ['mhchem']},
+        
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+          
+
+
+    
+    
+    <title>
+          
+            bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/01/11/2025-01-03-%E4%BA%94/">2025/01/03 (五)</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-01-11
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-01-11
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Life/">Life</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h5 id="早上-11-00"><a href="#早上-11-00" class="headerlink" title="- 早上 11:00"></a>- 早上 11:00</h5><p>今天一樣來跟爺爺講話，一到病房跟他說從第一天爺爺睡著叫不醒到送去急診室住進加護病房的這一連串事情，之前都還沒跟爺爺說過為什麼他躺在這邊好多天的原因呢，一開始不知道該怎麼講，但最終我覺得還是需要把我們打算進行安寧治療的決定當面跟爺爺說，一到病房我有跟爺爺說他的大女兒、姑丈、大女兒的兩個小孩、小女兒、兒子昨天有視訊，還有我跟我老婆都有在這幾天裡來探望陪他唷，以及你那剛出生的曾孫女小紗寶之前也有去家裡...
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/01/11/2025-01-03-%E4%BA%94/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/01/11/2025-01-02-%E5%9B%9B/">2025/01/02 (四)</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-01-11
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-01-11
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Life/">Life</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <p>今天約了早上 11:00 第二次與主治醫生會面，預先想好的問題是爺爺腦部的損傷程度、昨晚打的強心針、還有安寧照護的可能性等，總共問了以下問題：</p>
+<ol>
+<li><p>問：MRI 結果顯示目前的腦部的受損狀況如何？很嚴重嗎？<br>答：今天醫生不像第一次會面時講的比較保守了，直接說要能夠清醒的機率很低</p>
+</li>
+<li><p>問：之前有聽護士說爺爺的瞳孔反射微弱，加上這次腦幹中風似乎受損很嚴重，這樣算是腦死的狀況嗎？<br>答：沒有沒有，這樣還沒有到腦死，如果是腦死的話一兩天內就會走了</p>
+</li>
+<li><p>問：昨天跟前天晚上爺爺都有心跳驟停的狀況，有...
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/01/11/2025-01-02-%E5%9B%9B/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/01/11/2025-01-01%EF%BC%88%E4%B8%89%EF%BC%89/">2025/01/01（三）</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-01-11
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-01-11
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Life/">Life</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h5 id="早上-11-00"><a href="#早上-11-00" class="headerlink" title="- 早上 11:00"></a>- 早上 11:00</h5><p>護士說早上有嘗試把升壓藥的濃度降低，但又出現一次心跳驟停的狀況，當下把濃度再調回去後有恢復正常，另外昨晚注射白蛋白後，水腫已經好很多了，爺爺的右手不像昨天那樣按下去都沒有反彈，現在看起來就跟我的手回彈程度差不多了，後來回奶奶家，跟他說爺爺這兩天的狀況不好，昨天晚上心臟有停止的狀況，但奶奶似乎沒有覺得很嚴重，他一直都覺得爺爺手腳有動來動去，應該快好了啊</p>
+<h5 id="晚上-7-00"><...
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/01/11/2025-01-01%EF%BC%88%E4%B8%89%EF%BC%89/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/01/08/2024-12-31-%E4%BA%8C/">2024/12/31 (二)</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-01-08
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-01-08
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Life/">Life</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h5 id="晚上-7-00"><a href="#晚上-7-00" class="headerlink" title="- 晚上 7:00"></a>- 晚上 7:00</h5><p>護士說最近爺爺有水腫的狀況，可能是營養或藥物沒有吸收完全，會滲到身體四肢，的確按壓爺爺的手掌皮膚都沒有回彈起來，護士說這已經是<a target="_blank" rel="noopener" href="https://www.canceraway.org.tw/page.php?IDno=1528">四價的水腫了</a>，我後來查了一下這好像是最嚴重的水腫狀況，另外也問了爺爺目前的白蛋白指數，大約是 2.5-2.7g&#x2F;dl，已經滿低的了，所以問我們要...
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/01/08/2024-12-31-%E4%BA%8C/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/01/07/2024-12-28-%E5%85%AD/">2024/12/28 (六)</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-01-07
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-01-08
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Life/">Life</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h5 id="晚上-7-00"><a href="#晚上-7-00" class="headerlink" title="- 晚上 7:00"></a>- 晚上 7:00</h5><p>今天是奶奶第一次去醫院看爺爺，原本希望他在早上 11:00 的探訪時間來的，畢竟早上探病有陽光比較好的感覺，但他說太早了起不來實在沒有辦法，在去看爺爺之前，奶奶就一直說要幫他用力按手部的穴道、拍胸，這樣就可以把他喚醒了，在奶奶進去病房後，我很小心地站在前面的位置，以防奶奶衝動動到那些管子，奶奶果然對著爺爺的手大力地狂按，說什麼要按這個穴道，爺爺之前最討厭他按這裡，只要一按他就會起來了，奶奶不斷的按不斷地...
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/01/07/2024-12-28-%E5%85%AD/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/01/07/2024-12-27-%E4%BA%94/">2024/12/27 (五)</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-01-07
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-01-07
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Life/">Life</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h5 id="早上-11-00"><a href="#早上-11-00" class="headerlink" title="- 早上 11:00"></a>- 早上 11:00</h5><p>第一次與主治醫生的會面，原本昨天狀況良好，呼吸器都改成訓練模式，住院醫生說預計今天下午可以拔管，所以我們前一晚想了一堆拔管後可能面臨狀況的問題，但沒想到今天一早來到加護病房，突然說爺爺昨晚有肺部感染的狀況，痰液變多，所以呼吸器也沒辨法再用訓練模式，原本預計要拔管但目前狀況無法，隨後主治就在病床前講了一堆狀況，目前肺部感染所以有使用抗生素治療，那如果不能拔管的話，之後建議我們做氣切</p>
+<p>...
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/01/07/2024-12-27-%E4%BA%94/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/01/06/2024-12-26-%E5%9B%9B/">2024/12/26 (四)</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-01-06
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-01-07
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Life/">Life</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h5 id="早上-11-00"><a href="#早上-11-00" class="headerlink" title="- 早上 11:00"></a>- 早上 11:00</h5><p>昨天中午 12:00 做的 MRI 有初步的結果了，住院醫生說爺爺腦部有大片栓塞的狀況，判斷是缺血性腦中風，從住院到現在都有用藥治療幫助疏通，另外因為他们覺得爺爺現在自己呼吸狀況不錯，所以考慮明天下午拔氣管讓他自己呼吸，但拔氣管後可能會有各種需要設想的狀況，例如：爺爺現在沒有什麼咳嗽反應，所以如果之後有痰咳不出來，又需要再插回氣管，這樣的話基本就不能再拔管了，還有其他需要考量的點，這部分他們會再...
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/01/06/2024-12-26-%E5%9B%9B/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/01/05/2024-12-23-%E4%B8%80/">2024/12/23 (一)</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-01-05
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-01-07
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Life/">Life</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h5 id="晚上-8-00"><a href="#晚上-8-00" class="headerlink" title="- 晚上 8:00"></a>- 晚上 8:00</h5><p>奶奶打電話很緊急的跟我說爺爺睡著人都叫不醒，而且全身都硬硬的，大聲叫我快回家看怎麼辦</p>
+<p>我一回家後發現爺爺打呼超大聲，雙腳呈現交疊在一起的不正常姿勢，我趕快叫爺爺及推推他發現的確完全叫不醒，然後我趕快 google 搜尋 “老人睡覺叫不醒 打呼”，發現沒有什麼好的方式處理，這時奶奶一直推爺爺、按摩他的手、在耳朵旁邊大聲呼喊，但爺爺還是一樣大聲的打呼，雖然我覺得狀況很緊急但奶奶還是不願意打 1...
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/01/05/2024-12-23-%E4%B8%80/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/">使用 Three.js 操作 shader 畫出國旗</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2024-12-06
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-02-12
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>這是我第一篇學習 shader 的文章，藉由上完 <a target="_blank" rel="noopener" href="https://threejs-journey.com/">three.js journey lessons 27 - Shaders</a> 後，嘗試延伸用老師的範例畫出自己國家的國旗</p>
+<h2 id="為什麼需要寫-shader"><a href="#為什麼需要寫-shader" class="headerlink" title="為什麼需要寫 shader?"></a>為什麼需要寫 shader?</h2><p>Three.js 裡已經有內建各式各樣的 Geometry (ex. PlaneGeometry, BoxGeometry) 可以創建不同形狀的物體，但如果需要對這些 Geometry 裡個別的頂點們進行操作 (ex. 改變位置、顏色) 就需要 Shader 來進行精細的操作</p>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2024/02/18/%E7%90%86%E8%A7%A3-three-js-%E4%B8%AD-texture-%E7%9A%84-offset-repeat-%E5%8F%8A-wrap/">理解 Three.js 中 texture 的 offset, repeat 及 wrap</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-19
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Threejs 中的 texture(貼圖) 可以設置 offset, repeat 及 wrap 屬性，但大部分文章都只有文字說明而沒有視覺化的範例，所以寫了一個視覺化範例讓自己能夠理解</p>
+<h5 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a><a target="_blank" rel="noopener" href="https://codesandbox.io/p/devbox/threejs-texture-nds6mp?file=/src/Experience/World/objects/Plane.js:3,21">Demo</a></h5><p>圖片渲染在 (x,y) 平面上，右方橘色線為 x 軸，上方綠色線為 y 軸<br><img src="/blog/2024/02/18/理解-three-js-中-texture-的-offset-repeat-及-wrap/default.png" width="50%" height="50%"></p>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2024/02/18/%E7%90%86%E8%A7%A3-three-js-%E4%B8%AD-texture-%E7%9A%84-offset-repeat-%E5%8F%8A-wrap/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+
+
+  <nav style="text-align: center;">
+    <div class="pagination">
+      <a class="extend prev" rel="prev" href="/blog/page/2/"><i class="iconfont icon-angle-left"></i></a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/blog/page/4/">4</a><a class="extend next" rel="next" href="/blog/page/4/"><i class="iconfont icon-angle-right"></i></a>
+    </div>
+  </nav>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

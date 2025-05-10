@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+    
+        <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        
+            load: ['[tex]/mhchem'],
+        
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        
+            packages: {'[+]': ['mhchem']},
+        
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+          
+
+
+    
+    
+    <title>
+          
+            bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-05-04
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-6-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-6-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 6 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 6 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前五篇的系列文章讓我們理解 Three.js 中物體的遠近關係是如何決定的，今天這篇文章藉由 <a target="_blank" rel="noopener" href="https://threejs-journey.com/">Three.js journey - lesson particles</a> 這門課程中渲染粒子系統的範例，學習要怎麼正確的渲染粒子使其前後呈現的順序是正確的</p>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/">CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-04-17
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-04-22
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h6 id="此為-CORS-Debug-系列文章-第-2-篇："><a href="#此為-CORS-Debug-系列文章-第-2-篇：" class="headerlink" title="此為 CORS Debug 系列文章 - 第 2 篇："></a>此為 <strong>CORS Debug</strong> 系列文章 - 第 2 篇：</h6><ol>
+<li><a href="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">CORS Debug (1) - 網頁快取導致的 CORS 問題</a></li>
+<li><a href="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/" target="_blank">CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</a></li>
+</ol>
+<h2 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h2><p>在上一篇文章 - <a href="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">網頁快取導致的 CORS 問題</a> 中，最終採用了 <code>crossOrigin=&#39;anonymous&#39;</code> 這樣的方式解決網頁快取導致的 CORS 錯誤，原本以為這樣已經萬無一失，但沒想到更悲劇的事情發生了 &#x3D;&gt; 在 Safari 瀏覽器有時候會發現網頁上的圖片都不見了</p>
+<div style="display: flex; justify-content: center;">
+  <img src="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/safari-image-disappear.png" />
+</div>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/">CORS Debug (1) - 網頁快取導致的 CORS 問題</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-04-13
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-04-22
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h6 id="此為-CORS-Debug-系列文章-第-1-篇："><a href="#此為-CORS-Debug-系列文章-第-1-篇：" class="headerlink" title="此為 CORS Debug 系列文章 - 第 1 篇："></a>此為 <strong>CORS Debug</strong> 系列文章 - 第 1 篇：</h6><ol>
+<li><a href="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">CORS Debug (1) - 網頁快取導致的 CORS 問題</a></li>
+<li><a href="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/" target="_blank">CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</a></li>
+</ol>
+<h2 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h2><p>最近做到一個在網頁上展示圖片的功能，簡單來說就是點擊右側的圖片庫，左邊的主畫面可以展示大圖，如下圖所示，這是一個非常簡單的功能，但到最後發現這跟 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Guides/CORS">CORS</a> 有密切的關係，下面我們來一步步探討看看</p>
+<div style="display: flex; justify-content: center;">
+  <img src="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/demo.png" />
+</div>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-03-31
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-5-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-5-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 5 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 5 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前面幾篇系列文中介紹深度測試運作的原理，而決定畫面上的兩個物體誰遠誰近，除了跟物體之間深度值差異有關，另外也相同重要的是物體間渲染的順序，今天這篇文章就讓我們討論在 Three.js 中是如何根據不同種類的物體決定渲染順序</p>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/">Three.js 中物體的遠近關係 (4) - 對數深度值</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-03-17
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-4-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-4-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 4 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 4 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇中我們知道<strong>透視投影</strong>的深度值 $ z_{depth} $ 和 $ 1&#x2F;z $ 成正比，如此與人眼感知的狀況相符，對於近處物體的分辨率較高，而遠處物體不容易分辨清楚互相的前後關係，大部分情況下這個深度值的轉換函式可以很好的描述物體的遠近，但如果套用到大尺度的場景，例如：太陽系、宇宙等，這種深度值的轉換函式就會出問題，這篇文章討論會出現哪些問題，以及最後如何使用對數深度值轉換函式解決</p>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-3-%E6%B7%B1%E5%BA%A6%E5%80%BC%E7%9A%84%E8%A8%88%E7%AE%97%E6%96%B9%E5%BC%8F/">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-02-28
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-3-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-3-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 3 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 3 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇提到了所有 <strong>像素(fragment)</strong> 對應的深度值都會落在 <strong>[0, 1]</strong> 區間內，<strong>0</strong> 代表這個 <strong>像素(fragment)</strong> 離相機最近，而 <strong>1</strong> 代表離相機最遠。但每個物體與相機之間的距離都不一樣，要如何把這些距離都轉換到深度值的 <strong>[0, 1]</strong> 區間內呢？這篇文章將討論如何將物體的距離($ z $ 值)轉換成 <strong>[0, 1]</strong> 區間內的深度值</p>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-3-%E6%B7%B1%E5%BA%A6%E5%80%BC%E7%9A%84%E8%A8%88%E7%AE%97%E6%96%B9%E5%BC%8F/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/">Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-02-28
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-2-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-2-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 2 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 2 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇系列文中，我們了解深度測試中不同 <strong>像素(fragment)</strong> 是如何藉由比較各自的深度值來決定誰會渲染在畫面上，接著我們將討論深度值在數學上是如何計算出來的，但在那之前需要一些必備的知識幫助我們理解後續的數學推導，所以第二篇的系列文我們來學習這部分 - 左手&#x2F;右手座標系、齊次座標</p>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-02-13
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-1-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-1-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 1 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 1 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我想許多人一開始接觸 <strong>Three.js</strong> 中關於 <strong>深度測試(Depth testing)</strong> 的時候，常會聽到 <code>depthTest</code>, <code>depthWrite</code>，雖然看過很多文章講解這兩者的差別以及應用場景，但說真的還是無法體會兩者差在哪，於是萌生了研究深度測試的想法。而隨著對於深度測試的了解後才發現深挖的東西越來越多，所以才有了這一系列相關的文章</p>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/">理解 Three.js 的 shader 架構</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-02-08
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-02-12
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>繼上一篇 <a href="https://bcjohnblue.github.io/blog/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/">使用 Three.js 操作 shader 畫出國旗</a> 後，這一篇文章希望了解 Three.js 裡的 shader 架構</p>
+<h2 id="WebGL-裡的-shader-綁定"><a href="#WebGL-裡的-shader-綁定" class="headerlink" title="WebGL 裡的 shader 綁定"></a>WebGL 裡的 shader 綁定</h2><p>因為 Three.js 的底層就是 WebGL 所以我們可以先從 WebGL 是如何綁定 shader 來找到 Three.js 中處理 shader 的起始點</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WebGL 綁定 shader 部分片段</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> canvas = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;canvas&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> gl = canvas.<span class="title function_">getContext</span>(<span class="string">&#x27;webgl&#x27;</span>); <span class="comment">// WebGL 1.0</span></span><br><span class="line"><span class="comment">// 或</span></span><br><span class="line"><span class="keyword">const</span> gl = canvas.<span class="title function_">getContext</span>(<span class="string">&#x27;webgl2&#x27;</span>); <span class="comment">// WebGL 2.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 創建 shader</span></span><br><span class="line"><span class="keyword">const</span> vertexShader = gl.<span class="title function_">createShader</span>(gl.<span class="property">VERTEX_SHADER</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 撰寫 shader code</span></span><br><span class="line"><span class="keyword">const</span> vertexShaderSource = <span class="string">`</span></span><br><span class="line"><span class="string">    attribute vec4 aPosition;</span></span><br><span class="line"><span class="string">    void main() &#123;</span></span><br><span class="line"><span class="string">        gl_Position = aPosition;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line">gl.<span class="title function_">shaderSource</span>(vertexShader, vertexShaderSource);</span><br><span class="line"></span><br><span class="line">gl.<span class="title function_">compileShader</span>(vertexShader); <span class="comment">// 3. 編譯 shader</span></span><br><span class="line"><span class="keyword">const</span> shaderProgram = gl.<span class="title function_">createProgram</span>(); <span class="comment">// 4. 創建 program</span></span><br><span class="line">gl.<span class="title function_">attachShader</span>(shaderProgram, vertexShader); <span class="comment">// 5. 附加 shader 到 program</span></span><br><span class="line">gl.<span class="title function_">linkProgram</span>(shaderProgram); <span class="comment">// 6. 連接 program</span></span><br><span class="line">gl.<span class="title function_">useProgram</span>(shaderProgram); <span class="comment">// 7. 使用 program</span></span><br></pre></td></tr></table></figure>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/01/23/2025-01-23-%E5%9B%9B/">2025/01/23 (四)</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-01-23
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-01-23
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Life/">Life</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h5 id="To-奶奶"><a href="#To-奶奶" class="headerlink" title="To 奶奶"></a>To 奶奶</h5><p>前幾天有跟醫生提出拔管的需求了，但拔管後只能在醫院再住五天，之後就必須要回家照顧或轉到護理之家，這附近的護理之家我都問過了都沒有位置要排很久，所以目前會讓爺爺維持現在的狀態先在呼吸病房待著</p>
+<p>另外爺爺之後一直臥床的話，一兩個月後八成會有肺部或是尿道的感染，正常來說醫院會使用抗生素治療，但即使暫時治好了，之後感染的狀況一樣會反覆出現，所以我打算簽署拒絕使用抗生素、輸血的同意書，這樣當下次有感染症狀時，爺爺會比較自然地...
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2025/01/23/2025-01-23-%E5%9B%9B/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+
+
+  <nav style="text-align: center;">
+    <div class="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/blog/page/2/">2</a><a class="page-number" href="/blog/page/3/">3</a><a class="page-number" href="/blog/page/4/">4</a><a class="extend next" rel="next" href="/blog/page/2/"><i class="iconfont icon-angle-right"></i></a>
+    </div>
+  </nav>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

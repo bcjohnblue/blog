@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+          
+
+
+    
+    
+    <title>
+        
+            CORS Debug (1) - 網頁快取導致的 CORS 問題 | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/">CORS Debug (1) - 網頁快取導致的 CORS 問題</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-04-13
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-04-22
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=CORS Debug (1) - 網頁快取導致的 CORS 問題&url=https://bcjohnblue.github.io/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=CORS Debug (1) - 網頁快取導致的 CORS 問題&url=https://bcjohnblue.github.io/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/&title=CORS Debug (1) - 網頁快取導致的 CORS 問題" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=CORS Debug (1) - 網頁快取導致的 CORS 問題&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/&text=CORS Debug (1) - 網頁快取導致的 CORS 問題" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <h6 id="此為-CORS-Debug-系列文章-第-1-篇："><a href="#此為-CORS-Debug-系列文章-第-1-篇：" class="headerlink" title="此為 CORS Debug 系列文章 - 第 1 篇："></a>此為 <strong>CORS Debug</strong> 系列文章 - 第 1 篇：</h6><ol>
+<li><a href="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">CORS Debug (1) - 網頁快取導致的 CORS 問題</a></li>
+<li><a href="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/" target="_blank">CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</a></li>
+</ol>
+<h2 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h2><p>最近做到一個在網頁上展示圖片的功能，簡單來說就是點擊右側的圖片庫，左邊的主畫面可以展示大圖，如下圖所示，這是一個非常簡單的功能，但到最後發現這跟 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Guides/CORS">CORS</a> 有密切的關係，下面我們來一步步探討看看</p>
+<div style="display: flex; justify-content: center;">
+  <img src="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/demo.png" />
+</div>
+
+<span id="more"></span>
+
+<h2 id="需求-下載圖片功能"><a href="#需求-下載圖片功能" class="headerlink" title="需求 - 下載圖片功能"></a>需求 - 下載圖片功能</h2><p>除了展示圖片之外，還需要能夠個別下載圖片的功能，點擊圖片庫右上角的 <strong>下載</strong> 可以將圖片載下來，下載圖片的程式碼如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">downloadImage</span> = <span class="keyword">async</span> (<span class="params">image: Image</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(image.<span class="property">url</span>);</span><br><span class="line">    <span class="keyword">const</span> blob = <span class="keyword">await</span> response.<span class="title function_">blob</span>();</span><br><span class="line">    <span class="keyword">const</span> urlObject = <span class="variable constant_">URL</span>.<span class="title function_">createObjectURL</span>(blob);</span><br><span class="line">    <span class="keyword">const</span> a = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">    a.<span class="property">href</span> = urlObject;</span><br><span class="line">    a.<span class="property">download</span> = image.<span class="property">filename</span>;</span><br><span class="line">    <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(a);</span><br><span class="line">    a.<span class="title function_">click</span>();</span><br><span class="line">    <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">removeChild</span>(a);</span><br><span class="line">    <span class="variable constant_">URL</span>.<span class="title function_">revokeObjectURL</span>(urlObject);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">window</span>.<span class="title function_">alert</span>(<span class="string">`下載失敗: <span class="subst">$&#123;error.message&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="問題-無法下載圖片"><a href="#問題-無法下載圖片" class="headerlink" title="問題 - 無法下載圖片"></a>問題 - 無法下載圖片</h2><p>當點擊下載按鈕後，登愣！圖片竟然無法下載！</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./download-fail.png" />
+</div>
+
+<div style="display: flex; justify-content: center;">
+  <img src="./download-cors-error.png" />
+</div>
+
+<p>這時打開 DevTools 中的 console 可以看到下載圖片失敗的原因是 CORS 錯誤</p>
+<p>&#x3D;&gt; 為什麼會出現 CORS 錯誤呢？這其實跟圖片資源所在的後端伺服器息息相關，就我遇到的狀況來說，這個網頁顯示的圖片都儲存在 Amazon S3 上，而取得 Amazon S3 裡的資源時需要遵守他們的 <strong>CORS</strong> 規範</p>
+<h4 id="1-Amazon-S3-上的-CORS-規範"><a href="#1-Amazon-S3-上的-CORS-規範" class="headerlink" title="1. Amazon S3 上的 CORS 規範"></a>1. Amazon S3 上的 CORS 規範</h4><p>當請求 Amazon S3 中的資源時，基本上分為兩種獲取方式，一個是 <strong>非跨域請求</strong>、另一個是 <strong>跨域請求</strong> 也就是所謂的 <strong>CORS</strong></p>
+<h5 id="非跨域請求"><a href="#非跨域請求" class="headerlink" title="- 非跨域請求"></a>- 非跨域請求</h5><p>當 <code>img</code> 元素單純只有 <code>src</code> 的網址時，會對 Amazon S3 中的圖片發出 <strong>非跨域請求</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">  <span class="attr">src</span>=<span class="string">&quot;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">alt</span>=<span class="string">&quot;building&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="跨域請求-CORS"><a href="#跨域請求-CORS" class="headerlink" title="- 跨域請求 (CORS)"></a>- 跨域請求 (CORS)</h5><p>當 <code>img</code> 元素額外加上 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference/Attributes/crossorigin">crossorigin</a> 的屬性時，會對 Amazon S3 中的圖片發出 <strong>跨域請求</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">  <span class="attr">src</span>=<span class="string">&quot;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">crossorigin</span>=<span class="string">&quot;anonymous&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">alt</span>=<span class="string">&quot;building&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>當瀏覽器發出 <strong>跨域請求</strong> 的時候 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Reference/Headers/Origin#%E6%8F%8F%E8%BF%B0">會在 Request headers 中額外加上 Origin 的資訊</a>，讓資源所在的伺服器知道是哪個網站在請求這項資源</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./request-origin.png" />
+</div>
+
+<p>在 <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/32887912/10090927">S3 - Access-Control-Allow-Origin Header</a> 的討論文中提到：</p>
+<blockquote>
+<p>If your request doesn’t specify an “Origin” header, S3 won’t include the CORS headers in the response. This really threw me because I kept trying to curl the files to test the CORS but curl doesn’t include Origin.</p>
+</blockquote>
+<p>這句話指的是當 Request headers 帶有 “Origin” 欄位時，Amazon S3 回覆的 Response headers 才會多增加 CORS header 相關的欄位，CORS header 相關的欄位大致上有三個</p>
+<ul>
+<li><code>Access-Control-Allow-Headers</code></li>
+<li><code>Access-Control-Allow-Methods</code></li>
+<li><code>Access-Control-Allow-Origin</code></li>
+</ul>
+<p>其中的 <code>Access-Control-Allow-Origin</code> 需要回傳請求資源網站符合的網址，才代表 S3 認同你這個網站通過 CORS 規範，有權限取得 S3 裡面的資源</p>
+<p>所以當我們在 DevTools 中查看 Response headers 中有 <code>Access-Control-Allow-Origin: *</code> 的欄位時，代表著這張圖片是以 <strong>跨域請求 (CORS)</strong> 的方式獲得的</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./origin-star.png" />
+</div>
+
+<p>P.S. 在這篇文章中，<code>img.src</code> 圖片資源的網址都是 <code>https://rjzdhlvuuafqvgoyticm.supabase.co/</code> 開頭的，實際上我遇到無法下載圖片問題的時候後端伺服器是 Amazon S3，但這裡改用 <a target="_blank" rel="noopener" href="https://supabase.com/">supabase</a> 模擬 Amazon S3 Response headers 回傳的行為，主要是考慮到這樣可以更靈活的根據前端傳遞的 url，設置不同的 Response headers 來做測試</p>
+<h4 id="2-Amazon-S3-上的快取機制-cache"><a href="#2-Amazon-S3-上的快取機制-cache" class="headerlink" title="2. Amazon S3 上的快取機制 (cache)"></a>2. Amazon S3 上的快取機制 (cache)</h4><p>圖片下載失敗的原因之一除了 Amazon S3 上的 <strong>CORS</strong> 規範外，另外一個重點是 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Guides/Caching">網頁的快取機制(cache)</a></p>
+<p>在這個範例中，我在後端的伺服器設定了圖片的快取為 <code>Cache-Control: public max-age=30</code>，這代表當從伺服器獲取圖片後的 30s 內，如果再度對圖片進行請求都會從瀏覽器的快取中拿，而不會真正發出網路請求到伺服器</p>
+<h5 id="第一次請求"><a href="#第一次請求" class="headerlink" title="- 第一次請求"></a>- 第一次請求</h5><p>第一次請求時直接從伺服器取得圖片，而且由於 Response headers 設置了 <code>Cache-Control: public max-age=30</code>，所以後續 30s 內對同一張圖片的請求都會從瀏覽器的快取中取得</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./cache-control-30s.png" />
+</div>
+
+<h5 id="後續請求"><a href="#後續請求" class="headerlink" title="- 後續請求"></a>- 後續請求</h5><p>在 30s 內對同一張圖片的後續請求，由於快取尚未過期，所以可以看到圖片來源自 <strong>瀏覽器本身的快取(memory cache)</strong></p>
+<div style="display: flex; justify-content: center;">
+  <img src="./memory-cache.png" />
+</div>
+
+<h4 id="小結-為什麼下載圖片觸發了-CORS-錯誤？"><a href="#小結-為什麼下載圖片觸發了-CORS-錯誤？" class="headerlink" title="小結 - 為什麼下載圖片觸發了 CORS 錯誤？"></a>小結 - 為什麼下載圖片觸發了 CORS 錯誤？</h4><p>最初畫面上載入圖片時的寫法是這樣的，這種寫法是用 <strong>非跨域請求</strong> 的方式取得 Amazon S3 上的圖片</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">  <span class="attr">src</span>=<span class="string">&quot;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">alt</span>=<span class="string">&quot;building&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="使用-fetch-獲取-CORS-的資源"><a href="#使用-fetch-獲取-CORS-的資源" class="headerlink" title="使用 fetch 獲取 CORS 的資源"></a>使用 fetch 獲取 CORS 的資源</h5><p>在 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Guides/CORS">跨來源資源共享（CORS）</a>的頁面敘述如下：</p>
+<blockquote>
+<p>出於安全原因，瀏覽器限制從腳本發起的跨來源 HTTP 請求。例如，fetch() 和 XMLHttpRequest 遵循同源政策。這意味著，使用這些 API 的 Web 應用程序只能請求與加載該應用程序的相同來源的資源，除非來自其他來源的回應包含正確的 CORS 標頭。</p>
+</blockquote>
+<p>這裡所說的 <strong>包含正確的 CORS 標頭</strong> ，以我們的範例來說指的就是用 <strong>跨域請求</strong> 的方式取得 Amazon S3 上的圖片時，Response headers 需要回傳<code>Access-Control-Allow-Origin: *</code></p>
+<p>所以整個觸發 CORS 錯誤的過程是這樣的：</p>
+<ol>
+<li><p>一開始進入畫面時，瀏覽器就下載並快取了 <strong>非跨域請求</strong> 方式的圖片</p>
+</li>
+<li><p>後續下載圖片使用 <code>fetch</code> 請求，由於我們網站自身的網址與 Amazon S3 所在圖片伺服器的網址<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/Security/Same-origin_policy">不同源</a>，代表 <code>fetch</code> 需要以 <strong>跨域請求</strong> 的方式獲取圖片</p>
+</li>
+<li><p>此時因為已經有步驟 1. 中以 <strong>非跨域請求</strong> 方式快取的圖片了，瀏覽器直接以快取回應，但之前快取的 <strong>非跨域請求</strong> 並沒有 <strong>包含正確的 CORS 標頭</strong> 也就是 <code>Access-Control-Allow-Origin: *</code></p>
+</li>
+<li><p>結果導致 CORS 錯誤</p>
+</li>
+</ol>
+<p>此時在 Chrome DevTools 中可以看到 <code>fetch</code> 發出的 request 顯示 <a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/devtools/network/reference?utm_source=devtools&hl=zh-cn#provisional-headers">Provisional headers are shown…</a> 代表 <code>fetch</code> 圖片的請求並沒有真正的傳遞到伺服器，而是使用到了之前 <strong>非跨域請求</strong> 方式取得的圖片快取</p>
+<div style="display: flex; justify-content: center;">
+  <img src="./provisional-header.png" />
+</div>
+
+<h2 id="解決方式-如何讓圖片下載成功？"><a href="#解決方式-如何讓圖片下載成功？" class="headerlink" title="解決方式 - 如何讓圖片下載成功？"></a>解決方式 - 如何讓圖片下載成功？</h2><p>既然知道了原因是 <code>fetch</code> 下載圖片時用到 <strong>非跨域請求</strong> 方式的快取圖片，可以想到有以下幾種解決方式：</p>
+<h4 id="1-fetch-時指定-cache-不使用快取圖片"><a href="#1-fetch-時指定-cache-不使用快取圖片" class="headerlink" title="1. fetch 時指定 cache 不使用快取圖片"></a>1. fetch 時指定 cache 不使用快取圖片</h4><p>在使用 <code>fetch</code> 時可以設置參數 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Request/cache">cache</a>，指定請求資源時是否覆用快取，以我們的例子來說，目的是在 <code>fetch</code> 的時候不要用到原本的快取，所以適合設定的值是 <code>no-store</code> 或 <code>reload</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(image.<span class="property">url</span>, &#123; <span class="attr">cache</span>: <span class="string">&#x27;no-store&#x27;</span> &#125;); <span class="comment">// or &#x27;reload&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-設定-Vary-Origin"><a href="#2-設定-Vary-Origin" class="headerlink" title="2. 設定 Vary: Origin"></a>2. 設定 Vary: Origin</h4><p>Response headers 中的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Vary">Vary</a> 欄位，作用是即使同一個 url 但只要 Request headers 的某個欄位與 <code>Vary</code> 中設定的字串中有不一致的地方，那麼這個 Request 就不會使用到快取而是會真正的向伺服器發出請求，有點難用文字說明，以下用例子來解釋比較清楚：</p>
+<ol>
+<li><p>一進到頁面時 <code>&lt;img src=&quot;...&quot; /&gt;</code> 的元素讓瀏覽器前往伺服器下載圖片，此時的 Request headers 由於是 <strong>非跨域請求</strong> 所以並沒有攜帶 <code>Origin: localhost:8081</code> 這樣的欄位，接著瀏覽器在下載完圖片後以 <strong>非跨域請求</strong> 方式將圖片快取起來</p>
+</li>
+<li><p>接著點擊下載按鈕呼叫 <code>fetch</code> 請求圖片時，由於網站本身的網址與圖片所在的網址是非同源的，因此下載圖片的行為是 <strong>跨域請求</strong>，會在 Request headers 加上 <code>Origin: localhost:8081</code></p>
+</li>
+<li><p>第 1 項快取的圖片在 Request headers 中 <strong>沒有</strong> <code>Origin: localhost:8081</code>，第 2 項快取的圖片在 Request headers 中 <strong>有</strong> <code>Origin: localhost:8081</code></p>
+</li>
+<li><p>當執行 <code>fetch</code> 時，由於原先快取的 Request headers 跟目前請求的 Request headers 其 <code>Origin</code> 欄位的值不一樣，而 <code>Vary: Origin</code> 的設定在此時會判斷 <code>Origin</code> 的值 <strong>改變了</strong>，就不會覆用原先的快取，而是前往伺服器 <strong>跨域請求</strong> 圖片</p>
+</li>
+</ol>
+<ul>
+<li>第 1 項的 <code>&lt;img src=&quot;...&quot; /&gt;</code> 是沒有 <code>Origin</code> 欄位的 <strong>非跨域請求</strong>，但後端伺服器設定 Response headers 帶有 <code>Vary: Origin</code></li>
+</ul>
+<div style="display: flex; justify-content: center; margin-top: -1.2em">
+  <img src="./vary-origin-first.png" />
+</div>
+
+<ul>
+<li>第 2 項 <code>fetch</code> 是帶有 <code>Origin</code> 欄位的 <strong>跨域請求</strong>，判斷 <code>Origin</code> 欄位的值改變了，所以不會覆用快取而是對伺服器發出真正的請求，順利取得 <code>Access-Control-Allow-Origin: *</code></li>
+</ul>
+<div style="display: flex; justify-content: center; margin-top: -1.2em">
+  <img src="./vary-origin-second.png" />
+</div>
+
+<p>順帶一提在 <a target="_blank" rel="noopener" href="https://fetch.spec.whatwg.org/#cors-protocol-and-http-caches">fetch 規範中</a> 剛好有一段就完美的解釋我們所遇到的問題，以及如何使用 <code>Vary: Origin</code> 解決</p>
+<blockquote>
+<p>In particular, consider what happens if <code>Vary</code> is not used and a server is configured to send <code>Access-Control-Allow-Origin</code> for a certain resource only in response to a CORS request. When a user agent receives a response to a non-CORS request for that resource (for example, as the result of a navigation request), the response will lack <code>Access-Control-Allow-Origin</code> and the user agent will cache that response. Then, if the user agent subsequently encounters a CORS request for the resource, it will use that cached response from the previous non-CORS request, without <code>Access-Control-Allow-Origin</code>.</p>
+</blockquote>
+<h4 id="3-crossOrigin-’anonymous’"><a href="#3-crossOrigin-’anonymous’" class="headerlink" title="3. crossOrigin&#x3D;’anonymous’"></a>3. crossOrigin&#x3D;’anonymous’</h4><p>前面兩種方式在第一次進入頁面時就向伺服器拿到了 <strong>非跨域請求</strong> 的圖片，而之後 <code>fetch</code> 時為了避免覆用快取導致 CORS error 又向伺服器 <strong>跨域請求</strong> 了一次圖片，這等於我們花時間向伺服器拿了兩次一模一樣的圖片，完全沒有使用到快取的好處</p>
+<p>換個方向想，如果 <code>fetch</code> 時需要 <strong>跨域請求</strong> 圖片的話，那為何不一開始進入頁面的時候就直接 <strong>跨域請求</strong> 呢？這就是 <code>crossOrigin=&#39;anonymous&#39;</code> 的作用</p>
+<p>將 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference/Attributes/crossorigin">crossOrigin</a> 設置成 <code>crossOrigin=&#39;anonymous&#39;</code> 或是 <code>crossOrigin=&#39;&#39;</code> 是一樣的，代表需要以 <strong>跨域請求</strong> 的方式獲取圖片</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span></span></span><br><span class="line"><span class="tag">  <span class="attr">src</span>=<span class="string">&quot;https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">crossorigin</span>=<span class="string">&quot;anonymous&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">alt</span>=<span class="string">&quot;building&quot;</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>在這篇文章的範例中，<code>fetch</code> 下載圖片時需要送出的是 <strong>跨域請求</strong>，但卻覆用到一開始 <strong>非跨域請求</strong> 的圖片快取，所以才引起 CORS 錯誤。接著提出了三個想法解決，最終採用在 <code>img</code> 元素設置 <code>crossOrigin=&#39;anonymous&#39;</code> 屬性的方式讓一進入頁面時就用 <strong>跨域請求</strong> 的方式快取圖片，這樣的方式可以覆用每次的圖片快取又可以解決 CORS 錯誤的問題</p>
+<h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p><a target="_blank" rel="noopener" href="https://github.com/bcjohnblue/react-image-cors">範例程式碼 repo</a><br><a href="https://bcjohnblue.github.io/react-image-cors/" target="_blank">線上 Demo</a></p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.huli.tw/2018/08/18/cors-is-hard/">原來 CORS 沒有我想像中的簡單</a></li>
+</ol>
+<p>huli 大大寫的文章，跟這篇文章遇到的問題非常類似，都是讀取到原先瀏覽器快取住的檔案導致 CORS error</p>
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/">
+        <span>Three.js 中物體的遠近關係 (5) - 渲染物體的順序</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2025/04/13/cors-debug-1-%E7%B6%B2%E9%A0%81%E5%BF%AB%E5%8F%96%E5%B0%8E%E8%87%B4%E7%9A%84-cors-%E5%95%8F%E9%A1%8C/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%AD%A4%E7%82%BA-CORS-Debug-%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-%E7%AC%AC-1-%E7%AF%87%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">此為 CORS Debug 系列文章 - 第 1 篇：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B0%A1%E4%BB%8B"><span class="toc-number"></span> <span class="toc-text">簡介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82-%E4%B8%8B%E8%BC%89%E5%9C%96%E7%89%87%E5%8A%9F%E8%83%BD"><span class="toc-number"></span> <span class="toc-text">需求 - 下載圖片功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%95%8F%E9%A1%8C-%E7%84%A1%E6%B3%95%E4%B8%8B%E8%BC%89%E5%9C%96%E7%89%87"><span class="toc-number"></span> <span class="toc-text">問題 - 無法下載圖片</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-Amazon-S3-%E4%B8%8A%E7%9A%84-CORS-%E8%A6%8F%E7%AF%84"><span class="toc-number"></span> <span class="toc-text">1. Amazon S3 上的 CORS 規範</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%9D%9E%E8%B7%A8%E5%9F%9F%E8%AB%8B%E6%B1%82"><span class="toc-number"></span> <span class="toc-text">- 非跨域請求</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E8%AB%8B%E6%B1%82-CORS"><span class="toc-number"></span> <span class="toc-text">- 跨域請求 (CORS)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-Amazon-S3-%E4%B8%8A%E7%9A%84%E5%BF%AB%E5%8F%96%E6%A9%9F%E5%88%B6-cache"><span class="toc-number"></span> <span class="toc-text">2. Amazon S3 上的快取機制 (cache)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AB%8B%E6%B1%82"><span class="toc-number"></span> <span class="toc-text">- 第一次請求</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BE%8C%E7%BA%8C%E8%AB%8B%E6%B1%82"><span class="toc-number"></span> <span class="toc-text">- 後續請求</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%8F%E7%B5%90-%E7%82%BA%E4%BB%80%E9%BA%BC%E4%B8%8B%E8%BC%89%E5%9C%96%E7%89%87%E8%A7%B8%E7%99%BC%E4%BA%86-CORS-%E9%8C%AF%E8%AA%A4%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">小結 - 為什麼下載圖片觸發了 CORS 錯誤？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-fetch-%E7%8D%B2%E5%8F%96-CORS-%E7%9A%84%E8%B3%87%E6%BA%90"><span class="toc-number"></span> <span class="toc-text">使用 fetch 獲取 CORS 的資源</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%B1%BA%E6%96%B9%E5%BC%8F-%E5%A6%82%E4%BD%95%E8%AE%93%E5%9C%96%E7%89%87%E4%B8%8B%E8%BC%89%E6%88%90%E5%8A%9F%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">解決方式 - 如何讓圖片下載成功？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-fetch-%E6%99%82%E6%8C%87%E5%AE%9A-cache-%E4%B8%8D%E4%BD%BF%E7%94%A8%E5%BF%AB%E5%8F%96%E5%9C%96%E7%89%87"><span class="toc-number"></span> <span class="toc-text">1. fetch 時指定 cache 不使用快取圖片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%A8%AD%E5%AE%9A-Vary-Origin"><span class="toc-number"></span> <span class="toc-text">2. 設定 Vary: Origin</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-crossOrigin-%E2%80%99anonymous%E2%80%99"><span class="toc-number"></span> <span class="toc-text">3. crossOrigin&#x3D;’anonymous’</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B5%90%E8%AB%96"><span class="toc-number"></span> <span class="toc-text">結論</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AF%84%E4%BE%8B"><span class="toc-number"></span> <span class="toc-text">範例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number"></span> <span class="toc-text">參考資料</span></a>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+    
+        <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        
+            load: ['[tex]/mhchem'],
+        
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        
+            packages: {'[+]': ['mhchem']},
+        
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+          
+
+
+    
+    
+    <title>
+        
+            理解 THREE.Plane 的平面方程式 | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/">理解 THREE.Plane 的平面方程式</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2023-12-19
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=理解 THREE.Plane 的平面方程式&url=https://bcjohnblue.github.io/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=理解 THREE.Plane 的平面方程式&url=https://bcjohnblue.github.io/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/&title=理解 THREE.Plane 的平面方程式" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=理解 THREE.Plane 的平面方程式&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/&text=理解 THREE.Plane 的平面方程式" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <p><a target="_blank" rel="noopener" href="https://threejs.org/docs/index.html?q=Plane#api/en/math/Plane">THREE.Plane</a> 在 <code>threejs</code> 中用來表示數學上的平面</p>
+<h2 id="數學中的平面方程式"><a href="#數學中的平面方程式" class="headerlink" title="數學中的平面方程式"></a>數學中的平面方程式</h2><p><code>a, b, c</code> 代表平面的<strong>法向量</strong>，<code>d</code> 是一個<strong>常數值</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ax + by + cz + d = 0;</span><br></pre></td></tr></table></figure>
+
+<h2 id="創建平面"><a href="#創建平面" class="headerlink" title="創建平面"></a>創建平面</h2><p>以下程式碼創建了一個 <code>y - 1 = 0</code> 的平面，法向量為 <code>[0, 1, 0]</code>，常數值為 <code>-1</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plane = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Plane</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>).<span class="title function_">normalize</span>(), -<span class="number">1</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;normal&quot;</span>, plane.<span class="property">normal</span>); <span class="comment">// &#123;x: 0, y: 1, z: 0&#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;constant&quot;</span>, plane.<span class="property">constant</span>); <span class="comment">// -1</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<p>這裡需要特別注意的是傳入<strong>法向量</strong>時需要將其轉換為<strong>單位向量</strong>，<code>[0, 10, 0]</code> 跟 <code>[0, 1, 0]</code> 在向量的定義上是一樣的，都是指向正 x 軸方向，但 <code>threejs</code> 要求在牽涉到<strong>法向量</strong>時都必須是<strong>單位向量</strong>，否則在某些運算上會錯誤，所以以上程式碼才刻意加了 <a target="_blank" rel="noopener" href="https://threejs.org/docs/index.html?q=vector#api/en/math/Vector3.normalize">.normalize()</a></p>
+<h2 id="Plane-的方法"><a href="#Plane-的方法" class="headerlink" title="Plane 的方法"></a>Plane 的方法</h2><h5 id="distanceToPoint-point-Vector3-Float"><a href="#distanceToPoint-point-Vector3-Float" class="headerlink" title="- distanceToPoint(point: Vector3): Float"></a><strong>- distanceToPoint(point: Vector3): Float</strong></h5><p>計算傳入的 <code>point</code> 與平面的距離</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plane = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Plane</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), -<span class="number">1</span>);</span><br><span class="line"><span class="keyword">const</span> distanceToPoint = plane.<span class="title function_">distanceToPoint</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">3</span>, <span class="number">0</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;distanceToPoint&quot;</span>, distanceToPoint); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>這裡就可以看出為什麼一開始傳入<strong>法向量</strong>要是單位向量，以下面的例子來看：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plane = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Plane</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">10</span>, <span class="number">0</span>), -<span class="number">1</span>);</span><br><span class="line"><span class="keyword">const</span> distanceToPoint = plane.<span class="title function_">distanceToPoint</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">3</span>, <span class="number">0</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;distanceToPoint&quot;</span>, distanceToPoint); <span class="comment">// 29</span></span><br></pre></td></tr></table></figure>
+
+<p><code>[0, 1, 0]</code> 與 <code>[0, 10, 0]</code> 在<strong>法向量</strong>的定義上是一樣的，所以計算出來的點與平面的距離應該要一樣，但這兩個寫法的結果卻完全不一樣，原因可以從 <code>threejs</code> 的 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/e5c2a56d035df52b3b4d6f4a066e65bc1941f634/src/math/Plane.js#L90">distanceToPoint</a> 來查看</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">distanceToPoint</span>(<span class="params">point</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">normal</span>.<span class="title function_">dot</span>(point) + <span class="variable language_">this</span>.<span class="property">constant</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>從 <code>threejs</code> 原始碼來看，假設 <code>point</code> 座標為 <code>(x0, y0, z0)</code>，計算 <code>distanceToPoint</code> 的數學式為：</p>
+<p>$$ ax_0 + by_0 + cz_0 + d $$</p>
+<p>但實際用數學計算某個點與平面的距離公式是：</p>
+<p>$$ \frac{\lvert ax_0 + by_0 + cz_0 + d \rvert}{\sqrt{a^2+b^2+c^2}} $$</p>
+<p>可以看出來差異就在分母的 $ \sqrt{a^2+b^2+c^2} $，而這個東西就是<strong>法向量</strong>的長度，當<strong>法向量</strong>為<strong>單位向量</strong>時分母會等於 <code>1</code>，如此一來使用 <code>threejs</code> 的 <code>distanceToPoint</code> 才會與數學計算的結果一致，這也就是為什麼 <code>threejs</code> 中的<strong>法向量</strong>都需要先自行轉換為<strong>單位向量</strong></p>
+<h6 id="Refs"><a href="#Refs" class="headerlink" title="Refs."></a>Refs.</h6><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=CtDk_cg6u4A&t=208s">點到平面的距離公式推導</a><br><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/pull/11821">Use unit norm when finding plane distanceToPoint</a></p>
+<h5 id="projectPoint-point-Vector3-target-Vector3-Vector3"><a href="#projectPoint-point-Vector3-target-Vector3-Vector3" class="headerlink" title="- projectPoint(point:Vector3, target:Vector3): Vector3"></a><strong>- projectPoint(point:Vector3, target:Vector3): Vector3</strong></h5><p>計算空間中的某個點 <code>point</code> 投影到平面上的座標</p>
+<ul>
+<li><code>point</code> - 空間中的某個點 $(x_0, y_0, z_0)$</li>
+<li><code>target</code> - 投影到平面的座標</li>
+<li><code>回傳值</code> - 投影到平面的座標</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plane = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Plane</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), -<span class="number">1</span>);</span><br><span class="line"><span class="keyword">const</span> projectPointTarget = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>();</span><br><span class="line"><span class="keyword">const</span> projectPoint = plane.<span class="title function_">projectPoint</span>(</span><br><span class="line">  <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>),</span><br><span class="line">  projectPointTarget,</span><br><span class="line">);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;projectPointTarget&quot;</span>, projectPointTarget); <span class="comment">// &#123;x: 1, y: 1, z: 0&#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;projectPoint&quot;</span>, projectPoint); <span class="comment">// &#123;x: 1, y: 1, z: 0&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="原始碼"><a href="#原始碼" class="headerlink" title="原始碼"></a><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/e5c2a56d035df52b3b4d6f4a066e65bc1941f634/src/math/Plane.js#L102">原始碼</a></h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">projectPoint</span>(<span class="params"> point, target </span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> target.<span class="title function_">copy</span>( point ).<span class="title function_">addScaledVector</span>( <span class="variable language_">this</span>.<span class="property">normal</span>, - <span class="variable language_">this</span>.<span class="title function_">distanceToPoint</span>( point ) );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="數學推導"><a href="#數學推導" class="headerlink" title="數學推導"></a>數學推導</h6><!-- $$ x = x_0 - at $$ -->
+<p>$ (x, y, z) &#x3D; (x_0 - at, y_0 - bt, z_0 - ct) $</p>
+<p>$ ax + by + cz + d &#x3D; 0 $<br>$ a(x_0 - at) + b(y_0 - bt) + c(z_0 - ct) + d &#x3D; 0 $<br>$ ax_0 + by_0 + cz_0 - a^2t - b^2t - z^2t + d &#x3D; 0 $</p>
+<p>&#x3D;&gt;<br>$$ t &#x3D; \frac{ax_0 + by_0 + cz_0 + d}{a^2+b^2+c^2} &#x3D; ax_0 + by_0 + cz_0 + d &#x3D; distanceToPoint(point) $$<br>$$ (x, y, z) &#x3D; (x_0 - at, y_0 - bt, z_0 - ct) &#x3D; (x_0, y_0, z_0) + (a, b, c) \cdot -distanceToPoint(point) $$</p>
+<h6 id="Refs-1"><a href="#Refs-1" class="headerlink" title="Refs."></a>Refs.</h6><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=CtDk_cg6u4A&t=101s">點到平面的距離公式</a></p>
+<h5 id="coplanarPoint-target-Vector3-Vector3"><a href="#coplanarPoint-target-Vector3-Vector3" class="headerlink" title="- coplanarPoint(target: Vector3): Vector3"></a><strong>- coplanarPoint(target: Vector3): Vector3</strong></h5><p>計算沿著原點方向投影到平面的共面點</p>
+<ul>
+<li><code>target</code> - 沿著原點方向投影到平面的共面點 $(x, y, z)$</li>
+</ul>
+<p><code>coplanarPoint</code> 的意思是共面點，代表這個點位於平面上，<code>coplanarPoint</code> 的概念跟 <code>projectPoint</code> 很像，差別在 <code>coplanarPoint</code> 投影到平面上的點是沿著原點的方向，而 <code>projectPoint</code> 是沿著平面<strong>法向量</strong>的方向</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plane = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Plane</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>).<span class="title function_">normalize</span>(), -<span class="number">1</span>);</span><br><span class="line"><span class="keyword">const</span> target = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>();</span><br><span class="line"><span class="keyword">const</span> coplanarPoint = plane.<span class="title function_">coplanarPoint</span>(target);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;target&quot;</span>, target); <span class="comment">// &#123;x: 0, y: 1, z: 0&#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;coplanarPoint&quot;</span>, coplanarPoint); <span class="comment">// &#123;x: 0, y: 1, z: 0&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="原始碼-1"><a href="#原始碼-1" class="headerlink" title="原始碼"></a><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/e5c2a56d035df52b3b4d6f4a066e65bc1941f634/src/math/Plane.js#L163">原始碼</a></h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">coplanarPoint</span>(<span class="params">target</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> target.<span class="title function_">copy</span>(<span class="variable language_">this</span>.<span class="property">normal</span>).<span class="title function_">multiplyScalar</span>(-<span class="variable language_">this</span>.<span class="property">constant</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="數學推導-1"><a href="#數學推導-1" class="headerlink" title="數學推導"></a>數學推導</h6><p>$ (x, y, z) &#x3D; (at, bt, ct) $</p>
+<p>$ ax + by + cz + d &#x3D; 0 $<br>$ t \times (a^2+b^2+c^2) + d &#x3D; 0 $<br>$ t &#x3D; -d $</p>
+<p>$ (x, y, z) &#x3D; (a, b, c) \times -d  $</p>
+<h5 id="setFromNormalAndCoplanarPoint-normal-Vector3-point-Vector3"><a href="#setFromNormalAndCoplanarPoint-normal-Vector3-point-Vector3" class="headerlink" title="- setFromNormalAndCoplanarPoint(normal: Vector3, point: Vector3 )"></a><strong>- setFromNormalAndCoplanarPoint(normal: Vector3, point: Vector3 )</strong></h5><p>這個方法藉由提供平面的<strong>法向量</strong>及平面上某點的座標創建出平面</p>
+<ul>
+<li><code>normal</code> - 平面的<strong>法向量</strong> $(a, b, c)$</li>
+<li><code>point</code> - 平面上某個點的座標 $(x, y, z)$</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plane = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Plane</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>).<span class="title function_">normalize</span>(), -<span class="number">1</span>);</span><br><span class="line">plane.<span class="title function_">setFromNormalAndCoplanarPoint</span>(</span><br><span class="line">  <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>).<span class="title function_">normalize</span>(),</span><br><span class="line">  <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">3</span>, <span class="number">0</span>),</span><br><span class="line">);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;plane.normal&quot;</span>, plane.<span class="property">normal</span>); <span class="comment">// &#123;x: 0, y: 1, z: 0&#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;plane.constant&quot;</span>, plane.<span class="property">constant</span>); <span class="comment">// -3</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="原始碼-2"><a href="#原始碼-2" class="headerlink" title="原始碼"></a><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/e5c2a56d035df52b3b4d6f4a066e65bc1941f634/src/math/Plane.js#L39">原始碼</a></h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">setFromNormalAndCoplanarPoint</span>(<span class="params">normal, point</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">normal</span>.<span class="title function_">copy</span>( normal );</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">constant</span> = - point.<span class="title function_">dot</span>( <span class="variable language_">this</span>.<span class="property">normal</span> );</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="數學推導-2"><a href="#數學推導-2" class="headerlink" title="數學推導"></a>數學推導</h6><p>$ (a, b, c) \cdot (x, y, z) + d &#x3D; 0 $<br>$ d &#x3D; - (x, y, z) \cdot (a, b, c) $</p>
+<h2 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://codesandbox.io/p/devbox/threejs-plane-normal-r9qghf">Plane 視覺化呈現</a></li>
+</ul>
+<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><ul>
+<li>threejs r159</li>
+</ul>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/vadim-web/p/13353086.html">three.js 数学方法之Plane</a></li>
+</ul>
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>THREE.Vector3 三維空間的向量運算</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2023/12/11/%E5%90%91%E9%87%8F%E5%85%A7%E7%A9%8D/">
+        <span>向量內積</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B8%E5%AD%B8%E4%B8%AD%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">數學中的平面方程式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%B5%E5%BB%BA%E5%B9%B3%E9%9D%A2"><span class="toc-number">2.</span> <span class="toc-text">創建平面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Plane-%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">Plane 的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#distanceToPoint-point-Vector3-Float"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">- distanceToPoint(point: Vector3): Float</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Refs"><span class="toc-number">3.0.0.1.1.</span> <span class="toc-text">Refs.</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#projectPoint-point-Vector3-target-Vector3-Vector3"><span class="toc-number">3.0.0.2.</span> <span class="toc-text">- projectPoint(point:Vector3, target:Vector3): Vector3</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8E%9F%E5%A7%8B%E7%A2%BC"><span class="toc-number">3.0.0.2.1.</span> <span class="toc-text">原始碼</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%95%B8%E5%AD%B8%E6%8E%A8%E5%B0%8E"><span class="toc-number">3.0.0.2.2.</span> <span class="toc-text">數學推導</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Refs-1"><span class="toc-number">3.0.0.2.3.</span> <span class="toc-text">Refs.</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#coplanarPoint-target-Vector3-Vector3"><span class="toc-number">3.0.0.3.</span> <span class="toc-text">- coplanarPoint(target: Vector3): Vector3</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8E%9F%E5%A7%8B%E7%A2%BC-1"><span class="toc-number">3.0.0.3.1.</span> <span class="toc-text">原始碼</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%95%B8%E5%AD%B8%E6%8E%A8%E5%B0%8E-1"><span class="toc-number">3.0.0.3.2.</span> <span class="toc-text">數學推導</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#setFromNormalAndCoplanarPoint-normal-Vector3-point-Vector3"><span class="toc-number">3.0.0.4.</span> <span class="toc-text">- setFromNormalAndCoplanarPoint(normal: Vector3, point: Vector3 )</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8E%9F%E5%A7%8B%E7%A2%BC-2"><span class="toc-number">3.0.0.4.1.</span> <span class="toc-text">原始碼</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%95%B8%E5%AD%B8%E6%8E%A8%E5%B0%8E-2"><span class="toc-number">3.0.0.4.2.</span> <span class="toc-text">數學推導</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DEMO"><span class="toc-number">4.</span> <span class="toc-text">DEMO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC"><span class="toc-number">5.</span> <span class="toc-text">版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">參考資料</span></a></li></ol>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

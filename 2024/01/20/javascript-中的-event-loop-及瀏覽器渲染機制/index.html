@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+          
+
+
+    
+    
+    <title>
+        
+            Javascript 中的 event loop 及瀏覽器渲染機制 | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/">Javascript 中的 event loop 及瀏覽器渲染機制</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2024-01-20
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=Javascript 中的 event loop 及瀏覽器渲染機制&url=https://bcjohnblue.github.io/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=Javascript 中的 event loop 及瀏覽器渲染機制&url=https://bcjohnblue.github.io/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/&title=Javascript 中的 event loop 及瀏覽器渲染機制" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=Javascript 中的 event loop 及瀏覽器渲染機制&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/&text=Javascript 中的 event loop 及瀏覽器渲染機制" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <p>此為 <strong>event loop</strong> 系列文章 - 第 1 篇：</p>
+<ol>
+<li><a href="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> </li>
+<li><a href="/blog/2024/01/27/從程式碼角度來看-event-loop" target="_blank" rel="noreferrer noopenner">從程式碼角度來看 event loop</a> </li>
+<li><a href="/blog/2024/02/04/使用原生的-queuemicrotask-處理微任務/" target="_blank" rel="noreferrer noopenner">使用原生的 queueMicrotask 處理微任務</a></li>
+<li><a href="/blog/2024/02/05/vue-nexttick-中的-event-loop/" target="_blank" rel="noreferrer noopenner">Vue.nextTick() 中的 event loop</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>event loop</strong> 是 <strong>js</strong> 中一個蠻重要的概念，雖然以前知道 <strong>宏任務 (macrotask)</strong> 及 <strong>微任務 (microtask)</strong> 優先級上的差別，但似乎一直不知道 <strong>event loop</strong> 與瀏覽器渲染間的關係，而大部分的文章都只單獨介紹 <strong>event loop</strong> 或是 瀏覽器渲染流程，所以寫了這篇文章統整 <strong>event loop</strong> 與 瀏覽器渲染 間的關聯性</p>
+<h2 id="event-loop-的作用"><a href="#event-loop-的作用" class="headerlink" title="event loop 的作用"></a>event loop 的作用</h2><p>以前端來說，在瀏覽器中使用者的畫面點擊、呼叫後端 api、<code>window.addEventListener</code>，這些全部都由 <strong>js</strong> 執行，但 <strong>js</strong> 是單線程的程式語言，同一時間就是只能做一件事，所以當事情同時發生時，需要讓 <strong>js</strong> 知道哪行程式碼是先被執行的、而接下來又該執行哪段程式碼，這個負責安排執行順序的東西，基本上就叫做 <strong>event loop</strong></p>
+<h2 id="event-loop-的宿主環境"><a href="#event-loop-的宿主環境" class="headerlink" title="event loop 的宿主環境"></a>event loop 的宿主環境</h2><p>嚴格來說 <strong>event loop</strong> 並不是定義在 <strong>js</strong> 上的東西，而是根據不同環境有不同的 <strong>event loop</strong> 規則，以瀏覽器來說就會有瀏覽器的 <strong>event loop</strong> 規則，而 <strong>nodejs</strong> 的話又會有另一套 <strong>nodejs</strong> 的 <strong>event loop</strong> 規則，今天這篇文章只探討瀏覽器的 <strong>event loop</strong></p>
+<span id="more"></span>
+
+<h2 id="Javascript-中的程式執行"><a href="#Javascript-中的程式執行" class="headerlink" title="Javascript 中的程式執行"></a>Javascript 中的程式執行</h2><p><strong>js</strong> 中的程式，按照執行時機區分的話可以分為 <strong>同步執行 (sync)</strong> 以及 <strong>異步執行 (async)</strong>，<strong>同步執行 (sync)</strong> 的程式碼會被丟到 <strong>js 主線程(main thread)</strong> 中，從頭到尾不間斷的執行完，而 <strong>異步執行 (async)</strong> 的程式則是指那些之後才會執行的程式 (ex. 呼叫 api 會等伺服器資料回應後才執行後續的操作)，但特別需要強調的一點是，<strong>js</strong> 是單線程的程式，不論是 <strong>同步執行 (sync)</strong> 或是 <strong>異步執行 (async)</strong>，程式碼一定會在某一刻交由 <strong>js 主線程(main thread)</strong> 執行。</p>
+<h4 id="同步執行-sync"><a href="#同步執行-sync" class="headerlink" title="同步執行 (sync)"></a>同步執行 (sync)</h4><p>同步執行的程式會將每一段程式碼依序放入到 <strong>堆疊(stack)</strong> 裡面，再從最上層的 <strong>堆疊(stack)</strong> 挑出要運行的任務放入 <strong>js 主線程(main thread)</strong> 中執行</p>
+<p>範例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">A</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;A&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;main script&#x27;</span>);</span><br><span class="line"><span class="title function_">A</span>();</span><br></pre></td></tr></table></figure>
+<ol>
+<li>首先整個 <code>main script</code> 放入 <strong>堆疊(stack)</strong> 的最底層</li>
+<li>將 <strong>堆疊(stack)</strong> 最上層需執行的任務 <code>main script</code> 抓出，放入 <strong>js 主線程(main thread)</strong> 執行</li>
+<li><code>main script</code> 執行到第 5 行，印出 <span class="log">main script</span></li>
+<li><code>main script</code> 執行到第 6 行遇到 <code>函式A</code>，將 <code>函式A</code> 放入 <strong>堆疊(stack)</strong> 中</li>
+<li>將第 1-3 行的 <code>函式A</code> 放入 <strong>js 主線程(main thread)</strong> 執行</li>
+<li><code>函式A</code> 執行完畢，印出 <span class="log">A</span>，將 <code>函式 A</code> 移出 <strong>堆疊(stack)</strong></li>
+<li>接續執行 <code>main script</code></li>
+<li>第 6 行後整個 <code>main script</code> 執行完成，將 <code>main script</code> 移出 <strong>堆疊(stack)</strong></li>
+</ol>
+<br />
+
+<img src="stack.gif" width="60%">
+
+<p>圖片來源: <a target="_blank" rel="noopener" href="https://medium.com/i-caught-a-code/javascript-event-loop-stack-queue-%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-2abd083bf4e3">[學習筆記] JavaScript 的 Event Loop, Stack, Queue</a></p>
+<h4 id="異步執行-async"><a href="#異步執行-async" class="headerlink" title="異步執行 (async)"></a>異步執行 (async)</h4><p>除了一氣呵成的同步執行程式以外，<strong>js</strong> 也有所謂的異步執行程式 (ex. <code>call api</code>、<code>setTimeout</code>)，以下面的例子來看，假設我們寫的程式有很多這種異步邏輯，每一個區塊看起來都很像馬上就要執行，那麼瀏覽器要怎麼判斷每一段程式碼的執行順序呢？ 此時需要的就是 <strong>event loop</strong> 來安排這些異步任務程式碼的執行順序</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;timeout&#x27;</span>);</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>().<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;promise&#x27;</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">async</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;async&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">await</span> <span class="title function_">async1</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;main script&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="異步執行的任務"><a href="#異步執行的任務" class="headerlink" title="異步執行的任務"></a>異步執行的任務</h2><p>這些異步執行的程式，可以分為兩種： <strong>宏任務 (macrotask)</strong> 及 <strong>微任務 (microtask)</strong></p>
+<h6 id="宏任務-macrotask"><a href="#宏任務-macrotask" class="headerlink" title="- 宏任務 (macrotask)"></a>- <strong>宏任務 (macrotask)</strong></h6><p>在 HTML spec 的規範中，<strong>宏任務 (macrotask)</strong> 其實叫做 <strong>任務(task)</strong> ，但為了跟 <strong>微任務 (microtask)</strong> 有一個相對應的區分所以大部分的教學文章都加上了 <strong>宏(macro)</strong> 這個字，以下幾種方法都屬於 <strong>宏任務 (macrotask)</strong></p>
+<ul>
+<li>用 <code>&lt;script src=&quot;...&quot;&gt;</code> 方式載入的程式碼</li>
+<li>setTimeout, setInterval </li>
+<li>使用者交互事件 (ex. 滑鼠 click, 鍵盤 keydown 事件)</li>
+</ul>
+<h6 id="微任務-microtask"><a href="#微任務-microtask" class="headerlink" title="- 微任務 (microtask)"></a>- <strong>微任務 (microtask)</strong></h6><p>目前有的 <strong>微任務 (microtask)</strong> ：</p>
+<ul>
+<li>promise </li>
+<li>DOM mutations (MutaionObserver)</li>
+</ul>
+<p>而不論是 <strong>宏任務 (macrotask)</strong> 或是 <strong>微任務 (microtask)</strong> 它們都是以 <strong>佇列(queue)</strong> 的資料結構存放，存放這兩種任務的 <strong>佇列(queue)</strong> 名稱，後面我分別稱呼它們為 <strong>宏任務佇列 (macrotask queue)</strong> 與 <strong>微任務佇列 (microtask queue)</strong></p>
+<img src="queue.webp" style="margin-left: -10%">
+
+<p>圖片來源: <a target="_blank" rel="noopener" href="https://www.devcript.com/simple-explanation-of-stack-and-queue-with-javascript/">Simple Explanation of Stack and Queue with JavaScript</a></p>
+<p>範例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="keyword">function</span> <span class="title function_">timeoutCallback</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;timeout&#x27;</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>().<span class="title function_">then</span>(<span class="keyword">function</span> <span class="title function_">promiseCallback</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;promise&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol>
+<li>第 1 行的 <code>setTimeout</code> 屬於 <strong>宏任務 (macrotask)</strong> ，所以 <code>timeoutCallback</code> 會被放入 <strong>宏任務佇列 (macrotask queue)</strong> 中等待之後執行</li>
+<li>第 5 行的 <code>Promise.resolve()</code> 屬於 <strong>微任務 (microtask)</strong> ，所以 <code>promiseCallback</code> 會被放入 <strong>微任務佇列 (microtask queue)</strong> 中等待之後執行</li>
+</ol>
+<p>好的，目前為止我們知道了這些異步執行的程式們可以分為兩類 <strong>宏任務 (macrotask)</strong> 以及 <strong>微任務 (microtask)</strong> ，並且會被加入到各自的 <strong>佇列(queue)</strong> ，下一節我們會再進一步瞭解這些被加入到 <strong>佇列(queue)</strong> 中的任務們如何藉由 <strong>event loop</strong> 的安排最終丟入到 <strong>js 主線程(main thread)</strong> 執行</p>
+<h2 id="event-loop-如何安排任務的執行順序"><a href="#event-loop-如何安排任務的執行順序" class="headerlink" title="event loop 如何安排任務的執行順序"></a>event loop 如何安排任務的執行順序</h2><img src="event-loop-process.jpg" width="40%">
+
+<img src="event-loop.gif" width="50%">
+
+<br />
+圖片來源:
+
+<p><a target="_blank" rel="noopener" href="https://yeefun.github.io/event-loop-in-depth/#%E4%BA%8B%E4%BB%B6%E8%BF%B4%E5%9C%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">事件迴圈的基本概念</a><br><a target="_blank" rel="noopener" href="https://dev.to/rammcodes/javascript-microtask-vs-macrotask-queue-visually-explained-2209">Javascript MicroTask vs MacroTask Queue - Visually Explained Through An Animation</a></p>
+<p>搭配以上這兩張圖，我們可以看到 <strong>宏任務 (macrotask)</strong> 與 <strong>微任務 (microtask)</strong> 實際上用兩個不同的 queue 控制著任務的先後執行 </p>
+<ul>
+<li><strong>宏任務 (macrotask)</strong> 會被放到 <strong>宏任務佇列 (macrotask queue)</strong> 裡</li>
+<li><strong>微任務 (microtask)</strong> 會被放到 <strong>微任務佇列 (microtask queue)</strong> 裡</li>
+</ul>
+<p>而 <strong>宏任務佇列 (macrotask queue)</strong> 與 <strong>微任務佇列 (microtask queue)</strong> 會藉由 <strong>event loop</strong> 的安排，將任務依序丟往 <strong>堆疊(stack)</strong> 中，最後 <strong>js 主線程(main thread)</strong> 再以 <strong>同步執行 (sync)</strong> 的方式將 <strong>堆疊(stack)</strong> 中的任務執行完成</p>
+<p>而從 <strong>event loop</strong> 的角度來看，是以下面的這個邏輯決定怎麼把任務丟到 <strong>堆疊(stack)</strong> 中執行：</p>
+<ol>
+<li>檢查 <strong>宏任務佇列 (macrotask queue)</strong> 裡是否有 <strong>宏任務 (macrotask)</strong> 需要被執行：<br>1-1. 如果有的話就將最前面的 <strong>宏任務 (macrotask)</strong> 拿出來丟到 <strong>堆疊(stack)</strong> 執行，並前往 <strong>步驟 2.</strong><br>1-2. 如果沒有的話，直接前往 <strong>步驟 2.</strong></li>
+<li>檢查 <strong>微任務佇列 (microtask queue)</strong> 裡是否有 <strong>微任務 (microtask)</strong> 需要被執行：<br>2-1. 如果有的話將 <strong>目前所有</strong> 的 <strong>微任務 (microtask)</strong> 依序拿出來丟到 <strong>堆疊(stack)</strong> 執行，並前往 <strong>步驟 3.</strong><br>2-2. 如果沒有的話，直接前往 <strong>步驟 3.</strong></li>
+<li>是否需要渲染 UI 畫面：<br>3-1. 需要渲染的話，進行渲染畫面並回到 <strong>步驟 1.</strong><br>3-2. 不需要渲染的話，直接回到 <strong>步驟 1.</strong></li>
+</ol>
+<p>下面我們直接用程式碼來看 <strong>event loop</strong> 運行的邏輯： </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;timeout1&#x27;</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;timeout2&#x27;</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>().<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;promise1&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>().<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;promise2&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>().<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;promise3&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>分析：</strong></p>
+<ol>
+<li>第 1 行的 <code>setTimeout</code> 後的 <code>callback function</code> 最初被加入到 <strong>宏任務佇列 (macrotask queue)</strong> 裡，是第一個 <strong>宏任務 (macrotask)</strong> ，等待之後執行</li>
+<li>第 4 行的 <code>setTimeout</code> 後的 <code>callback function</code> 會接續加入到 <strong>宏任務佇列 (macrotask queue)</strong> 中，是第二個 <strong>宏任務 (macrotask)</strong> ，等待之後執行</li>
+<li>第 8 行的 <code>promise.resolve</code> 後的 <code>callback function</code> 會加入到 <strong>微任務佇列 (microtask queue)</strong> 裡，是第一個 <strong>微任務 (microtask)</strong> ，等待之後執行</li>
+<li>第 11 行的 <code>promise.resolve</code> 後的 <code>callback function</code> 會加入到 <strong>微任務佇列 (microtask queue)</strong> 裡，是第二個 <strong>微任務 (microtask)</strong> ，等待之後執行</li>
+<li>第 14 行的 <code>promise.resolve</code> 後的 <code>callback function</code> 會加入到 <strong>微任務佇列 (microtask queue)</strong> 裡，是第三個 <strong>微任務 (microtask)</strong> ，等待之後執行</li>
+</ol>
+<p><strong>結果：</strong><br>如右上角的 .gif 動圖所示，即使兩個 <code>setTimeout</code> 在程式上的順序是先寫在前面的，但由於 <strong>微任務 (microtask)</strong> 的優先級高於 <strong>宏任務 (macrotask)</strong> ，所以 <code>Promise.resolve()</code> 後的結果會先被執行，最後才執行 <code>setTimeout</code> 的 <strong>宏任務 (macrotask)</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;promise1&#x27;</span></span><br><span class="line"><span class="string">&#x27;promise2&#x27;</span></span><br><span class="line"><span class="string">&#x27;promise3&#x27;</span></span><br><span class="line"><span class="string">&#x27;timeout1&#x27;</span></span><br><span class="line"><span class="string">&#x27;timeout2&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="event-loop-之後-渲染畫面"><a href="#event-loop-之後-渲染畫面" class="headerlink" title="event loop 之後 - 渲染畫面"></a>event loop 之後 - 渲染畫面</h2><p>接著讓我們來看看 <strong>event loop</strong> 之後，瀏覽器怎麼進行畫面渲染：</p>
+<img src="browser-render.png" width="50%">
+
+<p>圖片來源: <a target="_blank" rel="noopener" href="https://nolanlawson.github.io/css-talk-2022/#96">CSS runtime performance</a></p>
+<p>上圖左側的 <strong>JavaScript</strong> 代表了我們上面所討論的 <strong>宏任務 (macrotask)</strong> 與 <strong>微任務 (microtask)</strong> ，當 <strong>JavaScript</strong> 執行完成後，瀏覽器開始準備渲染畫面，畫面的渲染大致上切分成四個部分：</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://nolanlawson.github.io/css-talk-2022/#13">Style</a><br>計算每個 DOM element 的樣式 (color, margin 等)</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://nolanlawson.github.io/css-talk-2022/#14">Layout</a><br>上面的 Style 計算完後，瀏覽器會知道每個 DOM element 該有的樣式，接著就會開始計算這些 element 佔用的空間，這包含位置、寬度等等</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://medium.com/@wutamy77/how-browser-rendering-works-%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90-6236d21403b4">Paint</a><br>開始針對網頁中的每個像素點進行繪製，包括顏色、陰影等等</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://medium.com/@wutamy77/how-browser-rendering-works-%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90-6236d21403b4#:~:text=%E6%A0%BC%E5%8C%96%E6%96%B9%E5%BC%8F-,Compositing,-%EF%BC%88%E5%90%88%E6%88%90%EF%BC%89">Composite</a><br>最後一步是根據不同的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_positioned_layout/Understanding_z-index/Stacking_context">圖層</a> 來安排各個 element 的位置</p>
+</li>
+</ol>
+<ul>
+<li><code>requestAnimationFrame</code><br>最後特別提到的是 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/window/requestAnimationFrame">requestAnimationFrame</a>，他的執行時機在 <strong>Style</strong> 之前，可以保證在每一幀的畫面渲染前執行，常用來做動畫效果或網頁 3D 場景的處理</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dom = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">animation</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (i &gt; <span class="number">200</span>) <span class="keyword">return</span>;</span><br><span class="line">  dom.<span class="property">style</span>.<span class="property">marginLeft</span> = <span class="string">`<span class="subst">$&#123;i&#125;</span>px`</span>;</span><br><span class="line">  <span class="variable language_">window</span>.<span class="title function_">requestAnimationFrame</span>(animation);</span><br><span class="line">  i++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">requestAnimationFrame</span>(animation);</span><br></pre></td></tr></table></figure>
+<p>現在大部分的螢幕通常是以 60Hz 的頻率更新畫面，如此可以讓人眼察覺不到每一幀畫面的差別，從而做到順暢的動畫，因此瀏覽器中在每一幀更新畫面的時間約為 <code>1/60 = 17ms</code>，所以 <code>animation</code> 函式大約會每 <code>17ms</code> 就執行一次</p>
+<h2 id="event-loop-的全貌"><a href="#event-loop-的全貌" class="headerlink" title="event loop 的全貌"></a>event loop 的全貌</h2><p>最後讓我們來看完整的 <strong>event loop</strong>：</p>
+<img src="event-loop-60fps.png" width="50%">
+
+<p>圖片來源: <a target="_blank" rel="noopener" href="https://blog.xnim.me/event-loop-and-render-queue">Browser Event loop: micro and macro tasks, call stack, render queue: layout, paint, composite</a></p>
+<p>整個完整的 <strong>event loop</strong> + 瀏覽器的畫面渲染流程如上圖所示，在一整圈的執行中，瀏覽器會盡量以 60Hz 的頻率渲染畫面，也就是說每一幀(圈)更新畫面的時間約為 <code>1/60 = 17ms</code></p>
+<ol>
+<li><p>最初從圖中左側開始，Javascript 會從 <strong>宏任務佇列 (macrotask queue)</strong> 挑出第一個 <strong>宏任務 (macrotask)</strong> 執行，接著執行完 <strong>微任務佇列 (microtask queue)</strong> 中所有的 <strong>微任務 (microtask)</strong></p>
+</li>
+<li><p>在準備進行瀏覽器渲染前會執行 <code>requestAnimationFrame</code></p>
+</li>
+<li><p>進入瀏覽器渲染的流程：<strong>Style</strong> &#x3D;&gt; <strong>Layout</strong> &#x3D;&gt; <strong>Paint</strong> &#x3D;&gt; <strong>Composite</strong></p>
+</li>
+<li><p>渲染畫面後重新回到 步驟 1. 循環執行這一整圈的 <strong>event loop</strong></p>
+</li>
+</ol>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.explainthis.io/zh-hant/swe/what-is-event-loop">請說明瀏覽器中的事件循環 (Event Loop)</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://jianline.com/javascript-event-loop/">[筆記]-JavaScript Event Loop是什麼?Event Loop的3個重點</a><br>簡短的文章幫助快速的了解 event loop</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://realdennis.medium.com/%E6%80%8E%E9%BA%BC%E7%90%86%E8%A7%A3-microtask-macrotask-7754939b3c2c">怎麼理解 microtask &amp; macrotask</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://macarthur.me/posts/navigating-the-event-loop">Picking the Right Tool for Maneuvering JavaScript’s Event Loop</a><br>作者寫了一些範例演示了 同步、異步 以及 宏任務 (macrotask)、微任務 (microtask) 的程式碼如何對畫面 UI 的堵塞造成不同影響</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://yeefun.github.io/event-loop-in-depth/">我知道你懂 Event Loop，但你了解到多深？</a><br>從 HTML spec 的角度詳細探討 event loop 的執行順序</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.shubo.io/browser-rendering/">瀏覽器轉譯&#x2F;渲染(Browser Rendering)原理</a><br><a target="_blank" rel="noopener" href="https://web.dev/articles/rendering-performance?hl=zh-tw">轉譯效能</a><br>完整的介紹瀏覽器渲染的各個步驟</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://nolanlawson.github.io/css-talk-2022/#10">CSS runtime performance</a><br>非常豐富生動的圖描繪出瀏覽器的渲染過程</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.xnim.me/event-loop-and-render-queue">Browser Event loop: micro and macro tasks, call stack, render queue: layout, paint, composite</a><br>完整的從 event loop 一路介紹到瀏覽器渲染畫面的優質文章</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://hentaicracker.github.io/2020/rAF.html#_1-%E4%BB%80%E4%B9%88%E6%98%AF-requestanimationframe">什么是 requestAnimationFrame</a><br>從 requestAnimationFrame 的角度出發，探討分別使用 requestAnimationFrame 及 setTimeout 當作計時器的差別</p>
+</li>
+</ul>
+
+<style>
+.log {
+	color: #9c9;
+  font-weight: bold;
+}
+</style>
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2024/01/27/%E5%BE%9E%E7%A8%8B%E5%BC%8F%E7%A2%BC%E8%A7%92%E5%BA%A6%E4%BE%86%E7%9C%8B-event-loop/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>從程式碼角度來看 event loop</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/">
+        <span>THREE.Vector3 三維空間的向量運算</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#event-loop-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">event loop 的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#event-loop-%E7%9A%84%E5%AE%BF%E4%B8%BB%E7%92%B0%E5%A2%83"><span class="toc-number">3.</span> <span class="toc-text">event loop 的宿主環境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Javascript-%E4%B8%AD%E7%9A%84%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C"><span class="toc-number">4.</span> <span class="toc-text">Javascript 中的程式執行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E5%9F%B7%E8%A1%8C-sync"><span class="toc-number">4.0.1.</span> <span class="toc-text">同步執行 (sync)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%95%B0%E6%AD%A5%E5%9F%B7%E8%A1%8C-async"><span class="toc-number">4.0.2.</span> <span class="toc-text">異步執行 (async)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%95%B0%E6%AD%A5%E5%9F%B7%E8%A1%8C%E7%9A%84%E4%BB%BB%E5%8B%99"><span class="toc-number">5.</span> <span class="toc-text">異步執行的任務</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%AE%8F%E4%BB%BB%E5%8B%99-macrotask"><span class="toc-number">5.0.0.0.1.</span> <span class="toc-text">- 宏任務 (macrotask)</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%BE%AE%E4%BB%BB%E5%8B%99-microtask"><span class="toc-number">5.0.0.0.2.</span> <span class="toc-text">- 微任務 (microtask)</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#event-loop-%E5%A6%82%E4%BD%95%E5%AE%89%E6%8E%92%E4%BB%BB%E5%8B%99%E7%9A%84%E5%9F%B7%E8%A1%8C%E9%A0%86%E5%BA%8F"><span class="toc-number">6.</span> <span class="toc-text">event loop 如何安排任務的執行順序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#event-loop-%E4%B9%8B%E5%BE%8C-%E6%B8%B2%E6%9F%93%E7%95%AB%E9%9D%A2"><span class="toc-number">7.</span> <span class="toc-text">event loop 之後 - 渲染畫面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#event-loop-%E7%9A%84%E5%85%A8%E8%B2%8C"><span class="toc-number">8.</span> <span class="toc-text">event loop 的全貌</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number">9.</span> <span class="toc-text">參考資料</span></a></li></ol>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

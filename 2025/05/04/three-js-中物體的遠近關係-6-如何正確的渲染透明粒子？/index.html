@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+          
+
+
+    
+    
+    <title>
+        
+            Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？ | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-05-04
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？&url=https://bcjohnblue.github.io/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？&url=https://bcjohnblue.github.io/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/&title=Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/&text=Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-6-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-6-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 6 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 6 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前五篇的系列文章讓我們理解 Three.js 中物體的遠近關係是如何決定的，今天這篇文章藉由 <a target="_blank" rel="noopener" href="https://threejs-journey.com/">Three.js journey - lesson particles</a> 這門課程中渲染粒子系統的範例，學習要怎麼正確的渲染粒子使其前後呈現的順序是正確的</p>
+<span id="more"></span>
+
+<h2 id="渲染粒子系統"><a href="#渲染粒子系統" class="headerlink" title="渲染粒子系統"></a>渲染粒子系統</h2><p>這裡先貼上粒子系統的範例程式碼 - <a target="_blank" rel="noopener" href="https://github.com/bcjohnblue/threejs-particles">threejs-particles</a>，下面的這段程式碼會生成 5000 個透明的粒子顯示在畫面上</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">ParticleSystem</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">experience</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">experience</span> = experience;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">scene</span> = experience.<span class="property">scene</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">count</span> = <span class="number">5000</span>;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">setGeometry</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">setMaterial</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">setPoints</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">setGeometry</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">geometry</span> = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">BufferGeometry</span>();</span><br><span class="line">    <span class="keyword">const</span> positions = <span class="keyword">new</span> <span class="title class_">Float32Array</span>(<span class="variable language_">this</span>.<span class="property">count</span> * <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="variable language_">this</span>.<span class="property">count</span> * <span class="number">3</span>; i++) &#123;</span><br><span class="line">      positions[i] = (<span class="title class_">Math</span>.<span class="title function_">random</span>() - <span class="number">0.5</span>) * <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">geometry</span>.<span class="title function_">setAttribute</span>(</span><br><span class="line">      <span class="string">&#x27;position&#x27;</span>,</span><br><span class="line">      <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">BufferAttribute</span>(positions, <span class="number">3</span>)</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">setMaterial</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> textureLoader = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">TextureLoader</span>();</span><br><span class="line">    <span class="keyword">const</span> particleTexture = textureLoader.<span class="title function_">load</span>(<span class="string">&#x27;/textures/particles/2.png&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">material</span> = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">PointsMaterial</span>(&#123;</span><br><span class="line">      <span class="attr">size</span>: <span class="number">0.1</span>,</span><br><span class="line">      <span class="attr">sizeAttenuation</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">color</span>: <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Color</span>(<span class="string">&#x27;#ff88cc&#x27;</span>),</span><br><span class="line">      <span class="attr">transparent</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">alphaMap</span>: particleTexture</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">setPoints</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">points</span> = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Points</span>(<span class="variable language_">this</span>.<span class="property">geometry</span>, <span class="variable language_">this</span>.<span class="property">material</span>);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">scene</span>.<span class="title function_">add</span>(<span class="variable language_">this</span>.<span class="property">points</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>setGeometry</code></li>
+</ul>
+<p>使用 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=BufferGeometry#api/zh/core/BufferGeometry">BufferGeometry</a> 的方式創造 5000 個點的座標</p>
+<ul>
+<li><code>setMaterial</code></li>
+</ul>
+<p>使用 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=PointsMaterial#api/zh/materials/PointsMaterial">PointsMaterial</a> 創建粒子的材質，將 <code>transparent</code> 設為 <code>true</code>，代表粒子是透明的可以看到後面的其他粒子，另外也使用了 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=PointsMaterial#api/zh/materials/PointsMaterial.alphaMap">alphaMap</a> 讓粒子呈現小圓圈的樣子</p>
+<p>alphaMap 使用的貼圖<br><img src="./texture-2.png" /></p>
+<ul>
+<li><code>setPoints</code></li>
+</ul>
+<p>最後結合上面創建的 <code>geometry</code> 與 <code>material</code> 生成 5000 個 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=Points#api/zh/objects/Points">Points</a></p>
+<img src="./particles.png" style="width: 100%" />
+
+<h2 id="問題：後面的粒子被前面的粒子遮擋住"><a href="#問題：後面的粒子被前面的粒子遮擋住" class="headerlink" title="問題：後面的粒子被前面的粒子遮擋住"></a>問題：後面的粒子被前面的粒子遮擋住</h2><p>仔細觀察會發現某些粒子會被前面的粒子遮擋住，如下圖所示：</p>
+<p><video src="https://bcjohn-public-static.s3.ap-southeast-2.amazonaws.com/particles-block.mp4" autoplay muted loop style="width: 100%"></video></p>
+<p>會導致這個問題的原因是這 5000 個粒子的繪製順序是無法被確定的，還記得我們在上一篇系列文中的 <a href="/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/#2-%E7%82%BA%E4%BB%80%E9%BA%BC%E9%80%8F%E5%85%89%E7%89%A9%E9%AB%94%E3%80%81%E9%80%8F%E6%98%8E%E7%89%A9%E9%AB%94%EF%BC%8C%E9%A0%90%E8%A8%AD%E7%9A%84%E6%B8%B2%E6%9F%93%E9%A0%86%E5%BA%8F%E6%98%AF-z-%E8%B6%8A%E5%A4%A7%E7%9A%84%E8%B6%8A%E5%85%88%E9%80%B2%E8%A1%8C%E6%B8%B2%E6%9F%93%EF%BC%9F" target="_blank">延伸閱讀 2. 為什麼透光物體、透明物體，預設的渲染順序是 z 越大的越先進行渲染？</a> 中探討過 <strong>透明物體</strong> 必須是由遠到近進行渲染，這樣在進行深度測試的時候才能保證看得到 <strong>透明物體</strong> 後面的東西，但由於這裡繪製粒子的順序並沒有依照 <code>z</code> 的大小進行排序，因此如果位在前面的某個粒子先行渲染，接著才輪到位在後面的某個粒子接著渲染，此時後面的粒子進行深度測試時會失敗被捨棄掉，也就出現了 <strong>後面的粒子被前面的粒子遮擋住</strong> 的現象</p>
+<h2 id="解決辦法"><a href="#解決辦法" class="headerlink" title="解決辦法"></a>解決辦法</h2><p>如何解決後面的粒子被前面遮擋住的問題呢？第一個方式可以考慮使用 <code>alphaTest</code></p>
+<h4 id="1-設置很小的-alphaTest-值"><a href="#1-設置很小的-alphaTest-值" class="headerlink" title="1. 設置很小的 alphaTest 值"></a>1. 設置很小的 alphaTest 值</h4><p><a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=Points#api/zh/materials/Material.alphaTest">alphaTest</a> 的設置可以決定透明度多少以下的像素不被渲染在畫面上，由於前面粒子的黑色背景可能遮擋到後面的粒子，所以我們可以設置一個 <strong>很低的闕值(例如 0.01)</strong> 來避免黑色背景渲染在畫面上</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">material</span> = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">PointsMaterial</span>(&#123;</span><br><span class="line">  ...,</span><br><span class="line">  <span class="attr">alphaTest</span>: <span class="number">0.01</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><video src="https://bcjohn-public-static.s3.ap-southeast-2.amazonaws.com/particles-alpha-test.mp4" autoplay muted loop style="width: 100%"></video></p>
+<p>原本會出現黑色正方形背景的原因是即使這個黑色背景的透明度是 0，代表完全透明，但由於他還是被渲染到畫面上，導致當這個黑色背景後面有粒子存在時，後面的粒子無法通過深度測試被捨棄，而出現被遮擋的現象，當設置一個 <strong>很低的闕值(0.01)</strong> 時可以告訴渲染引擎說只要低於 <strong>0.01</strong> 的像素都不進行渲染，這樣也就不會影響處於後面粒子們的深度測試</p>
+<p>將黑色背景消除後可以正確看到後面的粒子，但還有個不完美的地方是粉紅色的圈圈一樣有可能遮擋到後面的粒子，因為我們只是設置了一個很小的 <code>alphaTest</code> 值避免黑色背景渲染在畫面上，但前面粒子的粉紅色圈圈一樣有可能先行渲染而使得後面粒子的深度測試失敗，導致後面粒子被遮擋住的狀況</p>
+<h4 id="2-關閉深度測試-depthTest"><a href="#2-關閉深度測試-depthTest" class="headerlink" title="2. 關閉深度測試 (depthTest)"></a>2. 關閉深度測試 (depthTest)</h4><p>由於我們無法保證每個粒子都是由遠而近的順序進行渲染的，所以不如就關閉 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=Points#api/zh/materials/Material.depthTest">深度測試(depthTest)</a>，這樣即使粒子處在後面的位置也不會因為深度測試失敗而被丟棄</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">material</span> = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">PointsMaterial</span>(&#123;</span><br><span class="line">  ...,</span><br><span class="line">  <span class="attr">depthTest</span>: <span class="literal">false</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><video src="https://bcjohn-public-static.s3.ap-southeast-2.amazonaws.com/particles-depth-test.mp4" autoplay muted loop style="width: 100%"></video></p>
+<p>這個方式讓後面的粒子不會被遮住了，但關閉深度測試的方式有一個缺點是當場景中同時有 <strong>不透明物體</strong> 存在時，由於 <strong>透明的粒子</strong> 會在 <strong>不透明物體</strong> 之後才進行渲染，而粒子又關閉了深度測試，這就導致了即使粒子位在 <strong>不透明物體</strong> 的後面，最後都會顯示在 <strong>不透明物體</strong> 的前方被畫在畫面<br>上形成不正確的遮擋關係，如下圖所示：有很多本來應該在白色正方體後面的粒子都被畫在白色正方體前面了</p>
+<img src="./particles-box.png" style="width: 100%" />
+
+<h4 id="3-禁止深度值寫入緩衝區-depthWrite"><a href="#3-禁止深度值寫入緩衝區-depthWrite" class="headerlink" title="3. 禁止深度值寫入緩衝區 (depthWrite)"></a>3. 禁止深度值寫入緩衝區 (depthWrite)</h4><p>為了避免 <strong>透明粒子關閉深度測試 (depthTest)</strong> 後都畫在最前面，另一個解決方式是禁止深度值寫入 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=Points#api/zh/materials/Material.depthWrite">深度緩衝區(depthWrite)</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">material</span> = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">PointsMaterial</span>(&#123;</span><br><span class="line">  ...,</span><br><span class="line">  <span class="attr">depthWrite</span>: <span class="literal">false</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>讓我們來分析看看為什麼這樣可以解決物體前後遮擋的問題：</p>
+<ol>
+<li>首先畫面上會渲染 <strong>不透明的白色正方體</strong>，接著渲染 <strong>透明的粒子們</strong></li>
+<li>由於 <strong>透明的粒子們</strong> 有開啟深度測試，因此在 <strong>不透明的白色正方體</strong> 後面的粒子們，深度測試失敗會被捨棄，最終不會呈現在畫面上，而在 <strong>不透明的白色正方體</strong> 前的粒子會正確呈現</li>
+<li>而當 <strong>透明的粒子們</strong> 互相重疊的狀況時，由於先渲染的粒子並沒有將深度值寫入深度緩衝區，因此後渲染的粒子都可以通過深度測試顯示在畫面上，這就代表粒子之間不會有互相遮擋的問題出現</li>
+</ol>
+<p><video src="https://bcjohn-public-static.s3.ap-southeast-2.amazonaws.com/particles-depth-write.mp4" autoplay muted loop style="width: 100%"></video></p>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>今天探討了在 Three.js 中渲染多個粒子時可能遇到的前後遮擋問題，並提出了三個可能的解決方式，而最佳的解決方案是 <strong>禁止粒子的深度值寫入緩衝區 (depthWrite)</strong>，藉由這三種方式的分析讓我們瞭解到為什麼實務上渲染 <strong>透明物體</strong> 時通常都會將 <code>depthWrite</code> 設置為 <code>false</code> 以解決前後遮擋的問題</p>
+<h2 id="延伸閱讀"><a href="#延伸閱讀" class="headerlink" title="延伸閱讀"></a>延伸閱讀</h2><h4 id="1-為什麼透明粒子們沒有由遠到近進行渲染？"><a href="#1-為什麼透明粒子們沒有由遠到近進行渲染？" class="headerlink" title="1. 為什麼透明粒子們沒有由遠到近進行渲染？"></a>1. 為什麼透明粒子們沒有由遠到近進行渲染？</h4><p>在第五篇系列文 <a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/#2-為什麼透光物體、透明物體，預設的渲染順序是-z-越大的越先進行渲染？" target="_blank">延伸閱讀 2.為什麼透光物體、透明物體，預設的渲染順序是 z 越大的越先進行渲染？</a> 中提到對於 <strong>透明物體</strong> 來說 Three.js 底層的原始碼會根據每個物體距離相機遠近的 <code>z</code> 值排序，並且由遠到近進行渲染，而這篇文章中的粒子們也是 <strong>透明物體</strong> 但為何沒有由遠到近渲染而會出現互相遮擋的狀況呢？</p>
+<p>原因是 Three.js 底層處理 <code>z</code> 值排序的邏輯是根據 <strong>物體(Object)</strong> 為單位進行排序的，<strong>物體(Object)</strong> 可以用以下幾種方式創建：</p>
+<ul>
+<li><code>Mesh</code> 視作一個 <strong>物體(Object)</strong></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> geometry = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">BufferGeometry</span>();</span><br><span class="line"><span class="keyword">const</span> material = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">MeshBasicMaterial</span>();</span><br><span class="line"><span class="keyword">const</span> mesh = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Mesh</span>(geometry, material);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Points</code> 視作一個 <strong>物體(Object)</strong></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> geometry = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">BufferGeometry</span>();</span><br><span class="line"><span class="keyword">const</span> material = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">PointsMaterial</span>();</span><br><span class="line"><span class="keyword">const</span> mesh = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Points</span>(geometry, material);</span><br></pre></td></tr></table></figure>
+
+<p>在這篇文章中的 5000 個粒子是用一個單獨的 <code>THREE.Points</code> 同時渲染出來的，因此這 5000 個粒子在 Three.js 中其實只是一個 <strong>物體(Object)</strong>，當然就無法有每個粒子個別的 <code>z</code> 值由遠到近進行排序後再渲染</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://threejs-journey.com/">Three.js journey - lesson particles</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/7113540626347458591?searchId=20250127232905E3C3D7D58C4B5F0F699A">Three.js 之 12 Particles 粒子效果</a><br><a target="_blank" rel="noopener" href="https://discourse.threejs.org/t/a-problem-with-transparency-for-point-geomerty/19863">A problem with transparency for point geomerty</a></p>
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2025/04/17/cors-debug-2-src-%E8%88%87-crossorigin-%E5%9C%A8-img-%E5%85%83%E7%B4%A0%E4%B8%AD%E7%9A%84%E9%A0%86%E5%BA%8F%E5%B0%8E%E8%87%B4-cors-error/">
+        <span>CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2025/05/04/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-6-%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A2%BA%E7%9A%84%E6%B8%B2%E6%9F%93%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%EF%BC%9F/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%AD%A4%E7%82%BA-Three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-%E7%AC%AC-6-%E7%AF%87%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">此為 Three.js 中物體的遠近關係 系列文章 - 第 6 篇：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E7%B2%92%E5%AD%90%E7%B3%BB%E7%B5%B1"><span class="toc-number"></span> <span class="toc-text">渲染粒子系統</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%95%8F%E9%A1%8C%EF%BC%9A%E5%BE%8C%E9%9D%A2%E7%9A%84%E7%B2%92%E5%AD%90%E8%A2%AB%E5%89%8D%E9%9D%A2%E7%9A%84%E7%B2%92%E5%AD%90%E9%81%AE%E6%93%8B%E4%BD%8F"><span class="toc-number"></span> <span class="toc-text">問題：後面的粒子被前面的粒子遮擋住</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%B1%BA%E8%BE%A6%E6%B3%95"><span class="toc-number"></span> <span class="toc-text">解決辦法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%A8%AD%E7%BD%AE%E5%BE%88%E5%B0%8F%E7%9A%84-alphaTest-%E5%80%BC"><span class="toc-number"></span> <span class="toc-text">1. 設置很小的 alphaTest 值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E9%97%9C%E9%96%89%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6-depthTest"><span class="toc-number"></span> <span class="toc-text">2. 關閉深度測試 (depthTest)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%A6%81%E6%AD%A2%E6%B7%B1%E5%BA%A6%E5%80%BC%E5%AF%AB%E5%85%A5%E7%B7%A9%E8%A1%9D%E5%8D%80-depthWrite"><span class="toc-number"></span> <span class="toc-text">3. 禁止深度值寫入緩衝區 (depthWrite)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B5%90%E8%AB%96"><span class="toc-number"></span> <span class="toc-text">結論</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E4%BC%B8%E9%96%B1%E8%AE%80"><span class="toc-number"></span> <span class="toc-text">延伸閱讀</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%82%BA%E4%BB%80%E9%BA%BC%E9%80%8F%E6%98%8E%E7%B2%92%E5%AD%90%E5%80%91%E6%B2%92%E6%9C%89%E7%94%B1%E9%81%A0%E5%88%B0%E8%BF%91%E9%80%B2%E8%A1%8C%E6%B8%B2%E6%9F%93%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">1. 為什麼透明粒子們沒有由遠到近進行渲染？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number"></span> <span class="toc-text">參考資料</span></a>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+    
+        <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        
+            load: ['[tex]/mhchem'],
+        
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        
+            packages: {'[+]': ['mhchem']},
+        
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+          
+
+
+    
+    
+    <title>
+          
+            bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/">Vue.nextTick() 中的 event loop</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2024-02-05
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <p>此為 <strong>event loop</strong> 系列文章 - 第 4 篇：</p>
+<ol>
+<li><a href="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> </li>
+<li><a href="/blog/2024/01/27/從程式碼角度來看-event-loop" target="_blank" rel="noreferrer noopenner">從程式碼角度來看 event loop</a> </li>
+<li><a href="/blog/2024/02/04/使用原生的-queuemicrotask-處理微任務/" target="_blank" rel="noreferrer noopenner">使用原生的 queueMicrotask 處理微任務</a></li>
+<li><a href="/blog/2024/02/05/vue-nexttick-中的-event-loop/" target="_blank" rel="noreferrer noopenner">Vue.nextTick() 中的 event loop</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>這篇文章想藉由閱讀 <a target="_blank" rel="noopener" href="https://vuejs.org/api/general.html#nexttick">Vue.nextTick()</a> 的源碼來看 <strong>event loop</strong> 的使用</p>
+<h2 id="Vue-nextTick-的使用方式"><a href="#Vue-nextTick-的使用方式" class="headerlink" title="Vue.nextTick 的使用方式"></a>Vue.nextTick 的使用方式</h2><p>官方文件寫明 <code>Vue.nextTick()</code> 是拿來等待下一次 DOM 更新的方法，因為 Vue 在每次響應式數據改變後是異步去更新 DOM，所以如果在數據改變後，馬上獲取 DOM 的資料會是舊的，這時就需要用到 <code>Vue.nextTick()</code> 獲取更新後的 DOM</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; ref, nextTick &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> count = <span class="title function_">ref</span>(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">increment</span>(<span class="params"></span>) &#123;</span><br><span class="line">  count.<span class="property">value</span>++</span><br><span class="line"></span><br><span class="line">  <span class="comment">// DOM 还未更新</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;counter&#x27;</span>).<span class="property">textContent</span>) <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">nextTick</span>()</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// DOM 此时已经更新</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;counter&#x27;</span>).<span class="property">textContent</span>) <span class="comment">// 1</span></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;counter&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;increment&quot;</span>&gt;</span>&#123;&#123; count &#125;&#125;<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2024/02/04/%E4%BD%BF%E7%94%A8%E5%8E%9F%E7%94%9F%E7%9A%84-queuemicrotask-%E8%99%95%E7%90%86%E5%BE%AE%E4%BB%BB%E5%8B%99/">使用原生的 queueMicrotask 處理微任務</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2024-02-04
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <p>此為 <strong>event loop</strong> 系列文章 - 第 3 篇：</p>
+<ol>
+<li><a href="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> </li>
+<li><a href="/blog/2024/01/27/從程式碼角度來看-event-loop" target="_blank" rel="noreferrer noopenner">從程式碼角度來看 event loop</a> </li>
+<li><a href="/blog/2024/02/04/使用原生的-queuemicrotask-處理微任務/" target="_blank" rel="noreferrer noopenner">使用原生的 queueMicrotask 處理微任務</a></li>
+<li><a href="/blog/2024/02/05/vue-nexttick-中的-event-loop/" target="_blank" rel="noreferrer noopenner">Vue.nextTick() 中的 event loop</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在研究 <strong>event loop</strong> 的過程中，赫然發現原來瀏覽器已經有了原生的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/queueMicrotask">queueMicrotask</a> 讓開發者可以自行管理微任務的執行，下面我們來看看什麼情況下會需要用到這個功能吧</p>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>基本上 <code>queueMicrotask</code> 就如同使用 <code>new Promise()</code> 一樣，會將 callback 加入到 <strong>微任務佇列 (microtask queue)</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">callback</span> = (<span class="params"></span>) =&gt; <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Regular timeout callback has run&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">urgentCallback</span> = (<span class="params"></span>) =&gt;  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;*** Oh noes! An urgent callback has run!&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Main program started&quot;</span>);</span><br><span class="line"><span class="built_in">setTimeout</span>(callback, <span class="number">0</span>);</span><br><span class="line"><span class="title function_">queueMicrotask</span>(urgentCallback);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Main program exiting&quot;</span>);</span><br></pre></td></tr></table></figure>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2024/02/04/%E4%BD%BF%E7%94%A8%E5%8E%9F%E7%94%9F%E7%9A%84-queuemicrotask-%E8%99%95%E7%90%86%E5%BE%AE%E4%BB%BB%E5%8B%99/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2024/01/27/%E5%BE%9E%E7%A8%8B%E5%BC%8F%E7%A2%BC%E8%A7%92%E5%BA%A6%E4%BE%86%E7%9C%8B-event-loop/">從程式碼角度來看 event loop</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2024-01-27
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="post-tags">
+    
+      <i class="iconfont icon-tag">
+        <a rel="tag" href = /blog/tags/%E9%9D%A2%E8%A9%A6%E9%A1%8C/ >面試題</a>
+      </i>
+    
+  </div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <p>此為 <strong>event loop</strong> 系列文章 - 第 2 篇：</p>
+<ol>
+<li><a href="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> </li>
+<li><a href="/blog/2024/01/27/從程式碼角度來看-event-loop" target="_blank" rel="noreferrer noopenner">從程式碼角度來看 event loop</a> </li>
+<li><a href="/blog/2024/02/04/使用原生的-queuemicrotask-處理微任務/" target="_blank" rel="noreferrer noopenner">使用原生的 queueMicrotask 處理微任務</a></li>
+<li><a href="/blog/2024/02/05/vue-nexttick-中的-event-loop/" target="_blank" rel="noreferrer noopenner">Vue.nextTick() 中的 event loop</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇介紹了 <strong>event loop</strong> 的運行原理，這篇文章希望藉由各種範例進一步體會 <strong>event loop</strong> 的執行順序</p>
+<h2 id="各種不同的-event-loop-範例"><a href="#各種不同的-event-loop-範例" class="headerlink" title="各種不同的 event loop 範例"></a>各種不同的 event loop 範例</h2><h4 id="1-基本的-event-loop-執行順序"><a href="#1-基本的-event-loop-執行順序" class="headerlink" title="1. 基本的 event loop 執行順序"></a>1. 基本的 event loop 執行順序</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;timeout&#x27;</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>().<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;promise&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;main script&#x27;</span>);</span><br></pre></td></tr></table></figure>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2024/01/27/%E5%BE%9E%E7%A8%8B%E5%BC%8F%E7%A2%BC%E8%A7%92%E5%BA%A6%E4%BE%86%E7%9C%8B-event-loop/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/">Javascript 中的 event loop 及瀏覽器渲染機制</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2024-01-20
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <p>此為 <strong>event loop</strong> 系列文章 - 第 1 篇：</p>
+<ol>
+<li><a href="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> </li>
+<li><a href="/blog/2024/01/27/從程式碼角度來看-event-loop" target="_blank" rel="noreferrer noopenner">從程式碼角度來看 event loop</a> </li>
+<li><a href="/blog/2024/02/04/使用原生的-queuemicrotask-處理微任務/" target="_blank" rel="noreferrer noopenner">使用原生的 queueMicrotask 處理微任務</a></li>
+<li><a href="/blog/2024/02/05/vue-nexttick-中的-event-loop/" target="_blank" rel="noreferrer noopenner">Vue.nextTick() 中的 event loop</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>event loop</strong> 是 <strong>js</strong> 中一個蠻重要的概念，雖然以前知道 <strong>宏任務 (macrotask)</strong> 及 <strong>微任務 (microtask)</strong> 優先級上的差別，但似乎一直不知道 <strong>event loop</strong> 與瀏覽器渲染間的關係，而大部分的文章都只單獨介紹 <strong>event loop</strong> 或是 瀏覽器渲染流程，所以寫了這篇文章統整 <strong>event loop</strong> 與 瀏覽器渲染 間的關聯性</p>
+<h2 id="event-loop-的作用"><a href="#event-loop-的作用" class="headerlink" title="event loop 的作用"></a>event loop 的作用</h2><p>以前端來說，在瀏覽器中使用者的畫面點擊、呼叫後端 api、<code>window.addEventListener</code>，這些全部都由 <strong>js</strong> 執行，但 <strong>js</strong> 是單線程的程式語言，同一時間就是只能做一件事，所以當事情同時發生時，需要讓 <strong>js</strong> 知道哪行程式碼是先被執行的、而接下來又該執行哪段程式碼，這個負責安排執行順序的東西，基本上就叫做 <strong>event loop</strong></p>
+<h2 id="event-loop-的宿主環境"><a href="#event-loop-的宿主環境" class="headerlink" title="event loop 的宿主環境"></a>event loop 的宿主環境</h2><p>嚴格來說 <strong>event loop</strong> 並不是定義在 <strong>js</strong> 上的東西，而是根據不同環境有不同的 <strong>event loop</strong> 規則，以瀏覽器來說就會有瀏覽器的 <strong>event loop</strong> 規則，而 <strong>nodejs</strong> 的話又會有另一套 <strong>nodejs</strong> 的 <strong>event loop</strong> 規則，今天這篇文章只探討瀏覽器的 <strong>event loop</strong></p>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2024/01/20/javascript-%E4%B8%AD%E7%9A%84-event-loop-%E5%8F%8A%E7%80%8F%E8%A6%BD%E5%99%A8%E6%B8%B2%E6%9F%93%E6%A9%9F%E5%88%B6/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/">THREE.Vector3 三維空間的向量運算</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2023-12-23
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <p><a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/math/Vector3">THREE.Vector3</a> 是 <code>threejs</code> 中最常用到的基礎類別，代表 3 維向量的運算</p>
+<h2 id="Vector3-的方法"><a href="#Vector3-的方法" class="headerlink" title="Vector3 的方法"></a>Vector3 的方法</h2><h5 id="add-v-Vector3-this"><a href="#add-v-Vector3-this" class="headerlink" title="- add(v: Vector3): this"></a><strong>- add(v: Vector3): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> addVector3 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">addVector3.<span class="title function_">add</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.add&#x27;</span>, addVector3); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="addScalar-s-Float-this"><a href="#addScalar-s-Float-this" class="headerlink" title="- addScalar(s: Float): this"></a><strong>- addScalar(s: Float): this</strong></h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> addScalarVector3 = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">addScalarVector3.<span class="title function_">addScalar</span>(<span class="number">2</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;.addScalar&#x27;</span>, addScalarVector3); <span class="comment">// &#123;x: 3, y: 3, z: 3&#125;</span></span><br></pre></td></tr></table></figure>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2023/12/23/three-vector3-%E4%B8%89%E7%B6%AD%E7%A9%BA%E9%96%93%E7%9A%84%E5%90%91%E9%87%8F%E9%81%8B%E7%AE%97/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/">理解 THREE.Plane 的平面方程式</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2023-12-19
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <p><a target="_blank" rel="noopener" href="https://threejs.org/docs/index.html?q=Plane#api/en/math/Plane">THREE.Plane</a> 在 <code>threejs</code> 中用來表示數學上的平面</p>
+<h2 id="數學中的平面方程式"><a href="#數學中的平面方程式" class="headerlink" title="數學中的平面方程式"></a>數學中的平面方程式</h2><p><code>a, b, c</code> 代表平面的<strong>法向量</strong>，<code>d</code> 是一個<strong>常數值</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ax + by + cz + d = 0;</span><br></pre></td></tr></table></figure>
+
+<h2 id="創建平面"><a href="#創建平面" class="headerlink" title="創建平面"></a>創建平面</h2><p>以下程式碼創建了一個 <code>y - 1 = 0</code> 的平面，法向量為 <code>[0, 1, 0]</code>，常數值為 <code>-1</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plane = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Plane</span>(<span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">Vector3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>).<span class="title function_">normalize</span>(), -<span class="number">1</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;normal&quot;</span>, plane.<span class="property">normal</span>); <span class="comment">// &#123;x: 0, y: 1, z: 0&#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;constant&quot;</span>, plane.<span class="property">constant</span>); <span class="comment">// -1</span></span><br></pre></td></tr></table></figure>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2023/12/19/%E7%90%86%E8%A7%A3-three-plane-%E7%9A%84%E5%B9%B3%E9%9D%A2%E6%96%B9%E7%A8%8B%E5%BC%8F/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2023/12/11/%E5%90%91%E9%87%8F%E5%85%A7%E7%A9%8D/">向量內積</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2023-12-11
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Math/">Math</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h2 id="說明"><a href="#說明" class="headerlink" title="說明"></a>說明</h2><p>向量內積代表從其中一個向量投影到另一個向量</p>
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Scalarproduct.gif?20050309032222" width="250px" />
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2023/12/11/%E5%90%91%E9%87%8F%E5%85%A7%E7%A9%8D/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2023/12/10/%E9%A4%98%E5%BC%A6%E5%AE%9A%E7%90%86/">餘弦定理</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2023-12-10
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Math/">Math</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="tag-line-space"></div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h2 id="定義"><a href="#定義" class="headerlink" title="定義"></a>定義</h2><p>餘弦定理是三角形中三邊長度與一個角的 <strong>餘弦值(cos)</strong> 的數學式，公式定義如下：</p>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2023/12/10/%E9%A4%98%E5%BC%A6%E5%AE%9A%E7%90%86/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="mdui-card mdui-m-b-5 mdui-hoverable">    
+      
+      
+        <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2023/12/06/debounce-%E4%B8%AD%E7%9A%84-this-%E6%8C%87%E5%90%91/">debounce 中的 this 指向</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2023-12-06
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+  </div>
+</div>   
+    
+
+
+
+      
+      
+  <div class="post-tags">
+    
+      <i class="iconfont icon-tag">
+        <a rel="tag" href = /blog/tags/%E9%9D%A2%E8%A9%A6%E9%A1%8C/ >面試題</a>
+      </i>
+    
+  </div>
+
+      
+      <div id="achieve-abstract" class="mdui-card-content mdui-p-x-4">
+        <div class="post-abstract mdui-typo ">
+          
+            <h2 id="什麼是-debounce"><a href="#什麼是-debounce" class="headerlink" title="什麼是 debounce ?"></a>什麼是 debounce ?</h2><p><code>debounce</code> 是一種用於防止事件處理過於頻繁發生的技術，常用於處理使用者輸入，例如按鍵事件或搜尋框的輸入事件。</p>
+<h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p>以文字搜尋功能為例，使用者每次搜尋打的文字都會呼叫後端的 api 拿回資料，但通常使用者想搜尋的是最後打字的結果，而此時就適合使用 <code>debounce</code> 在一定時間過後才去真正的呼叫後端 api</p>
+<p>以下面為例，搜尋框改變時，不會馬上觸發 <code>onInput</code> 方法，而是會等 500ms 後，如果搜尋框的文字沒有任何改變，才呼叫 <code>onInput</code> 方法</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">onInput</span>=<span class="string">&quot;debounceInput&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">onInput</span> = (<span class="params">event</span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(event.<span class="property">target</span>.<span class="property">value</span>);</span><br><span class="line">  <span class="comment">// call api...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> debounceInput = <span class="title function_">debounce</span>(onInput, <span class="number">500</span>);</span><br></pre></td></tr></table></figure>
+          
+        </div>
+        
+        <div style="text-align:center;">
+          <a class="post-readmore mdui-btn mdui-ripple mdui-btn-raised" href="/blog/2023/12/06/debounce-%E4%B8%AD%E7%9A%84-this-%E6%8C%87%E5%90%91/">閱讀更多</a>
+        </div>
+      </div>
+    </article>
+
+
+
+  <nav style="text-align: center;">
+    <div class="pagination">
+      <a class="extend prev" rel="prev" href="/blog/page/3/"><i class="iconfont icon-angle-left"></i></a><a class="page-number" href="/blog/">1</a><a class="page-number" href="/blog/page/2/">2</a><a class="page-number" href="/blog/page/3/">3</a><span class="page-number current">4</span>
+    </div>
+  </nav>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

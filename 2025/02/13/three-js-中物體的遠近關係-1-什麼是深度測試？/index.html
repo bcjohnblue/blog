@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+          
+
+
+    
+    
+    <title>
+        
+            Three.js 中物體的遠近關係 (1) - 什麼是深度測試？ | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-02-13
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=Three.js 中物體的遠近關係 (1) - 什麼是深度測試？&url=https://bcjohnblue.github.io/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=Three.js 中物體的遠近關係 (1) - 什麼是深度測試？&url=https://bcjohnblue.github.io/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/&title=Three.js 中物體的遠近關係 (1) - 什麼是深度測試？" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=Three.js 中物體的遠近關係 (1) - 什麼是深度測試？&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/&text=Three.js 中物體的遠近關係 (1) - 什麼是深度測試？" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-1-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-1-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 1 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 1 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我想許多人一開始接觸 <strong>Three.js</strong> 中關於 <strong>深度測試(Depth testing)</strong> 的時候，常會聽到 <code>depthTest</code>, <code>depthWrite</code>，雖然看過很多文章講解這兩者的差別以及應用場景，但說真的還是無法體會兩者差在哪，於是萌生了研究深度測試的想法。而隨著對於深度測試的了解後才發現深挖的東西越來越多，所以才有了這一系列相關的文章</p>
+<span id="more"></span>
+
+<h2 id="什麼是深度測試"><a href="#什麼是深度測試" class="headerlink" title="什麼是深度測試"></a>什麼是深度測試</h2><p>當人的眼睛四處看的時候，會看到許多不同的物體，這些物體有些近、有些遠，遠的物體會被近的擋住，而當 <strong>Three.js</strong> 要渲染 3D 物件在場景上時也是一樣的道理，將物體呈現在畫面上時，需要了解每個物體相對於相機(也就是眼睛)之間的遠近關係，而如何判斷物體遠近關係，決定誰要呈現在前面最終將物體渲染到 2D 螢幕上的這種技術就是所謂的深度測試</p>
+<h2 id="深度測試是如何運作的"><a href="#深度測試是如何運作的" class="headerlink" title="深度測試是如何運作的"></a>深度測試是如何運作的</h2><p>深度測試會將每個 <strong>像素(fragment)</strong> 的深度值存儲在 <strong>深度緩衝區 (Depth Buffer or z-buffer)</strong> 中，每個 <strong>像素(fragment)</strong> 深度值的範圍都會在 <strong>[0, 1]</strong> 之間，<strong>0</strong> 代表這個 <strong>像素(fragment)</strong> 離相機最近，而 <strong>1</strong> 代表離相機最遠，以 <a target="_blank" rel="noopener" href="https://threejs.org/docs/?q=camera#api/en/cameras/PerspectiveCamera">PerspectiveCamera</a> 來說，0 與 1 分別代表的位置就是相機的 <strong>近平面(near plane)</strong> 與 <strong>遠平面(far plane)</strong></p>
+<img src="https://learnopengl.com/img/guest/2021/Frustum_culling/VisualCameraFrustum.png" style="width: 50%"/>
+
+<p><a target="_blank" rel="noopener" href="https://learnopengl.com/Guest-Articles/2021/Scene/Frustum-Culling">圖片來源</a></p>
+<p>在深度測試的過程中，會比較相機視線方向上所有物體的深度值，深度值較大的物體其 <strong>像素(fragment)</strong> 會被丟棄而不會繪製到畫面上。例如：A 物體與 B 物體都在相機的視線方向上，A 較近、B 較遠，當 A 物體先被繪製時，場景上都還沒有東西，這些空白場景 <strong>像素(fragment)</strong> <a target="_blank" rel="noopener" href="https://open.gl/depthstencils#:~:text=The%20default%20clear%20value%20for%20the%20depth%20is%201.0f%2C%20which%20is%20equal%20to%20the%20depth%20of%20your%20far%20clipping%20plane%20and%20thus%20the%20furthest%20depth%20that%20can%20be%20represented.%20All%20fragments%20will%20be%20closer%20than%20that%2C%20so%20they%20will%20no%20longer%20be%20discarded.">預設的深度值是 1.0</a>，而 A 物體因為在近平面與遠平面之間，代表深度值會落在 [0, 1] 間，比預設的深度值 1.0 小，因此深度測試判斷 A 物體通過深度測試將其繪製到畫面上，接著繪製 B 時因為他比 A 還要遠，代表 B 的深度值大於 A 的深度值，此時深度測試判斷失敗把 B 的 <strong>像素(fragment)</strong> 丟棄，最終 B 就不會被繪製到畫面上</p>
+<h2 id="深度測試的啟用"><a href="#深度測試的啟用" class="headerlink" title="深度測試的啟用"></a>深度測試的啟用</h2><p>在 <strong>Three.js</strong> 中深度測試的啟用定義在 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/Material.depthTest">Material.depthTest</a>，預設值是 <code>true</code>，也就是說在繪製 <strong>Material</strong> 時，會先將 <strong>Material</strong> 中的每個 <strong>像素(fragment)</strong> 與原有 <strong>深度緩衝區</strong> 中的深度值進行比較，如果新的 <strong>像素(fragment)</strong> 比較近(也就是深度值較小) 就會繪製在畫面上，相反來說如果比較遠的話就將這個 <strong>像素(fragment)</strong> 丟棄，不會繪製到畫面上。而如果深度測試關閉的話，代表在繪製 <strong>Material</strong> 時不需要判斷其 <strong>像素(fragment)</strong> 與原有 <strong>深度緩衝區</strong> 中深度值的關係，也就是說這個 <strong>Material</strong> 中的 <strong>像素(fragment)</strong> 不管他所處的位置是遠是近，最終都會被繪製到畫面上</p>
+<h2 id="深度測試函式"><a href="#深度測試函式" class="headerlink" title="深度測試函式"></a>深度測試函式</h2><p>指的是當比較兩個 <strong>像素(fragment)</strong> 比較深度值時使用的方式，前面有提到近的物體深度值較小、遠的物體深度值較大，而在進行深度測試時，深度值較小的物體會通過深度測試，為什麼深度值較小的代表通過深度測試呢？原因是定義在 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/Material.depthFunc">Material.depthFunc</a> 的深度測試函式，其預設值是 <code>LessEqualDepth</code>，代表當前 <strong>像素(fragment)</strong> 的深度值小於或等於 <strong>深度緩衝區</strong> 原有的深度值時通過測試，也就是渲染在畫面上。除了預設的 <code>LessEqualDepth</code> 外，還有以下幾種不同的比較方法：</p>
+<table>
+<thead>
+<tr>
+<th>運算符名稱</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LessEqualDepth</td>
+<td>當前深度值小於或等於緩衝區原有的深度值時通過測試。</td>
+</tr>
+<tr>
+<td>LessDepth</td>
+<td>當前深度值小於緩衝區原有的深度值時通過測試。</td>
+</tr>
+<tr>
+<td>GreaterEqualDepth</td>
+<td>當前深度值大於或等於緩衝區原有的深度值時通過測試。</td>
+</tr>
+<tr>
+<td>GreaterDepth</td>
+<td>當前深度值大於緩衝區原有的深度值時通過測試。</td>
+</tr>
+<tr>
+<td>EqualDepth</td>
+<td>當前深度值等於緩衝區原有的深度值時通過測試。</td>
+</tr>
+<tr>
+<td>NotEqualDepth</td>
+<td>當前深度值不等於緩衝區原有的深度值時通過測試。</td>
+</tr>
+<tr>
+<td>AlwaysDepth</td>
+<td>始終通過深度測試，不論深度值如何。</td>
+</tr>
+<tr>
+<td>NeverDepth</td>
+<td>始終不通過深度測試，所有片段都會被丟棄。</td>
+</tr>
+</tbody></table>
+<h2 id="是否寫入深度緩衝區"><a href="#是否寫入深度緩衝區" class="headerlink" title="是否寫入深度緩衝區"></a>是否寫入深度緩衝區</h2><p>前面提到運行深度測試的時候會比較兩個 <strong>像素(fragment)</strong> 的深度值，比較後會將深度值較大的 <strong>像素(fragment)</strong> 丟棄，並把深度值較小的 <strong>像素(fragment)</strong> 寫入 <strong>深度緩衝區</strong>，特別的是要不要將深度值寫入 <strong>深度緩衝區</strong> 是可以自行設定的。在 <strong>Three.js</strong> 中是否寫入 <strong>深度緩衝區</strong> 的開關定義在 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/Material.depthWrite">Material.depthWrite</a>，預設值是 <code>true</code>，代表在繪製 <strong>Material</strong> 時，如果深度測試通過會把新 <strong>像素(fragment)</strong> 的深度值寫入 <strong>深度緩衝區</strong>。以兩個物體 A 與 B 來舉例，一開始 A 物體中的 <strong>像素(fragment)</strong> 寫入了深度值為 0.5，接著繪製 B 物體的 <strong>像素(fragment)</strong> 其深度值是 0.3，發現 B 物體中其 <strong>像素(fragment)</strong> 的深度值比較小通過深度測試，就會將 0.3 寫入<strong>深度緩衝區</strong> 中，在下次深度值比較的時候就會將新 <strong>像素(fragment)</strong> 的深度值拿來跟 0.3 進行比較了</p>
+<h2 id="了解深度測試的行為"><a href="#了解深度測試的行為" class="headerlink" title="了解深度測試的行為"></a>了解深度測試的行為</h2><p>下面藉由幾個例子更好的了解深度測試是如何運作的，請搭配 <a target="_blank" rel="noopener" href="https://codesandbox.io/p/github/bcjohnblue/threejs-what-is-depth-test/main">線上 Demo 版</a> 自行操作</p>
+<p>在這個例子中我創建了兩個平面，一個是紅色的平面(z&#x3D;0)，另一個是藍色的平面(z&#x3D;-1)，而相機視野的方向設定是朝向 -z 軸的，所以一開始可以看到紅色的平面在前而藍色的平面在後，下面這張圖是我稍微把相機拉高，所以可以看到後面的藍色平面</p>
+<img src="./init.png" style="width: 50%" />
+
+<p>另外值得一提的是，在這個例子中我先繪製的是紅色的平面，接著才是藍色的平面，繪製順序對於後面分析物體遠近關係是很重要的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// first draw</span></span><br><span class="line"><span class="variable language_">this</span>.<span class="property">redPlane</span> = <span class="keyword">new</span> <span class="title class_">Plane</span>(experience);</span><br><span class="line"><span class="variable language_">this</span>.<span class="property">redPlane</span>.<span class="property">mesh</span>.<span class="property">position</span>.<span class="property">z</span> = <span class="number">0</span>;</span><br><span class="line"><span class="variable language_">this</span>.<span class="property">redPlane</span>.<span class="property">mesh</span>.<span class="property">material</span>.<span class="property">color</span> = <span class="keyword">new</span> <span class="title class_">Color</span>(<span class="string">&#x27;#ff0000&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// second draw</span></span><br><span class="line"><span class="variable language_">this</span>.<span class="property">bluePlane</span> = <span class="keyword">new</span> <span class="title class_">Plane</span>(experience);</span><br><span class="line"><span class="variable language_">this</span>.<span class="property">bluePlane</span>.<span class="property">mesh</span>.<span class="property">position</span>.<span class="property">z</span> = -<span class="number">1</span>;</span><br><span class="line"><span class="variable language_">this</span>.<span class="property">bluePlane</span>.<span class="property">mesh</span>.<span class="property">material</span>.<span class="property">color</span> = <span class="keyword">new</span> <span class="title class_">Color</span>(<span class="string">&#x27;#0000ff&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="Case-1-切換深度測試的開關"><a href="#Case-1-切換深度測試的開關" class="headerlink" title="Case 1. 切換深度測試的開關"></a>Case 1. 切換深度測試的開關</h4><ol>
+<li>紅色平面的 <code>depthTest</code> 設為 <code>false</code> &#x3D;&gt; 藍色平面被繪製上去<br>繪製紅色平面時因為沒有開啟深度測試，因此紅色平面 <strong>像素(fragment)</strong> 的深度值也不會寫入 <strong>深度緩衝區</strong> 中，後面當繪製藍色平面時，藍色平面 <strong>像素(fragment)</strong> 比較的深度值都是 <strong>深度緩衝區</strong> 中預設的 1.0，藍色平面 <strong>像素(fragment)</strong> 都比 1.0 小通過深度測試，所以最終藍色平面覆蓋紅色平面繪製到畫面上</li>
+</ol>
+<img src="./depth-test-red-disabled.png" style="width: 50%" />
+
+<ol start="2">
+<li>藍色平面的 <code>depthTest</code> 設為 <code>false</code> &#x3D;&gt; 藍色平面被繪製上去<br>繪製藍色平面時因為沒有開啟深度測試，也就不會將藍色平面中的 <strong>像素(fragment)</strong> 去與原先 <strong>深度緩衝區</strong> 的值進行比較，最終藍色平面會直接繪製在畫面上。這邊可以看到一個特性，就是當 <code>depthTest</code> 關閉時，完全不需要管原有 <strong>深度緩衝區</strong> 中的深度值是多少，只要後畫的物體都一定會在畫面上呈現</li>
+</ol>
+<img src="./depth-test-blue-disabled.png" style="width: 50%" />
+
+<h4 id="Case-2-改變深度測試函式"><a href="#Case-2-改變深度測試函式" class="headerlink" title="Case 2. 改變深度測試函式"></a>Case 2. 改變深度測試函式</h4><ol>
+<li>紅色平面的 <code>depthFunc</code> 改為 <code>GreaterEqualDepth</code> &#x3D;&gt; 紅色平面沒有被畫上去<br>當繪製紅色平面時，由於紅色平面的位置在 <strong>遠平面(far plane)</strong> 之內，代表其 <strong>像素(fragment)</strong> 的深度值都小於 1，而改成 <code>GreaterEqualDepth</code> 後，代表深度值需要大於原有 <strong>深度緩衝區</strong> 的深度值，深度測試才會成功，但預設 <strong>深度緩衝區</strong> 中的深度值為 1.0，因此紅色平面的深度測試失敗，最終不會繪製出來</li>
+</ol>
+<img src="./depth-func-red-greater.png" style="width: 50%" />
+
+<ol start="2">
+<li>藍色平面的 <code>depthFunc</code> 改為 <code>GreaterEqualDepth</code> &#x3D;&gt; 藍色平面被畫上去<br>跟上面的原因一樣，原本藍色平面的位置就在紅色平面之後，藍色平面的深度值都比紅色平面大，當 <code>depthFunc</code> 改為 <code>GreaterEqualDepth</code> 後，藍色平面的深度測試就都通過了，因此藍色平面被繪製出來</li>
+</ol>
+<img src="./depth-func-blue-greater.png" style="width: 50%" />
+
+<h4 id="Case-3-改變是否寫入深度緩衝區"><a href="#Case-3-改變是否寫入深度緩衝區" class="headerlink" title="Case 3. 改變是否寫入深度緩衝區"></a>Case 3. 改變是否寫入深度緩衝區</h4><ol>
+<li>紅色平面的 <code>depthWrite</code> 改為 <code>false</code> &#x3D;&gt; 藍色平面被畫上去<br>因為紅色平面 <strong>像素(fragment)</strong> 其深度值並沒有被寫入 <strong>深度緩衝區</strong>，所以當繪製藍色平面時，藍色平面的 <strong>像素(fragment)</strong> 都是與 <strong>深度緩衝區</strong> 中預設的 1.0 比較，也就通過深度測試被繪製出來了</li>
+</ol>
+<img src="./depth-write-red-disabled.png" style="width: 50%" />
+
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://learnopengl-cn.readthedocs.io/zh/latest/04%20Advanced%20OpenGL/01%20Depth%20testing/">深度测试</a></p>
+
+
+<style>
+table {
+  th, td {
+   padding: 8px 12px;
+  } 
+}
+</style>
+
+
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-2-%E5%B7%A6%E6%89%8B-%E5%8F%B3%E6%89%8B%E5%BA%A7%E6%A8%99%E7%B3%BB%E8%88%87%E9%BD%8A%E6%AC%A1%E5%BA%A7%E6%A8%99/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2025/02/08/%E7%90%86%E8%A7%A3-three-js-%E7%9A%84-shader-%E6%9E%B6%E6%A7%8B/">
+        <span>理解 Three.js 的 shader 架構</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2025/02/13/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-1-%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%EF%BC%9F/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%AD%A4%E7%82%BA-Three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-%E7%AC%AC-1-%E7%AF%87%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">此為 Three.js 中物體的遠近關係 系列文章 - 第 1 篇：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6"><span class="toc-number"></span> <span class="toc-text">什麼是深度測試</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%E6%98%AF%E5%A6%82%E4%BD%95%E9%81%8B%E4%BD%9C%E7%9A%84"><span class="toc-number"></span> <span class="toc-text">深度測試是如何運作的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%E7%9A%84%E5%95%9F%E7%94%A8"><span class="toc-number"></span> <span class="toc-text">深度測試的啟用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%E5%87%BD%E5%BC%8F"><span class="toc-number"></span> <span class="toc-text">深度測試函式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%AF%E5%90%A6%E5%AF%AB%E5%85%A5%E6%B7%B1%E5%BA%A6%E7%B7%A9%E8%A1%9D%E5%8D%80"><span class="toc-number"></span> <span class="toc-text">是否寫入深度緩衝區</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%E7%9A%84%E8%A1%8C%E7%82%BA"><span class="toc-number"></span> <span class="toc-text">了解深度測試的行為</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-1-%E5%88%87%E6%8F%9B%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%E7%9A%84%E9%96%8B%E9%97%9C"><span class="toc-number"></span> <span class="toc-text">Case 1. 切換深度測試的開關</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-2-%E6%94%B9%E8%AE%8A%E6%B7%B1%E5%BA%A6%E6%B8%AC%E8%A9%A6%E5%87%BD%E5%BC%8F"><span class="toc-number"></span> <span class="toc-text">Case 2. 改變深度測試函式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Case-3-%E6%94%B9%E8%AE%8A%E6%98%AF%E5%90%A6%E5%AF%AB%E5%85%A5%E6%B7%B1%E5%BA%A6%E7%B7%A9%E8%A1%9D%E5%8D%80"><span class="toc-number"></span> <span class="toc-text">Case 3. 改變是否寫入深度緩衝區</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number"></span> <span class="toc-text">參考資料</span></a>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

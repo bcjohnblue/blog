@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+          
+
+
+    
+    
+    <title>
+        
+            Vue.nextTick() 中的 event loop | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/">Vue.nextTick() 中的 event loop</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2024-02-05
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2024-02-18
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Javascript/">Javascript</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=Vue.nextTick() 中的 event loop&url=https://bcjohnblue.github.io/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=Vue.nextTick() 中的 event loop&url=https://bcjohnblue.github.io/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/&title=Vue.nextTick() 中的 event loop" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=Vue.nextTick() 中的 event loop&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/&text=Vue.nextTick() 中的 event loop" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <p>此為 <strong>event loop</strong> 系列文章 - 第 4 篇：</p>
+<ol>
+<li><a href="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> </li>
+<li><a href="/blog/2024/01/27/從程式碼角度來看-event-loop" target="_blank" rel="noreferrer noopenner">從程式碼角度來看 event loop</a> </li>
+<li><a href="/blog/2024/02/04/使用原生的-queuemicrotask-處理微任務/" target="_blank" rel="noreferrer noopenner">使用原生的 queueMicrotask 處理微任務</a></li>
+<li><a href="/blog/2024/02/05/vue-nexttick-中的-event-loop/" target="_blank" rel="noreferrer noopenner">Vue.nextTick() 中的 event loop</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>這篇文章想藉由閱讀 <a target="_blank" rel="noopener" href="https://vuejs.org/api/general.html#nexttick">Vue.nextTick()</a> 的源碼來看 <strong>event loop</strong> 的使用</p>
+<h2 id="Vue-nextTick-的使用方式"><a href="#Vue-nextTick-的使用方式" class="headerlink" title="Vue.nextTick 的使用方式"></a>Vue.nextTick 的使用方式</h2><p>官方文件寫明 <code>Vue.nextTick()</code> 是拿來等待下一次 DOM 更新的方法，因為 Vue 在每次響應式數據改變後是異步去更新 DOM，所以如果在數據改變後，馬上獲取 DOM 的資料會是舊的，這時就需要用到 <code>Vue.nextTick()</code> 獲取更新後的 DOM</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; ref, nextTick &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> count = <span class="title function_">ref</span>(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">increment</span>(<span class="params"></span>) &#123;</span><br><span class="line">  count.<span class="property">value</span>++</span><br><span class="line"></span><br><span class="line">  <span class="comment">// DOM 还未更新</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;counter&#x27;</span>).<span class="property">textContent</span>) <span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">nextTick</span>()</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// DOM 此时已经更新</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;counter&#x27;</span>).<span class="property">textContent</span>) <span class="comment">// 1</span></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;counter&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;increment&quot;</span>&gt;</span>&#123;&#123; count &#125;&#125;<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="Vue-nextTick-的源碼分析"><a href="#Vue-nextTick-的源碼分析" class="headerlink" title="Vue.nextTick 的源碼分析"></a>Vue.nextTick 的源碼分析</h2><p>目前最新版(2024&#x2F;02) 的 <a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/dev/src/core/util/next-tick.js">Vue.nextTick 源碼</a> 如下(移除掉一些註解方便整體閱讀)：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; noop &#125; <span class="keyword">from</span> <span class="string">&#x27;shared/util&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; handleError &#125; <span class="keyword">from</span> <span class="string">&#x27;./error&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; isIE, isIOS, isNative &#125; <span class="keyword">from</span> <span class="string">&#x27;./env&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> isUsingMicroTask = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> callbacks = []</span><br><span class="line"><span class="keyword">let</span> pending = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">flushCallbacks</span> () &#123;</span><br><span class="line">  pending = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">const</span> copies = callbacks.<span class="title function_">slice</span>(<span class="number">0</span>)</span><br><span class="line">  callbacks.<span class="property">length</span> = <span class="number">0</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; copies.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    copies[i]()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> timerFunc</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="title class_">Promise</span> !== <span class="string">&#x27;undefined&#x27;</span> &amp;&amp; <span class="title function_">isNative</span>(<span class="title class_">Promise</span>)) &#123;</span><br><span class="line">  <span class="keyword">const</span> p = <span class="title class_">Promise</span>.<span class="title function_">resolve</span>()</span><br><span class="line">  timerFunc = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    p.<span class="title function_">then</span>(flushCallbacks)</span><br><span class="line">    <span class="keyword">if</span> (isIOS) <span class="built_in">setTimeout</span>(noop)</span><br><span class="line">  &#125;</span><br><span class="line">  isUsingMicroTask = <span class="literal">true</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (!isIE &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">MutationObserver</span> !== <span class="string">&#x27;undefined&#x27;</span> &amp;&amp; (</span><br><span class="line">  <span class="title function_">isNative</span>(<span class="title class_">MutationObserver</span>) ||</span><br><span class="line">  <span class="title class_">MutationObserver</span>.<span class="title function_">toString</span>() === <span class="string">&#x27;[object MutationObserverConstructor]&#x27;</span></span><br><span class="line">)) &#123;</span><br><span class="line">  <span class="keyword">let</span> counter = <span class="number">1</span></span><br><span class="line">  <span class="keyword">const</span> observer = <span class="keyword">new</span> <span class="title class_">MutationObserver</span>(flushCallbacks)</span><br><span class="line">  <span class="keyword">const</span> textNode = <span class="variable language_">document</span>.<span class="title function_">createTextNode</span>(<span class="title class_">String</span>(counter))</span><br><span class="line">  observer.<span class="title function_">observe</span>(textNode, &#123;</span><br><span class="line">    <span class="attr">characterData</span>: <span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line">  timerFunc = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    counter = (counter + <span class="number">1</span>) % <span class="number">2</span></span><br><span class="line">    textNode.<span class="property">data</span> = <span class="title class_">String</span>(counter)</span><br><span class="line">  &#125;</span><br><span class="line">  isUsingMicroTask = <span class="literal">true</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> setImmediate !== <span class="string">&#x27;undefined&#x27;</span> &amp;&amp; <span class="title function_">isNative</span>(setImmediate)) &#123;</span><br><span class="line">  <span class="comment">// Fallback to setImmediate.</span></span><br><span class="line">  <span class="comment">// Technically it leverages the (macro) task queue,</span></span><br><span class="line">  <span class="comment">// but it is still a better choice than setTimeout.</span></span><br><span class="line">  timerFunc = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">setImmediate</span>(flushCallbacks)</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// Fallback to setTimeout.</span></span><br><span class="line">  timerFunc = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(flushCallbacks, <span class="number">0</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">nextTick</span> (cb?: <span class="title class_">Function</span>, ctx?: <span class="title class_">Object</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> _resolve</span><br><span class="line">  callbacks.<span class="title function_">push</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (cb) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        cb.<span class="title function_">call</span>(ctx)</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="title function_">handleError</span>(e, ctx, <span class="string">&#x27;nextTick&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (_resolve) &#123;</span><br><span class="line">      <span class="title function_">_resolve</span>(ctx)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">if</span> (!pending) &#123;</span><br><span class="line">    pending = <span class="literal">true</span></span><br><span class="line">    <span class="title function_">timerFunc</span>()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!cb &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">Promise</span> !== <span class="string">&#x27;undefined&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">      _resolve = resolve</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="nextTick-函式"><a href="#nextTick-函式" class="headerlink" title="nextTick 函式"></a>nextTick 函式</h3><p>第 57-79 行就是我們實際在用的 <code>nextTick</code> 函式，傳入的參數有兩個，<code>cb</code> 是 DOM 更新後才執行的 callback，<code>ctx</code> 為了傳遞 <code>this</code> 的指向<br>第 59-69 行將傳入的 <code>cb</code> 放入 <code>callbacks</code> 的佇列裡，等待後續執行<br>第 70-73 行用一個 <code>pending</code> 的變數控制，讓多次呼叫 <code>nextTick</code> 函式時，<code>timerFunc</code> 可以在同一次的 <strong>更新時機(tick)</strong> 中執行所有的 <code>callbacks</code></p>
+<p><strong>什麼是更新時機(tick)?</strong><br>在 <code>Vue</code> 中定義了一個叫做 <strong>tick</strong> 的專有名詞，指的是某一個特定的時間下 <code>Vue</code> 用來執行響應式資料改變、DOM 更新等邏輯，<strong>tick</strong> 執行的時機會根據之後將提到的 <code>timerFunc</code> 函式判斷是要用 <strong>event loop</strong> 中的 <strong>宏任務 (macrotask)</strong> 或是 <strong>微任務 (microtask)</strong> 方式執行。</p>
+<p>第 74-78 行讓 <code>nextTick</code> 函式可以單純回傳 <code>Promise</code>，如此一來不用傳 <code>cb</code> 也可以使用</p>
+<ul>
+<li>使用 callback 方式</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;counter&#x27;</span>).<span class="property">textContent</span>) <span class="comment">// 更新 DOM 前</span></span><br><span class="line"><span class="keyword">await</span> <span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;counter&#x27;</span>).<span class="property">textContent</span>) <span class="comment">// 更新 DOM 後</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>不使用 callback 方式</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;counter&#x27;</span>).<span class="property">textContent</span>) <span class="comment">// 更新 DOM 前</span></span><br><span class="line"><span class="keyword">await</span> <span class="title function_">nextTick</span>()</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;counter&#x27;</span>).<span class="property">textContent</span>) <span class="comment">// 更新 DOM 後</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="callbacks-flushCallbacks-負責執行-callback"><a href="#callbacks-flushCallbacks-負責執行-callback" class="headerlink" title="callbacks &amp; flushCallbacks - 負責執行 callback"></a>callbacks &amp; flushCallbacks - 負責執行 callback</h3><p>在 <code>nextTick</code> 中丟入的 <code>cb</code> 參數，會放入 <code>callbacks</code> 佇列裡，等待下一次適當的 <strong>更新時機(nextTick)</strong> 後，才真正執行 <code>cb</code> 函式。而真正執行 <code>cb</code> 的地方就是 <code>flushCallbacks</code> 函式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> callbacks = []</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">flushCallbacks</span> () &#123;</span><br><span class="line">  pending = <span class="literal">false</span></span><br><span class="line">  <span class="comment">// 問題 2. 為什麼需要複製 callbacks 陣列？</span></span><br><span class="line">  <span class="keyword">const</span> copies = callbacks.<span class="title function_">slice</span>(<span class="number">0</span>)</span><br><span class="line">  callbacks.<span class="property">length</span> = <span class="number">0</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; copies.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    copies[i]()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="timerFunc-決定用哪種-event-loop-方式決定更新時機-nextTick"><a href="#timerFunc-決定用哪種-event-loop-方式決定更新時機-nextTick" class="headerlink" title="timerFunc - 決定用哪種 event loop 方式決定更新時機(nextTick)"></a>timerFunc - 決定用哪種 event loop 方式決定更新時機(nextTick)</h3><p>什麼是下一次適當的 <strong>更新時機(nextTick)</strong> 呢？在 <code>Vue</code> 中使用了 <code>timerFunc</code> 這個變數去做判斷，以下這段程式碼會根據不同的瀏覽器去做兼容控制，我們可以看到 <code>timerFunc</code> 的優先順序為： <code>Promise</code> &#x3D;&gt; <code>MutationObserver</code> &#x3D;&gt; <code>setImmediate</code> &#x3D;&gt; <code>setTimeout</code>，也就是說 <code>nextTick</code> 中傳入的 <code>callback</code> 會優先以 <strong>微任務 (microtask)</strong> 的方式執行，如果真的不行最後才會降級成 <code>setTimeout</code> 的 <strong>宏任務 (macrotask)</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> timerFunc</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="title class_">Promise</span> !== <span class="string">&#x27;undefined&#x27;</span> &amp;&amp; <span class="title function_">isNative</span>(<span class="title class_">Promise</span>)) &#123;</span><br><span class="line">  <span class="keyword">const</span> p = <span class="title class_">Promise</span>.<span class="title function_">resolve</span>()</span><br><span class="line">  timerFunc = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    p.<span class="title function_">then</span>(flushCallbacks)</span><br><span class="line">    <span class="keyword">if</span> (isIOS) <span class="built_in">setTimeout</span>(noop)</span><br><span class="line">  &#125;</span><br><span class="line">  isUsingMicroTask = <span class="literal">true</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (!isIE &amp;&amp; <span class="keyword">typeof</span> <span class="title class_">MutationObserver</span> !== <span class="string">&#x27;undefined&#x27;</span> &amp;&amp; (</span><br><span class="line">  <span class="title function_">isNative</span>(<span class="title class_">MutationObserver</span>) ||</span><br><span class="line">  <span class="title class_">MutationObserver</span>.<span class="title function_">toString</span>() === <span class="string">&#x27;[object MutationObserverConstructor]&#x27;</span></span><br><span class="line">)) &#123;</span><br><span class="line">  <span class="keyword">let</span> counter = <span class="number">1</span></span><br><span class="line">  <span class="keyword">const</span> observer = <span class="keyword">new</span> <span class="title class_">MutationObserver</span>(flushCallbacks)</span><br><span class="line">  <span class="keyword">const</span> textNode = <span class="variable language_">document</span>.<span class="title function_">createTextNode</span>(<span class="title class_">String</span>(counter))</span><br><span class="line">  observer.<span class="title function_">observe</span>(textNode, &#123;</span><br><span class="line">    <span class="attr">characterData</span>: <span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line">  timerFunc = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    counter = (counter + <span class="number">1</span>) % <span class="number">2</span></span><br><span class="line">    textNode.<span class="property">data</span> = <span class="title class_">String</span>(counter)</span><br><span class="line">  &#125;</span><br><span class="line">  isUsingMicroTask = <span class="literal">true</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> setImmediate !== <span class="string">&#x27;undefined&#x27;</span> &amp;&amp; <span class="title function_">isNative</span>(setImmediate)) &#123;</span><br><span class="line">  <span class="comment">// Fallback to setImmediate.</span></span><br><span class="line">  <span class="comment">// Technically it leverages the (macro) task queue,</span></span><br><span class="line">  <span class="comment">// but it is still a better choice than setTimeout.</span></span><br><span class="line">  timerFunc = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title function_">setImmediate</span>(flushCallbacks)</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// Fallback to setTimeout.</span></span><br><span class="line">  timerFunc = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(flushCallbacks, <span class="number">0</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>為什麼優先以微任務方式執行？</strong><br>在之前系列文提到每一輪的 <strong>event loop</strong> 會挑出一個 <strong>宏任務 (macrotask)</strong> 執行，接著執行 <strong>微任務佇列 (microtask queue)</strong> 中的所有 <strong>微任務 (microtask)</strong> ，然後再進行 UI 的畫面渲染。<br>在 <code>Vue</code> 中的響應式資料改變，都有可能會修改 DOM 改變畫面，而畫面的改變當然希望是越即時越好，這部分如果使用 <code>setTimeout</code> 這種 <strong>宏任務 (macrotask)</strong> 執行 <code>Vue</code> 的更新邏輯，每一幀渲染前都只能執行一個 <strong>宏任務 (macrotask)</strong> ，這樣一定很容易遇到<a target="_blank" rel="noopener" href="https://github.com/Ma63d/vue-analysis/issues/6#:~:text=Vue%E4%B8%80%E5%BC%80%E5%A7%8B%E6%9B%BE%E7%BB%8F%E6%94%B9%E8%BF%87nextTick%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%82%E6%88%91%E4%BB%AC%E6%9D%A5%E7%9C%8B%E7%9C%8B%E8%BF%99%E4%B8%A4%E4%B8%AAjsFiddle">畫面不即時的問題</a>，所以 <code>Vue</code> 在處理資料更新以及 DOM 的修改才優先以 <strong>微任務 (microtask)</strong> 方式執行，這樣在當輪的瀏覽器渲染畫面前資料都已經更新了。</p>
+<h3 id="nextTick-問題解析"><a href="#nextTick-問題解析" class="headerlink" title="nextTick 問題解析"></a>nextTick 問題解析</h3><h5 id="1-pending-變數的作用"><a href="#1-pending-變數的作用" class="headerlink" title="1. pending 變數的作用?"></a>1. pending 變數的作用?</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> callbacks = []</span><br><span class="line"><span class="keyword">let</span> pending = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">flushCallbacks</span> () &#123;</span><br><span class="line">  pending = <span class="literal">false</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">timerFunc = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title class_">Promise</span>.<span class="title function_">resolve</span>().<span class="title function_">then</span>(flushCallbacks)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">nextTick</span> (cb?: <span class="title class_">Function</span>, ctx?: <span class="title class_">Object</span>) &#123;</span><br><span class="line">  callbacks.<span class="title function_">push</span>(...)</span><br><span class="line">  <span class="keyword">if</span> (!pending) &#123;</span><br><span class="line">    pending = <span class="literal">true</span></span><br><span class="line">    <span class="title function_">timerFunc</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>pending</code> 的初始值為 <code>false</code>，在一開始使用 <code>nextTick</code> 的時候會設為 <code>true</code>，然後在 <code>flushCallbacks</code> 中 (<code>callbacks</code> 佇列全部執行前) 會設為 <code>false</code>，這樣可以讓多次 <code>nextTick</code> 中加入的 <code>cb</code>，在同一次的 <strong>更新時機(nextTick)</strong> 中一次全部執行完</p>
+<p>範例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">cb1</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">cb2</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">nextTick</span>(cb1)</span><br><span class="line"><span class="title function_">nextTick</span>(cb2)</span><br></pre></td></tr></table></figure>
+<p>由於有 <code>pending</code> 變數的控制，第 5 行執行後 <code>callbacks = [cb1, cb2]</code>，但 <code>timerFunc()</code> 一樣只會執行一次。接著第 10 行將 <code>flushCallbacks</code> 加入 <strong>微任務佇列 (microtask queue)</strong> ，等待之後從 <strong>微任務佇列 (microtask queue)</strong> 挑出 <code>flushCallbacks</code> 時，<code>cb1</code>, <code>cb2</code> 就可以在同一次的 <strong>更新時機(nextTick)</strong> 中一併執行</p>
+<h5 id="2-為什麼需要複製-callbacks-陣列？"><a href="#2-為什麼需要複製-callbacks-陣列？" class="headerlink" title="2. 為什麼需要複製 callbacks 陣列？"></a>2. 為什麼需要複製 callbacks 陣列？</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">flushCallbacks</span> () &#123;</span><br><span class="line">  pending = <span class="literal">false</span></span><br><span class="line">  <span class="keyword">const</span> copies = callbacks.<span class="title function_">slice</span>(<span class="number">0</span>)</span><br><span class="line">  callbacks.<span class="property">length</span> = <span class="number">0</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; copies.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    copies[i]()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在實際執行 <code>callback</code> 前會先將整個 <code>callbacks</code> 陣列複製，原因是當 <code>nextTick</code> 中的 <code>callback</code> 使用到巢狀的 <code>nextTick</code> 時，需要讓父層與子層的 <code>callback</code> 在不同次的 <strong>更新時機(nextTick)</strong> 執行</p>
+<p>範例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">nextTick</span>(<span class="keyword">function</span> <span class="title function_">cb1</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">nextTick</span>(cb2)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><code>cb1</code> 的子層巢狀用到了 <code>cb2</code>，如果不複製 <code>callbacks</code> 陣列的話，<code>cb2</code> 也會被加入到當輪要執行的 <code>callbacks</code> 陣列裡，導致 <code>cb1</code> 與 <code>cb2</code> 都在同一次的 <strong>更新時機(nextTick)</strong> 中執行，而複製了 <code>callbacks</code> 陣列後，<code>flushCallbacks</code> 會將這一次該執行完的 <code>callbacks</code> 都跑完，而 <code>cb2</code> 被加入到的是下一次的 <code>callbacks</code> 陣列，也就是在下一次的 <strong>更新時機(nextTick)</strong> 才會執行 </p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://jiuto.github.io/jiuto_blog/guide/vue/nextTick.html#vue%E4%B8%AD-nexttick%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86">vue中$nextTick的实现原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://vue3js.cn/interview/vue/nexttick.html">面试官：Vue中的$nextTick有什么作用？</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Ma63d/vue-analysis/issues/6">Vue源码详解之nextTick：MutationObserver只是浮云，microtask才是核心！</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7089980191329484830">Vue异步更新机制以及$nextTick原理</a></li>
+</ul>
+<br />
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/33521966/mutationobserver-characterdata-usage-without-childlist">MutationObserver characterData usage without childList</a><br>講解 MutationObserver 中的 characterData 的作用</li>
+</ul>
+<br />
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://nodejs.org/en/learn/asynchronous-work/understanding-setimmediate">Understanding setImmediate()</a></li>
+<li><a target="_blank" rel="noopener" href="https://nodejs.org/en/guides/event-loop-timers-and-nexttick">The Node.js Event Loop, Timers, and process.nextTick()</a></li>
+<li><a target="_blank" rel="noopener" href="https://yu-jack.github.io/2021/03/14/node-event-loop/">Event Loop 運行機制解析 - Node.js 篇</a><br>瀏覽器中的 setImmediate 只有已廢棄的 IE 支援，基本上現在 setImmediate 只會在 nodejs 中被使用，以上三篇文章簡介了 Node.js 的 event loop，以及 setImmediate 的執行時機</li>
+</ul>
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2024/02/18/%E7%90%86%E8%A7%A3-three-js-%E4%B8%AD-texture-%E7%9A%84-offset-repeat-%E5%8F%8A-wrap/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>理解 Three.js 中 texture 的 offset, repeat 及 wrap</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2024/02/04/%E4%BD%BF%E7%94%A8%E5%8E%9F%E7%94%9F%E7%9A%84-queuemicrotask-%E8%99%95%E7%90%86%E5%BE%AE%E4%BB%BB%E5%8B%99/">
+        <span>使用原生的 queueMicrotask 處理微任務</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2024/02/05/vue-nexttick-%E4%B8%AD%E7%9A%84-event-loop/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-nextTick-%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">Vue.nextTick 的使用方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-nextTick-%E7%9A%84%E6%BA%90%E7%A2%BC%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">Vue.nextTick 的源碼分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nextTick-%E5%87%BD%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">nextTick 函式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#callbacks-flushCallbacks-%E8%B2%A0%E8%B2%AC%E5%9F%B7%E8%A1%8C-callback"><span class="toc-number">3.2.</span> <span class="toc-text">callbacks &amp; flushCallbacks - 負責執行 callback</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#timerFunc-%E6%B1%BA%E5%AE%9A%E7%94%A8%E5%93%AA%E7%A8%AE-event-loop-%E6%96%B9%E5%BC%8F%E6%B1%BA%E5%AE%9A%E6%9B%B4%E6%96%B0%E6%99%82%E6%A9%9F-nextTick"><span class="toc-number">3.3.</span> <span class="toc-text">timerFunc - 決定用哪種 event loop 方式決定更新時機(nextTick)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nextTick-%E5%95%8F%E9%A1%8C%E8%A7%A3%E6%9E%90"><span class="toc-number">3.4.</span> <span class="toc-text">nextTick 問題解析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-pending-%E8%AE%8A%E6%95%B8%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">3.4.0.1.</span> <span class="toc-text">1. pending 變數的作用?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E7%82%BA%E4%BB%80%E9%BA%BC%E9%9C%80%E8%A6%81%E8%A4%87%E8%A3%BD-callbacks-%E9%99%A3%E5%88%97%EF%BC%9F"><span class="toc-number">3.4.0.2.</span> <span class="toc-text">2. 為什麼需要複製 callbacks 陣列？</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number">4.</span> <span class="toc-text">參考資料</span></a></li></ol>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >

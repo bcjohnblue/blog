@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script>if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode)) window.location.href="https://support.dmeng.net/upgrade-your-browser.html?referrer="+encodeURIComponent(window.location.href); </script>
+    
+    
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Regular.woff2" as="font">
+        <link rel="preload" crossorigin="crossorigin" href="/fonts/roboto/Roboto-Bold.woff2" as="font">
+    
+    
+    
+        <link rel="shortcut icon" href="/blog/icons/favicon.ico">
+    
+
+    
+    
+        
+<link rel="stylesheet" href="/blog/css/mdui.min.v1.0.0.css">
+
+    
+    
+<link rel="stylesheet" href="/blog/css/main.css">
+<link rel="stylesheet" href="/blog/css/iconfont.css">
+
+
+    
+    
+
+    
+        <script data-ad-client="ca-" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFVMRNT125"></script>
+<script>
+  var host = window.location.hostname;
+  if (host != "localhost" || true == false) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFVMRNT125');
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+    
+        <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        
+            load: ['[tex]/mhchem'],
+        
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        
+            packages: {'[+]': ['mhchem']},
+        
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+          
+
+
+    
+    
+    <title>
+        
+            Three.js 中物體的遠近關係 (4) - 對數深度值 | bcjohn&#39;s blog
+        
+    </title>
+    
+    
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-teal mdui-theme-accent-blue">
+  
+  <header class="mdui-appbar mdui-appbar-fixed">
+  <div id="toolbar" class="mdui-toolbar mdui-color-theme">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="iconfont icon-menu"></i></button>
+    <a href="/blog/" class="mdui-typo-headline">bcjohn's</a>
+    <a href="/blog/" class="header-subtitle mdui-typo-headline">blog</a>
+    <!-- <a href="/blog/" class="mdui-typo-headline">bcjohn&#39;s blog</a> -->
+    <!-- <a href="/blog/" class="header-subtitle mdui-typo-headline"></a> -->
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: 'search'}"><i class="iconfont icon-search"></i></button>
+  </div>
+</header>
+
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="請輸入關鍵字" onfocus="listenSearchFunc()">
+    </div>
+    <div class="search-result" data-resource="/blog/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer">
+    <!-- <div class="mdui-tab" mdui-tab>
+        <a href="#sidebar-tab1" id="sidebartab" class="mdui-ripple mdui-tab-active">目錄</a>
+        <a href="#sidebar-tab2" id="sidebartab" class="mdui-ripple">關於</a>
+    </div> -->
+
+    
+    <div id="sidebar-tab1" class="mdui-p-a-1">
+        <div class="mdui-list">
+            
+                
+                <a href="/blog/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-home"></i>
+                    </div>
+                    <div class="mdui-list-item-content">首頁</div>
+                </a>
+            
+                
+                <a href="/blog/categories/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-folder"></i>
+                    </div>
+                    <div class="mdui-list-item-content">資料夾</div>
+                </a>
+            
+                
+                <a href="/blog/archives/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-archive"></i>
+                    </div>
+                    <div class="mdui-list-item-content">所有文章</div>
+                </a>
+            
+                
+                <a href="/blog/about/" class="mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-user"></i>
+                    </div>
+                    <div class="mdui-list-item-content">關於我</div>
+                </a>
+            
+            <div class="mdui-list-item mdui-ripple">
+                <div class="mdui-list-item-icon">
+                    <i class="iconfont icon-moon"></i>
+                </div>
+                <div class="mdui-list-item-content">夜間模式</div>
+                <label class="mdui-switch" id="darkmode">
+                  <input type="checkbox" id="nightmode_switch"/>
+                  <i class="mdui-switch-icon"></i>
+                </label>
+            </div>           
+        </div>
+    </div>
+
+    
+    <!-- <div id="sidebar-tab2" class="mdui-p-a-1">
+        <div class="sidebar-overview">
+            <div class="sidebar-avatar">
+                
+                    <img src="/icons/avatar.gif"/>
+                
+            </div>
+            <div class="sidebar-author-name">bcjohn</div>
+            <div class="sidebar-description">bcjohn&#39;s blog</div>
+        </div>
+        <div class="sidebar-links">
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-mail"></i></span>
+                    <a href="mailto:xxx@xxx.com" class="mdui-chip-title">E-Mail</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-github"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">GitHub</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-steam"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Steam</a>
+                </div>
+            
+                
+                <div class="mdui-chip">
+                    <span class="mdui-chip-icon"><i class="iconfont icon-weibo"></i></span>
+                    <a target="_blank" rel="noopener" href="https://your.url" class="mdui-chip-title">Weibo</a>
+                </div>
+            
+        </div>
+        <ul class="mdui-list" mdui-collapse="{accordion: true}">
+            <li class="mdui-collapse-item">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-icon">
+                        <i class="iconfont icon-link"></i>
+                    </div>
+                    <div class="mdui-list-item-content">友情連結</div>
+                    <div class="mdui-collapse-item-arrow">
+                        <i class="mdui-list-item-icon iconfont icon-angle-down"></i>
+                    </div>
+                </div>
+                <ul id="linksList" class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    
+                        <a target="_blank" rel="noopener" href="https://garybear.cn/hexo-theme-meadow/" class="mdui-list-item mdui-ripple">
+                            Meadow说明文档
+                        </a>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div> -->
+
+    <!-- <div class="mdui-divider"></div> -->
+    
+    
+</aside>
+  
+  <main id="main-contain" class="mdui-container mdui-m-t-5">
+    <article id="article" class="mdui-card mdui-p-b-2 mdui-m-b-5">
+  <header class="mdui-card-media">
+    
+    
+      <div class="post-header"> 
+  <a class="post-header-title" href="/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/">Three.js 中物體的遠近關係 (4) - 對數深度值</a>
+  <div class="post-header-meta">
+    <span>
+      <span class="iconfont icon-calendar"></span>
+      發布於:&nbsp;2025-03-17
+    </span>
+    <span>
+      <span class="iconfont icon-calendar-check"></span>
+      更新於:&nbsp;2025-05-10
+    </span>
+    <span>
+      <span class="iconfont icon-folder"></span>
+      分類於:&nbsp;<a class="category-link" href="/blog/categories/Three-js/">Three.js</a>
+    </span>
+    
+      <span>
+        <span class="iconfont icon-eye"></span>
+        閱讀次數:&nbsp;
+        <span id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv"></span></span>
+      </span>
+    
+  </div>
+</div>   
+    
+
+
+
+    
+    
+    <div class="mdui-card-menu">
+    
+      <button class="mdui-btn mdui-btn-icon mdui-text-color-teal" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="iconfont icon-share"></i></button>
+      <ul class="mdui-menu" id="share_menu">
+        <li class="mdui-menu-item">
+          <a href="http://service.weibo.com/share/share.php?appkey=&title=Three.js 中物體的遠近關係 (4) - 對數深度值&url=https://bcjohnblue.github.io/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/&pic=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://twitter.com/intent/tweet?text=Three.js 中物體的遠近關係 (4) - 對數深度值&url=https://bcjohnblue.github.io/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/&via=bcjohn" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://bcjohnblue.github.io/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://plus.google.com/share?url=https://bcjohnblue.github.io/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://bcjohnblue.github.io/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/&title=Three.js 中物體的遠近關係 (4) - 對數深度值" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="http://connect.qq.com/widget/shareqq/index.html?site=bcjohn&#39;s blog&title=Three.js 中物體的遠近關係 (4) - 對數深度值&summary=bcjohn&#39;s blog&pics=https://bcjohnblue.github.io/blog/blog/blog/icons/favicon.ico&url=https://bcjohnblue.github.io/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+        </li>
+        <li class="mdui-menu-item">
+          <a href="https://telegram.me/share/url?url=https://bcjohnblue.github.io/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/&text=Three.js 中物體的遠近關係 (4) - 對數深度值" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+        </li>
+      </ul>
+    
+  </div>
+  </header>
+  
+  
+  
+  
+  
+  <div class="mdui-card-content mdui-typo mdui-p-x-4">
+    <h6 id="此為-Three-js-中物體的遠近關係-系列文章-第-4-篇："><a href="#此為-Three-js-中物體的遠近關係-系列文章-第-4-篇：" class="headerlink" title="此為 Three.js 中物體的遠近關係 系列文章 - 第 4 篇："></a>此為 <strong>Three.js 中物體的遠近關係</strong> 系列文章 - 第 4 篇：</h6><ol>
+<li><a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手&#x2F;右手座標系與齊次座標</a></li>
+<li><a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a></li>
+<li><a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a></li>
+<li><a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a></li>
+<li><a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a></li>
+</ol>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇中我們知道<strong>透視投影</strong>的深度值 $ z_{depth} $ 和 $ 1&#x2F;z $ 成正比，如此與人眼感知的狀況相符，對於近處物體的分辨率較高，而遠處物體不容易分辨清楚互相的前後關係，大部分情況下這個深度值的轉換函式可以很好的描述物體的遠近，但如果套用到大尺度的場景，例如：太陽系、宇宙等，這種深度值的轉換函式就會出問題，這篇文章討論會出現哪些問題，以及最後如何使用對數深度值轉換函式解決</p>
+<span id="more"></span>
+
+<h2 id="深度值轉換函式的問題點"><a href="#深度值轉換函式的問題點" class="headerlink" title="深度值轉換函式的問題點"></a>深度值轉換函式的問題點</h2><p>上一篇文章中推導出深度值轉換的函式如下：</p>
+
+
+$$
+\large z_{depth} = \frac{1/z - 1/near}{1/far - 1/near}
+$$
+
+
+
+<div style="display: flex; justify-content: center;">
+  <img src="./reciprocal.png" />
+</div>
+
+<p>以 <strong>Z-value</strong> 的範圍在 <strong>[1, 50]</strong> 來看，大約有九成的深度值都位在 <strong>Z-value</strong> 小於 10 的範圍內，這意味著離相機越遠的物體，深度值可以覆蓋的範圍越少，也就是說越遠的物體越難分辨他們的前後關係，對人眼來說這是正常的機制，但如果打算在 <strong>Three.js</strong> 中渲染大尺度的場景，可以想像位於非常遠處的兩個物體深度值會非常接近於 1，例如：0.9999991 v.s. 0.9999992，再加上電腦能儲存浮點數後的小數位數是有限制的，當四捨五入後兩個物體的深度值很有可能都等於 1，無法判別這兩個物體究竟誰在前誰在後，此時會看到畫面兩個物體互相重疊出現閃爍，這就是所謂的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Z-fighting">z-fighting 問題</a></p>
+<h2 id="大尺度場景下導致的-z-fighting"><a href="#大尺度場景下導致的-z-fighting" class="headerlink" title="大尺度場景下導致的 z-fighting"></a>大尺度場景下導致的 z-fighting</h2><p><strong>Three.js</strong> 的其中一個 <a target="_blank" rel="noopener" href="https://threejs.org/examples/#webgl_camera_logarithmicdepthbuffer">官方範例</a> 很好的展示了這個問題，畫面的左邊套用的是正常深度值轉換函式，也就是 $ z_{depth} $ 與 $ 1&#x2F;z $ 成正比，而右邊的是 <strong>Three.js</strong> 內建的對數深度值轉換函式，一進去這個場景會從  $ 10^{-6} \; \small m $  距離開始逐步將相機拉遠到  $ 10^{19} \; \small m $  遠的地方，從以下截圖可以看到當相機拉遠到太陽的尺度  $ 1.4 \times 10^{5} \; \small km $  時，左邊的畫面不斷閃爍出現很明顯的 <strong>z-fighting</strong></p>
+<div style="display: flex; justify-content: center;">
+  <img src="./scene-sun.png" />
+</div>
+
+<h2 id="對數深度值"><a href="#對數深度值" class="headerlink" title="對數深度值"></a>對數深度值</h2><p>在 <strong>Three.js</strong> 中啟用對數深度值的方式非常簡單，只要在 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/renderers/WebGLRenderer">WebGLRenderer</a> 中將 <code>logarithmicDepthBuffer</code> 設為 <code>true</code> 就好了，以上範例左、右畫面在實作上就只是 <code>logarithmicDepthBuffer</code> 有沒有開啟而已</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> renderer = <span class="keyword">new</span> <span class="variable constant_">THREE</span>.<span class="title class_">WebGLRenderer</span>(&#123; <span class="attr">logarithmicDepthBuffer</span>: <span class="literal">true</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>光調整一個參數就可以讓畫面的呈現有這麽大的差別真是神奇，以下讓我們來看看 <code>logarithmicDepthBuffer</code> 底層的邏輯是如何實作的</p>
+<p>P.S. 在這之前建議先閱讀 <a href="/blog/2025/02/08/理解-three-js-的-shader-架構/" target="_blank">理解-three-js-的-shader-架構</a>，了解 <strong>Three.js</strong> 中的 shader 是如何作用的</p>
+<h4 id="定義-USE-LOGDEPTHBUF-常數"><a href="#定義-USE-LOGDEPTHBUF-常數" class="headerlink" title="定義 USE_LOGDEPTHBUF 常數"></a>定義 USE_LOGDEPTHBUF 常數</h4><p>首先在 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/a6bbc0e4e2126f075327d667973443060fdd9e63/src/renderers/webgl/WebGLProgram.js#L654">WebGLProgram.js</a> 檔案裡，當 <code>logarithmicDepthBuffer = true</code> 時，會在 shaders 中定義 <code>USE_LOGDEPTHBUF</code> 常數</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">parameters.<span class="property">logarithmicDepthBuffer</span> ? <span class="string">&#x27;#define USE_LOGDEPTHBUF&#x27;</span> : <span class="string">&#x27;&#x27;</span>,</span><br></pre></td></tr></table></figure>
+
+<p>當 <code>USE_LOGDEPTHBUF</code> 被定義時，會在 vertex shader 及 fragment shader 中添加一些變數，這些變數最後用來計算對數深度值</p>
+<h4 id="Vertex-shader"><a href="#Vertex-shader" class="headerlink" title="Vertex shader"></a>Vertex shader</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/db7233612cb0d6372605f414c0fa955d01d7916b/src/renderers/shaders/ShaderChunk/logdepthbuf_pars_vertex.glsl.js">logdepthbuf_pars_vertex.glsl.js</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">#ifdef USE_LOGDEPTHBUF</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  varying float vFragDepth;</span></span><br><span class="line"><span class="string">  varying float vIsPerspective;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/db7233612cb0d6372605f414c0fa955d01d7916b/src/renderers/shaders/ShaderChunk/logdepthbuf_vertex.glsl.js">logdepthbuf_vertex.glsl.js</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">#ifdef USE_LOGDEPTHBUF</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  vFragDepth = 1.0 + gl_Position.w;</span></span><br><span class="line"><span class="string">  vIsPerspective = float( isPerspectiveMatrix( projectionMatrix ) );</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Fragment-shader"><a href="#Fragment-shader" class="headerlink" title="Fragment shader"></a>Fragment shader</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/db7233612cb0d6372605f414c0fa955d01d7916b/src/renderers/shaders/ShaderChunk/logdepthbuf_pars_fragment.glsl.js">logdepthbuf_pars_fragment.glsl.js</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">#if defined( USE_LOGDEPTHBUF )</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  uniform float logDepthBufFC;</span></span><br><span class="line"><span class="string">  varying float vFragDepth;</span></span><br><span class="line"><span class="string">  varying float vIsPerspective;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/db7233612cb0d6372605f414c0fa955d01d7916b/src/renderers/shaders/ShaderChunk/logdepthbuf_fragment.glsl.js">logdepthbuf_fragment.glsl.js</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">#if defined( USE_LOGDEPTHBUF )</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  // Doing a strict comparison with == 1.0 can cause noise artifacts</span></span><br><span class="line"><span class="string">  // on some platforms. See issue #17623.</span></span><br><span class="line"><span class="string">  gl_FragDepth = vIsPerspective == 0.0 ? gl_FragCoord.z : log2( vFragDepth ) * logDepthBufFC * 0.5;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="對數深度值公式"><a href="#對數深度值公式" class="headerlink" title="對數深度值公式"></a>對數深度值公式</h2><p>其中最重要的變數是 <code>gl_FragDepth</code>，<a target="_blank" rel="noopener" href="https://learnopengl-cn.readthedocs.io/zh/latest/04%20Advanced%20OpenGL/08%20Advanced%20GLSL/#:~:text=gl_FrontFacing%E6%AF%AB%E6%97%A0%E6%84%8F%E4%B9%89%E3%80%82-,gl_FragDepth,-%E8%BE%93%E5%85%A5%E5%8F%98%E9%87%8Fgl_FragCoord">gl_FragDepth</a> 代表這個 fragment 的深度值，在這個式子中先利用 <code>vIsPerspective</code> 判斷是否為透視投影，當 <code>vIsPerspective == 0</code> 時不是透視投影，深度值套用預設的 <code>gl_FragCoord.z</code>，那如果是透視投影的話套用 <code>log2( vFragDepth ) * logDepthBufFC * 0.5</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gl_FragDepth =</span><br><span class="line">  vIsPerspective == <span class="number">0.0</span></span><br><span class="line">    ? gl_FragCoord.<span class="property">z</span></span><br><span class="line">    : <span class="title function_">log2</span>(vFragDepth) * logDepthBufFC * <span class="number">0.5</span>;</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>vFragDepth</code> 與 <code>logDepthBufFC</code> 的數值是從其他檔案引入進來的：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/db7233612cb0d6372605f414c0fa955d01d7916b/src/renderers/shaders/ShaderChunk/logdepthbuf_vertex.glsl.js">logdepthbuf_vertex.glsl.js</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vFragDepth = <span class="number">1.0</span> + gl_Position.<span class="property">w</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/4f03f16366ca4ca2a49d4f19b7ec2db2ac8b0736/src/renderers/WebGLRenderer.js#L2409">WebGLRenderer.js</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">p_uniforms.<span class="title function_">setValue</span>(</span><br><span class="line">  _gl,</span><br><span class="line">  <span class="string">&#x27;logDepthBufFC&#x27;</span>,</span><br><span class="line">  <span class="number">2.0</span> / (<span class="title class_">Math</span>.<span class="title function_">log</span>(camera.<span class="property">far</span> + <span class="number">1.0</span>) / <span class="title class_">Math</span>.<span class="property">LN2</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>綜合以上資訊，透視投影的對數深度值公式以數學形式表示如下：</p>
+
+
+$$
+z_{depth} = \log_2(1 + w) \times \frac{2}{\frac{\log_e(f + 1)}{\log_e2}} \times 0.5
+$$
+
+
+
+<p>套用以下已知條件，可以進一步將公式改寫：</p>
+<h5 id="1-w-替換成-z"><a href="#1-w-替換成-z" class="headerlink" title="1. $ w $ 替換成 $ -z $"></a>1. $ w $ 替換成 $ -z $</h5><p>在上一篇文章 - <a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/#透視除法-Perspective-division" target="_blank">透視除法</a> 有求出 $ w &#x3D; -z $，$ w $ 位於 <strong>裁剪座標(clip coordinates)</strong> 下，而  $ z $ 位於 <strong>觀察座標(view coordinates)</strong></p>
+<p>上面計算 <code>vFragDepth</code> 中的 <code>gl_Position.w</code> 指的是 <strong>螢幕座標 (screen coordinate)</strong> 下的 $ w $，由於<strong>裁剪座標</strong>的 $ w $ 在經過 <a target="_blank" rel="noopener" href="https://www.songho.ca/opengl/gl_viewport.html">視口變換(viewport transform)</a> 成<strong>螢幕座標</strong>後 <a target="_blank" rel="noopener" href="https://youtu.be/k55KvDFu3_4?t=680">$ w $ 維持不變</a>，因此計算 <code>vFragDepth</code> 中的 $ 1 + w $ 可以變成 $ 1 - z $，其中的 $ z $ 是<strong>觀察座標</strong>下的 $ z $</p>
+<h5 id="2-改寫對數部分"><a href="#2-改寫對數部分" class="headerlink" title="2. 改寫對數部分"></a>2. 改寫對數部分</h5><p>套用 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-tw/%E5%AF%B9%E6%95%B0%E6%81%92%E7%AD%89%E5%BC%8F#%E6%8D%A2%E5%BA%95%E5%85%AC%E5%BC%8F">換底公式、倒數公式</a>：</p>
+
+
+$$
+\begin{align*}
+\displaystyle
+\frac{2}{\frac{\log_e(f + 1)}{\log_e2}} \times 0.5 &= \frac{\log_e2}{\log_e(f + 1)} = \frac{1}{\log_2(f + 1)} \\
+\end{align*}
+$$
+
+
+
+<p>所以改寫後的深度值如下：</p>
+
+
+$$
+z_{depth} = \frac{\log_2(-z + 1)}{\log_2(f + 1)}
+$$
+
+
+
+<h2 id="為什麼對數深度值的公式長這樣？"><a href="#為什麼對數深度值的公式長這樣？" class="headerlink" title="為什麼對數深度值的公式長這樣？"></a>為什麼對數深度值的公式長這樣？</h2><p>剛看到這個公式其實我想了很久，不知道為什麼對數深度值的公式是這個形式，後來研究許久後得出一些結論：</p>
+<h5 id="1-為什麼分子是-z-1"><a href="#1-為什麼分子是-z-1" class="headerlink" title="1. 為什麼分子是 $ -z + 1 $ ?"></a>1. 為什麼分子是 $ -z + 1 $ ?</h5><p>一開始可以想到最簡單取對數的方式就是 $ \log_2{z} $，我們知道 $ z $ 的範圍會從 <strong>近平面(-n)</strong> 到 <strong>遠平面(-f)</strong>，其中<strong>近平面</strong>的距離可以小到完全接近相機也就是 $ z &#x3D; 0 $，此時深度值的函式會變成 $ z_{depth} &#x3D; \log_2{0} &#x3D; -\infty $，由於深度值的範圍定義在 <strong>[0, 1]</strong> 之間，所以很明顯這樣是不合理的，而當分子改成 $ -z + 1 $ 時， $ z_{depth} &#x3D; \log_2(-0 + 1) &#x3D; \log_21 &#x3D; 0 $，如此我們可以將 $ z $ 的最小值 $ 0 $ 正確映射到深度值區間的最小值 $ 0 $</p>
+<h5 id="2-為什麼分母是-f-1"><a href="#2-為什麼分母是-f-1" class="headerlink" title="2. 為什麼分母是 $ f + 1 $ ?"></a>2. 為什麼分母是 $ f + 1 $ ?</h5><p>當 $ z $ 值拉到最遠等於 <strong>遠平面(-f)</strong> 時，分子會變成 $ z_{depth} &#x3D; \log_2(f + 1) $，為了要符合深度值最大為 $ 1 $ 的限制，因此就必須除以分母 $ \log_2(f + 1) $</p>
+<h2 id="正常深度值與對數深度值的比較"><a href="#正常深度值與對數深度值的比較" class="headerlink" title="正常深度值與對數深度值的比較"></a>正常深度值與對數深度值的比較</h2><p>接著我們以一開始提到 <strong>Three.js</strong> 大尺度場景的範例來看深度值套用兩種不同公式間的差別，設定物體與相機的距離 $ z $ 範圍為 $ 10^{-6} $ 到 $ 10^{19} $，畫出正常深度值(左圖) 與 對數深度值(右圖)</p>
+<div class="two-column">
+  <div class="center">
+    <b>正常深度值</b>
+    <img src="./large-scale-reciprocal.png" />
+  </div>
+  <div class="center">
+   <b>對數深度值</b>
+    <img src="./large-scale-log.png" />
+  </div>
+</div>
+
+<p>可以看到之前正常深度值的優點是符合人眼感知的狀況，在近的地方深度值覆蓋範圍大，適合分辨近處物體，但當場景需要容納大尺度的 $ z $ 值時，這就變成缺點了，可以看到從 $ 10^3 $ 左右一直到 $ 10^{18} $ 的距離，轉換成深度值後幾乎都等於 $ 1 $，這導致 shader 在判定物體的遠近時，兩個物體深度值的差異小到無法正確判別，就導致畫面上閃爍的 <strong>z-fighting</strong> 問題了。反過來看對數深度值則是在 $ 10^0 $ 到 $ 10^{18} $ 之間分佈平均，可以正常判別物體深度值之間的差異</p>
+<h2 id="深度值的精度"><a href="#深度值的精度" class="headerlink" title="深度值的精度"></a>深度值的精度</h2><p>最終我們來討論深度值的精度是如何設置的，上面提到藉由比較兩個物體的深度值判斷誰應該在前誰應該在後，而在電腦中是以浮點數的方式儲存深度值的，當兩個浮點數的差值小到電腦無法分辨的時候就會引起 <strong>z-fighting</strong> 的問題。上面我們在 fragment shader 中使用 <code>gl_FragDepth</code> 賦予每個 fragment 的深度值，在 <a href="/blog/2024/12/06/使用-three-js-操作-shader-畫出國旗/#Shader-數值的精度設置" target="_blank">Shader 數值的精度設置</a> 的部分有提過，fragment shader 中可設置的精度有三種 - <strong>highp</strong>, <strong>mediump</strong>, <strong>lowp</strong></p>
+<table>
+<thead>
+<tr>
+<th>精細度</th>
+<th>說明</th>
+<th>適用場景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>highp</td>
+<td>高精度 (32 位浮點數)</td>
+<td>需要高精度的計算，例如：光照、物理模擬等</td>
+</tr>
+<tr>
+<td>mediump</td>
+<td>中精度 (16 位浮點數)</td>
+<td>對精度要求中等的場景，例如：紋理 UV 坐標、顏色</td>
+</tr>
+<tr>
+<td>lowp</td>
+<td>低精度 (8 位浮點數)</td>
+<td>不太需要精度的場景，例如：簡單的顏色計算</td>
+</tr>
+</tbody></table>
+<p>在 Three.js 中創建 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/renderers/WebGLRenderer">WebGLRenderer</a> 時預設將 <strong>精度(precision)</strong> 設為 <strong>highp</strong>，或是在 <a target="_blank" rel="noopener" href="https://threejs.org/docs/#api/en/materials/Material.precision">Material.precision</a> 中也可以個別修改 fragment 的<strong>精度</strong></p>
+<p>接著我們以大尺度場景的範例來看，當 $ near &#x3D; 10^{-6}, far &#x3D; 10^{19} $ 時，兩個很遠的物體 $ z_1 &#x3D; 10^{15}, z_2 &#x3D; 10^{18} $ 時他們的深度值差異是多少：</p>
+<ul>
+<li>正常深度值的差異</li>
+</ul>
+
+
+$$
+z_{depth1} = \frac{1/z_1 - 1/near}{1/far - 1/near} = \frac{10^{-15} - 10^6}{10^{-19} - 10^6} \approx \frac{-10^6}{-10^6} = 1
+$$
+
+$$
+z_{depth2} = \frac{1/z_2 - 1/near}{1/far - 1/near} = \frac{10^{-18} - 10^6}{10^{-19} - 10^6} \approx \frac{-10^6}{-10^6} = 1
+$$
+
+
+
+<ul>
+<li>對數深度值的差異</li>
+</ul>
+
+
+$$
+z_{depth1} = \frac{\log_2(z_1 + 1)}{\log_2(far + 1)} = \frac{\log_2(10^{15} + 1)}{\log_2(10^{19} + 1)} \approx 0.7895
+$$
+
+$$
+z_{depth2} = \frac{\log_2(z_2 + 1)}{\log_2(far + 1)} = \frac{\log_2(10^{18} + 1)}{\log_2(10^{19} + 1)} \approx 0.9474
+$$
+
+
+
+<p>由於電腦只能用有限的位數儲存浮點數，所以當數值相差過大的數值進行加減時，有些位數就會直接被忽略 (ex. $ 10^{-15} - 10^6 \approx -10^6 $)，所以正常深度值的公式至少在 $ z &gt; 10^{15} $ 以上的區間就已經無法分辨物體的遠近關係了，而對數深度值公式即使是 $ z $ 很大的狀況下一樣可以求出有效的深度值</p>
+<h2 id="延伸閱讀"><a href="#延伸閱讀" class="headerlink" title="延伸閱讀"></a>延伸閱讀</h2><h4 id="1-gl-FragDepth-的相容性"><a href="#1-gl-FragDepth-的相容性" class="headerlink" title="1. gl_FragDepth 的相容性"></a>1. gl_FragDepth 的相容性</h4><p><a target="_blank" rel="noopener" href="https://registry.khronos.org/webgl/specs/latest/2.0/#5.33">gl_FragDepth</a> 是 WebGL 2.0 中改變 fragment 深度值的方式，在 WebGL 1.0 中則是使用 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/EXT_frag_depth">gl_FragDepthEXT</a>，在 <strong>Three.js</strong> 的原始碼中對這部分進行了相容性的處理如果是 WebGL 1.0 的 <code>gl_FragDepthEXT</code> 的話會重新命名成 <code>gl_FragDepth</code>，因此最後賦予深度值的變數只需要使用 <code>gl_FragDepth</code> 就好</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/1095272ee053480256ea3b0d3a5827fc0340936f/src/renderers/webgl/WebGLProgram.js#L875">WebGLProgram.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">prefixFragment = [</span><br><span class="line">  <span class="string">&#x27;#define varying in&#x27;</span>,</span><br><span class="line">  ( parameters.<span class="property">glslVersion</span> === <span class="title class_">GLSL3</span> ) ? <span class="string">&#x27;&#x27;</span> : <span class="string">&#x27;layout(location = 0) out highp vec4 pc_fragColor;&#x27;</span>,</span><br><span class="line">  ( parameters.<span class="property">glslVersion</span> === <span class="title class_">GLSL3</span> ) ? <span class="string">&#x27;&#x27;</span> : <span class="string">&#x27;#define gl_FragColor pc_fragColor&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;#define gl_FragDepthEXT gl_FragDepth&#x27;</span>,</span><br><span class="line">  ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-isPerspectiveMatrix-的實作"><a href="#2-isPerspectiveMatrix-的實作" class="headerlink" title="2. isPerspectiveMatrix 的實作"></a>2. isPerspectiveMatrix 的實作</h4><p>shader 中的 <code>isPerspectiveMatrix</code> 函式定義在 <code>common.glsl.js</code> 檔案中，是用投影矩陣的第三行第四列是否等於 -1 判斷透視投影矩陣</p>
+<div class="two-column">
+  <div class="center">
+    <b>透視投影矩陣</b>
+    
+
+    $$
+    \begin{bmatrix}
+    \displaystyle \frac{2n}{r-l} & 0 & \displaystyle \frac{r+l}{r-l} & 0 \\
+    0 & \displaystyle \frac{2n}{t-b} & \displaystyle \frac{t+b}{t-b} & 0 \\
+    0 & 0 & \displaystyle -\frac{f+n}{f-n} & \displaystyle -\frac{2 f n}{f - n} \\
+    0 & 0 & -1 & 0 \\
+    \end{bmatrix}
+    $$
+
+    
+
+  </div>
+  <div class="center">
+    <b>正交投影矩陣</b>
+    
+
+    $$
+    \begin{bmatrix}
+    \displaystyle \frac{1}{r} & 0 & 0 & 0 \\
+    0 & \displaystyle \frac{1}{t} & 0 & 0 \\
+    0 & 0 & \displaystyle -\frac{2}{f-n} & \displaystyle -\frac{f+n}{f-n} \\
+    0 & 0 & 0 & 1 \\
+    \end{bmatrix}
+    $$
+
+    
+
+  </div>
+</div>
+
+<p>透視投影矩陣與正交投影矩陣的推導過程請見 <a target="_blank" rel="noopener" href="https://hackmd.io/@23657689/projection_matrix#">Projection Matrix</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/blob/1095272ee053480256ea3b0d3a5827fc0340936f/src/renderers/shaders/ShaderChunk/common.glsl.js#L88">common.glsl.js</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bool <span class="title function_">isPerspectiveMatrix</span>(<span class="params"> mat4 m </span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> m[ <span class="number">2</span> ][ <span class="number">3</span> ] == - <span class="number">1.0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-gl-FragCoord-z-的定義"><a href="#3-gl-FragCoord-z-的定義" class="headerlink" title="3. gl_FragCoord.z 的定義"></a>3. gl_FragCoord.z 的定義</h4><p>在 fragment shader 中可以取得的 <a target="_blank" rel="noopener" href="https://registry.khronos.org/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml">gl_FragCoord</a> 是 OpenGL 中定義的變數，其中 <code>gl_FragCoord.z</code> 指的就是 <strong>[0, 1]</strong> 區間的深度值，因此當不是透視投影時(<code>vIsPerspective == 0.0</code>)，將預設的深度值 <code>gl_FragCoord.z</code> 賦值給 <code>gl_FragDepth</code></p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">gl_FragDepth</span> = vIsPerspective == <span class="number">0.0</span> ? <span class="built_in">gl_FragCoord</span>.z : <span class="built_in">log2</span>( vFragDepth ) * logDepthBufFC * <span class="number">0.5</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-issue-17623-的浮點數精度-bug"><a href="#4-issue-17623-的浮點數精度-bug" class="headerlink" title="4. issue #17623 的浮點數精度 bug"></a>4. issue #17623 的浮點數精度 bug</h4><p>在計算 <code>gl_FragDepth</code> 的地方有一段註解說明 <a target="_blank" rel="noopener" href="https://github.com/mrdoob/three.js/issues/17623">issue #17623</a> 的 bug：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">#if defined( USE_LOGDEPTHBUF )</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  // Doing a strict comparison with == 1.0 can cause noise artifacts</span></span><br><span class="line"><span class="string">  // on some platforms. See issue #17623.</span></span><br><span class="line"><span class="string">  gl_FragDepth = vIsPerspective == 0.0 ? gl_FragCoord.z : log2( vFragDepth ) * logDepthBufFC * 0.5;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<p>進一步查詢可以發現之前的程式是這樣寫的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="comment">/* glsl */</span> <span class="string">`</span></span><br><span class="line"><span class="string">#if defined( USE_LOGDEPTHBUF )</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  gl_FragDepth = vIsPerspective == 1.0 ? log2( vFragDepth ) * logDepthBufFC * 0.5 : gl_FragCoord.z;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">#endif</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到計算深度值的邏輯完全沒變，差別只在以前是 <code>vIsPerspective == 1.0</code> 而現在是判斷 <code>vIsPerspective == 0.0</code>，經過一些研究後看起來是判斷 <code>vIsPerspective == 1.0</code> 時會有浮點數精度誤差的問題，也就是說有些 GPU 的實作 <code>1.0</code> 可能會變成 <code>0.99999994</code> 或 <code>1.0000001</code> 導致判斷失效，因此最後解決方案改為判斷 <code>vIsPerspective == 0.0</code></p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a target="_blank" rel="noopener" href="https://outerra.blogspot.com/2013/07/logarithmic-depth-buffer-optimizations.html">Logarithmic depth buffer optimizations &amp; fixes</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_21476953/article/details/141713244">Cesium 和 three.js 对数深度缓冲原理简析</a><br><a target="_blank" rel="noopener" href="https://community.khronos.org/t/gl-fragcoord-z/54092">gl_FragCoord.z 的定義討論</a><br><a target="_blank" rel="noopener" href="https://registry.khronos.org/OpenGL-Refpages/gl4/html/gl_FragCoord.xhtml">gl_FragCoord 官方文檔</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/fatcat123/article/details/103861403">gl_FragCoord 的含义</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/57938025/how-does-a-camera-convert-from-clip-space-into-screen-space">How Does a camera convert from clip space into screen space?</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=k55KvDFu3_4">OpenGL clip space, NDC, and screen space</a></p>
+<ul>
+<li>浮點數精度<br><a target="_blank" rel="noopener" href="https://vocus.cc/article/65ee9d51fd89780001eb4d59">淺談 DeepLearning 的浮點數精度 FP32&#x2F;FP16&#x2F;TF32&#x2F;BF16……..(以 LLM 為例)</a><br><a target="_blank" rel="noopener" href="https://tigercosmos.xyz/post/2020/12/system/floating-number-cpu-gpu/">CPU 與 GPU 計算浮點數的差異</a><br><a target="_blank" rel="noopener" href="https://polarisxu.studygolang.com/posts/basic/diagram-float-point/">15 张图带你深入理解浮点数</a><br><a target="_blank" rel="noopener" href="https://zhaoshihan.github.io/posts/16352/">详解浮点数</a></li>
+</ul>
+
+
+<style>
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  .center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+table {
+  th, td {
+   padding: 8px 12px;
+  } 
+}
+
+@media (max-width: 600px) {
+  img {
+      width: 100%;
+  }
+}
+
+@media (min-width: 601px) {
+  img {
+      width: 75%;
+  }
+}
+</style>
+
+
+
+  </div>
+  <!--文末结束语-->
+  
+  <!--页脚广告-->
+  
+  <div class="mdui-divider"></div>
+  
+  <nav>
+    
+      <a rel="prev" class="post-nav-item mdui-float-left" href="/blog/2025/03/31/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-5-%E6%B8%B2%E6%9F%93%E7%89%A9%E9%AB%94%E7%9A%84%E9%A0%86%E5%BA%8F/">
+        <i class="iconfont icon-angle-left"></i>
+        <span>Three.js 中物體的遠近關係 (5) - 渲染物體的順序</span>
+      </a>
+    
+    
+      <a rel="next" class="post-nav-item mdui-float-right" href="/blog/2025/02/28/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-3-%E6%B7%B1%E5%BA%A6%E5%80%BC%E7%9A%84%E8%A8%88%E7%AE%97%E6%96%B9%E5%BC%8F/">
+        <span>Three.js 中物體的遠近關係 (3) - 深度值的計算方式</span>
+        <i class="iconfont icon-angle-right"></i>
+      </a>
+    
+  </nav>
+</article>
+
+
+
+
+  <div class="toc-button"  style="z-index: 100;">
+    <button class="mdui-fab mdui-ripple mdui-color-teal" mdui-menu="{target: '#toc'}"><i class="iconfont icon-list"></i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item">
+        <a href="/blog/2025/03/17/three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-4-%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC/" id="toc-header" class="mdui-ripple">文章目錄</a>
+        <ol class="toc"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%AD%A4%E7%82%BA-Three-js-%E4%B8%AD%E7%89%A9%E9%AB%94%E7%9A%84%E9%81%A0%E8%BF%91%E9%97%9C%E4%BF%82-%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-%E7%AC%AC-4-%E7%AF%87%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">此為 Three.js 中物體的遠近關係 系列文章 - 第 4 篇：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number"></span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%80%BC%E8%BD%89%E6%8F%9B%E5%87%BD%E5%BC%8F%E7%9A%84%E5%95%8F%E9%A1%8C%E9%BB%9E"><span class="toc-number"></span> <span class="toc-text">深度值轉換函式的問題點</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E5%B0%BA%E5%BA%A6%E5%A0%B4%E6%99%AF%E4%B8%8B%E5%B0%8E%E8%87%B4%E7%9A%84-z-fighting"><span class="toc-number"></span> <span class="toc-text">大尺度場景下導致的 z-fighting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC"><span class="toc-number"></span> <span class="toc-text">對數深度值</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E7%BE%A9-USE-LOGDEPTHBUF-%E5%B8%B8%E6%95%B8"><span class="toc-number"></span> <span class="toc-text">定義 USE_LOGDEPTHBUF 常數</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vertex-shader"><span class="toc-number"></span> <span class="toc-text">Vertex shader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Fragment-shader"><span class="toc-number"></span> <span class="toc-text">Fragment shader</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC%E5%85%AC%E5%BC%8F"><span class="toc-number"></span> <span class="toc-text">對數深度值公式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-w-%E6%9B%BF%E6%8F%9B%E6%88%90-z"><span class="toc-number"></span> <span class="toc-text">1. $ w $ 替換成 $ -z $</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E6%94%B9%E5%AF%AB%E5%B0%8D%E6%95%B8%E9%83%A8%E5%88%86"><span class="toc-number"></span> <span class="toc-text">2. 改寫對數部分</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC%E7%9A%84%E5%85%AC%E5%BC%8F%E9%95%B7%E9%80%99%E6%A8%A3%EF%BC%9F"><span class="toc-number"></span> <span class="toc-text">為什麼對數深度值的公式長這樣？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E7%82%BA%E4%BB%80%E9%BA%BC%E5%88%86%E5%AD%90%E6%98%AF-z-1"><span class="toc-number"></span> <span class="toc-text">1. 為什麼分子是 $ -z + 1 $ ?</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E7%82%BA%E4%BB%80%E9%BA%BC%E5%88%86%E6%AF%8D%E6%98%AF-f-1"><span class="toc-number"></span> <span class="toc-text">2. 為什麼分母是 $ f + 1 $ ?</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8%E6%B7%B1%E5%BA%A6%E5%80%BC%E8%88%87%E5%B0%8D%E6%95%B8%E6%B7%B1%E5%BA%A6%E5%80%BC%E7%9A%84%E6%AF%94%E8%BC%83"><span class="toc-number"></span> <span class="toc-text">正常深度值與對數深度值的比較</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%80%BC%E7%9A%84%E7%B2%BE%E5%BA%A6"><span class="toc-number"></span> <span class="toc-text">深度值的精度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E4%BC%B8%E9%96%B1%E8%AE%80"><span class="toc-number"></span> <span class="toc-text">延伸閱讀</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-gl-FragDepth-%E7%9A%84%E7%9B%B8%E5%AE%B9%E6%80%A7"><span class="toc-number"></span> <span class="toc-text">1. gl_FragDepth 的相容性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-isPerspectiveMatrix-%E7%9A%84%E5%AF%A6%E4%BD%9C"><span class="toc-number"></span> <span class="toc-text">2. isPerspectiveMatrix 的實作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-gl-FragCoord-z-%E7%9A%84%E5%AE%9A%E7%BE%A9"><span class="toc-number"></span> <span class="toc-text">3. gl_FragCoord.z 的定義</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-issue-17623-%E7%9A%84%E6%B5%AE%E9%BB%9E%E6%95%B8%E7%B2%BE%E5%BA%A6-bug"><span class="toc-number"></span> <span class="toc-text">4. issue #17623 的浮點數精度 bug</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="toc-number"></span> <span class="toc-text">參考資料</span></a>
+      </li>
+    </ul>
+  </div>
+
+
+
+    <div id="comment" class="mdui-card mdui-p-a-2 mdui-m-b-5">
+      <div class="mdui-tab" mdui-tab>
+        
+          <a href="#comment-tab0" class="mdui-ripple">gitalk</a>
+        
+      </div>
+      
+        <div id="comment-tab0" class="mdui-p-a-2">
+          <div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: '5357929866aac623ef96',
+    clientSecret: '6556e0b2614163c853bea7116cc991233350b7be',
+    repo: 'gitalk-comments',
+    owner: 'bcjohnblue',
+    admin: ['bcjohnblue'],
+    id:  md5(location.pathname) ,
+    distractionFreeMode: 'true',
+  });
+  gitalk.render('gitalk-container');
+</script>
+        </div>
+      
+    </div>
+
+  </main>
+  <footer id="footer" class="mdui-text-center mdui-m-t-5 mdui-p-b-2 mdui-p-t-4 mdui-color-theme">
+  <div class="mdui-container">
+    <div class="mdui-row">
+      
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank"></a>
+      
+      <span>
+        &copy; 2023 - 2025 
+        
+          <span style="color:#d9333f" class="iconfont icon-heart"></span>
+        
+        bcjohn
+      </span>
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span>Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span>Theme: <a href="https://github.com/kb1000fx/Meadow" rel="noopener" target="_blank">Meadow</a></span>
+        </div>
+      
+    </div>
+    <div class="mdui-row">
+      
+        <div class="mdui-col-xs-6 mdui-text-right">
+          <span id="busuanzi_container_site_uv" style="display: none;"> <span class="iconfont icon-user"></span>總訪客量 <span id="busuanzi_value_site_uv"></span></span>
+        </div>
+        <div class="mdui-col-xs-6 mdui-text-left">
+          <span id="busuanzi_container_site_pv" style="display: none;"> <span class="iconfont icon-eye"></span>總訪問量 <span id="busuanzi_value_site_pv"></span></span>
+        </div>
+      
+    </div>
+ </div>
+</footer>
+  
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-ripple mdui-color-teal" style="z-index:100;"><i class="iconfont icon-arrowup"></i></button>
+  
+  
+
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        startOnLoad: true,
+        theme: "default"
+    });</script>
+
+
+
+
+    
+<script src="/blog/js/mdui.min.v1.0.0.js"></script>
+
+
+
+
+<script src="/blog/js/meadow.js"></script>
+
+</body>
+</html >
