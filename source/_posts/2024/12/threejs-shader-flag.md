@@ -1,6 +1,7 @@
 ---
 title: 使用 Three.js 操作 shader 畫出國旗
 date: 2024-12-06 23:26:04
+updated: 2025-05-11 02:06:00
 categories: Three.js
 tags:
 ---

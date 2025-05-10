@@ -1,6 +1,7 @@
 ---
 title: 從程式碼角度來看 event loop
 date: 2024-01-27 12:08:56
+updated: 2025-05-11 02:06:00
 categories: Javascript
 tags: 面試題
 ---

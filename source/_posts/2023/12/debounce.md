@@ -1,6 +1,7 @@
 ---
 title: debounce 中的 this 指向
 date: 2023-12-06 20:42:51
+updated: 2025-05-11 02:06:00
 categories: Javascript
 tags: 面試題
 ---

@@ -1,6 +1,7 @@
 ---
 title: Three.js 中物體的遠近關係 (4) - 對數深度值
 date: 2025-03-17 01:06:00
+updated: 2025-05-11 02:06:00
 categories: Three.js
 tags:
 mathjax: true

@@ -1,6 +1,7 @@
 ---
 title: 餘弦定理
 date: 2023-12-10 09:27:01
+updated: 2025-05-11 02:06:00
 categories: Math
 tags:
 ---

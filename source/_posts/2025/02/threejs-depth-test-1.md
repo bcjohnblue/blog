@@ -1,6 +1,7 @@
 ---
 title: Three.js 中物體的遠近關係 (1) - 什麼是深度測試？
 date: 2025-02-13 00:18:18
+updated: 2025-05-11 02:06:00
 categories: Three.js
 tags:
 ---
