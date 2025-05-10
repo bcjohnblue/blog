@@ -8,12 +8,12 @@ mathjax: true
 
 ###### 此為 **Three.js 中物體的遠近關係** 系列文章 - 第 4 篇： 
 
-1. <a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a>
-2. <a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標</a>
-3. <a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a>
-4. <a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a>
-5. <a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a>
-6. <a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a>
+1. <a href="/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a>
+2. <a href="/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標</a>
+3. <a href="/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a>
+4. <a href="/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a>
+5. <a href="/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a>
+6. <a href="/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a>
 
 ## 前言
 
@@ -57,7 +57,7 @@ const renderer = new THREE.WebGLRenderer({ logarithmicDepthBuffer: true });
 
 光調整一個參數就可以讓畫面的呈現有這麽大的差別真是神奇，以下讓我們來看看 `logarithmicDepthBuffer` 底層的邏輯是如何實作的
 
-P.S. 在這之前建議先閱讀 <a href="/blog/2025/02/08/理解-three-js-的-shader-架構/" target="_blank">理解-three-js-的-shader-架構</a>，了解 **Three.js** 中的 shader 是如何作用的
+P.S. 在這之前建議先閱讀 <a href="/2025/02/08/理解-three-js-的-shader-架構/" target="_blank">理解-three-js-的-shader-架構</a>，了解 **Three.js** 中的 shader 是如何作用的
 
 #### 定義 USE_LOGDEPTHBUF 常數
 
@@ -170,7 +170,7 @@ $$
 
 ##### 1. $ w $ 替換成 $ -z $
 
-在上一篇文章 - <a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/#透視除法-Perspective-division" target="_blank">透視除法</a> 有求出 $ w = -z $，$ w $ 位於 **裁剪座標(clip coordinates)** 下，而  $ z $ 位於 **觀察座標(view coordinates)**
+在上一篇文章 - <a href="/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/#透視除法-Perspective-division" target="_blank">透視除法</a> 有求出 $ w = -z $，$ w $ 位於 **裁剪座標(clip coordinates)** 下，而  $ z $ 位於 **觀察座標(view coordinates)**
 
 上面計算 `vFragDepth` 中的 `gl_Position.w` 指的是 **螢幕座標 (screen coordinate)** 下的 $ w $，由於**裁剪座標**的 $ w $ 在經過 [視口變換(viewport transform)](https://www.songho.ca/opengl/gl_viewport.html) 成**螢幕座標**後 [$ w $ 維持不變](https://youtu.be/k55KvDFu3_4?t=680)，因此計算 `vFragDepth` 中的 $ 1 + w $ 可以變成 $ 1 - z $，其中的 $ z $ 是**觀察座標**下的 $ z $
 
@@ -230,7 +230,7 @@ $$
 
 ## 深度值的精度
 
-最終我們來討論深度值的精度是如何設置的，上面提到藉由比較兩個物體的深度值判斷誰應該在前誰應該在後，而在電腦中是以浮點數的方式儲存深度值的，當兩個浮點數的差值小到電腦無法分辨的時候就會引起 **z-fighting** 的問題。上面我們在 fragment shader 中使用 `gl_FragDepth` 賦予每個 fragment 的深度值，在 <a href="/blog/2024/12/06/使用-three-js-操作-shader-畫出國旗/#Shader-數值的精度設置" target="_blank">Shader 數值的精度設置</a> 的部分有提過，fragment shader 中可設置的精度有三種 - **highp**, **mediump**, **lowp**
+最終我們來討論深度值的精度是如何設置的，上面提到藉由比較兩個物體的深度值判斷誰應該在前誰應該在後，而在電腦中是以浮點數的方式儲存深度值的，當兩個浮點數的差值小到電腦無法分辨的時候就會引起 **z-fighting** 的問題。上面我們在 fragment shader 中使用 `gl_FragDepth` 賦予每個 fragment 的深度值，在 <a href="/2024/12/06/使用-three-js-操作-shader-畫出國旗/#Shader-數值的精度設置" target="_blank">Shader 數值的精度設置</a> 的部分有提過，fragment shader 中可設置的精度有三種 - **highp**, **mediump**, **lowp**
 
 | 精細度  | 說明                 | 適用場景                                       |
 | ------- | -------------------- | ---------------------------------------------- |

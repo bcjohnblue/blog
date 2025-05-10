@@ -7,15 +7,15 @@ tags:
 
 ###### 此為 **CORS Debug** 系列文章 - 第 1 篇：
 
-1. <a href="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">CORS Debug (1) - 網頁快取導致的 CORS 問題</a>
-2. <a href="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/" target="_blank">CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</a>
+1. <a href="/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">CORS Debug (1) - 網頁快取導致的 CORS 問題</a>
+2. <a href="/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/" target="_blank">CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</a>
 
 ## 簡介
 
 最近做到一個在網頁上展示圖片的功能，簡單來說就是點擊右側的圖片庫，左邊的主畫面可以展示大圖，如下圖所示，這是一個非常簡單的功能，但到最後發現這跟 [CORS](https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Guides/CORS) 有密切的關係，下面我們來一步步探討看看
 
 <div style="display: flex; justify-content: center;">
-  <img src="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/demo.png" />
+  <img src="/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/demo.png" />
 </div>
 
 <!--more-->

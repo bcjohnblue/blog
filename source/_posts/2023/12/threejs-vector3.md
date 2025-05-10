@@ -128,7 +128,7 @@ const dot = new THREE.Vector3(1, 1, 0).dot(new THREE.Vector3(2, 3, 0));
 console.log(".dot", dot); // 5
 ```
 
-參考 <a href="/blog/2023/12/11/向量內積/" target="_blank" rel="noreferrer noopenner">向量內積</a>
+參考 <a href="/2023/12/11/向量內積/" target="_blank" rel="noreferrer noopenner">向量內積</a>
 
 ##### **- equals(v: Vector3): Boolean**
 ```js

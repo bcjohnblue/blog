@@ -8,12 +8,12 @@ mathjax: true
 
 ###### 此為 **Three.js 中物體的遠近關係** 系列文章 - 第 3 篇： 
 
-1. <a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a>
-2. <a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標</a>
-3. <a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a>
-4. <a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a>
-5. <a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a>
-6. <a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a>
+1. <a href="/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a>
+2. <a href="/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標</a>
+3. <a href="/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a>
+4. <a href="/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a>
+5. <a href="/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a>
+6. <a href="/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a>
 
 ## 前言
 
@@ -79,7 +79,7 @@ $$
 
 ## OpenGL 中的投影
 
-接著來看 **Three.js** 的底層 **OpenGL** 中是如何將 3D 的物體投影到 2D 的平面上，在 [Vertex shader 做的事情](https://bcjohnblue.github.io/blog/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/#Vertex-shader-%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85) 這篇文章中提過物體的頂點數據會轉換到不同的座標系統，從一開始的 **本地座標 (local coordinate)** 最後轉換到顯示在螢幕上的 **螢幕座標 (screen coordinate)** ，而投影這件事是將物體以相機為原點的 3D 座標系投影到 2D **近平面** 上，而以相機為原點的座標系就是下圖中的 **View space 觀察座標 (view coordinates)**，**觀察座標 (view coordinates)** 會經過一個 **投影矩陣 (projection matrix)** 的計算進而變成 **Clip space 裁剪座標 (clip coordinates)**，這其實就是上面所說的將 3D 物體投影到 2D 平面的過程，而中間的數學計算是將 3D 物體所在的 **觀察座標 (view coordinates)** 乘以 **投影矩陣 (projection matrix)** 變成 2D 平面的 **裁剪座標 (clip coordinates)**
+接著來看 **Three.js** 的底層 **OpenGL** 中是如何將 3D 的物體投影到 2D 的平面上，在 [Vertex shader 做的事情](https://bcjohnblue.github.io/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/#Vertex-shader-%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85) 這篇文章中提過物體的頂點數據會轉換到不同的座標系統，從一開始的 **本地座標 (local coordinate)** 最後轉換到顯示在螢幕上的 **螢幕座標 (screen coordinate)** ，而投影這件事是將物體以相機為原點的 3D 座標系投影到 2D **近平面** 上，而以相機為原點的座標系就是下圖中的 **View space 觀察座標 (view coordinates)**，**觀察座標 (view coordinates)** 會經過一個 **投影矩陣 (projection matrix)** 的計算進而變成 **Clip space 裁剪座標 (clip coordinates)**，這其實就是上面所說的將 3D 物體投影到 2D 平面的過程，而中間的數學計算是將 3D 物體所在的 **觀察座標 (view coordinates)** 乘以 **投影矩陣 (projection matrix)** 變成 2D 平面的 **裁剪座標 (clip coordinates)**
 
 <img src="https://learnopengl.com/img/getting-started/coordinate_systems.png" />
 

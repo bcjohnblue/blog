@@ -7,10 +7,10 @@ tags: 面試題
 
 此為 **event loop** 系列文章 - 第 2 篇：
 
-1. <a href="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> 
-2. <a href="/blog/2024/01/27/從程式碼角度來看-event-loop" target="_blank" rel="noreferrer noopenner">從程式碼角度來看 event loop</a> 
-3. <a href="/blog/2024/02/04/使用原生的-queuemicrotask-處理微任務/" target="_blank" rel="noreferrer noopenner">使用原生的 queueMicrotask 處理微任務</a>
-3. <a href="/blog/2024/02/05/vue-nexttick-中的-event-loop/" target="_blank" rel="noreferrer noopenner">Vue.nextTick() 中的 event loop</a>
+1. <a href="/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> 
+2. <a href="/2024/01/27/從程式碼角度來看-event-loop" target="_blank" rel="noreferrer noopenner">從程式碼角度來看 event loop</a> 
+3. <a href="/2024/02/04/使用原生的-queuemicrotask-處理微任務/" target="_blank" rel="noreferrer noopenner">使用原生的 queueMicrotask 處理微任務</a>
+3. <a href="/2024/02/05/vue-nexttick-中的-event-loop/" target="_blank" rel="noreferrer noopenner">Vue.nextTick() 中的 event loop</a>
 
 ## 前言
 上一篇介紹了 **event loop** 的運行原理，這篇文章希望藉由各種範例進一步體會 **event loop** 的執行順序
@@ -246,9 +246,9 @@ document.body.innerHTML = 'D';
 
 首先這一段程式執行後，畫面最後印出來的會是 A, B, C 或是 D 呢？
 
-<img src="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制/event-loop-60fps.png" width="50%">
+<img src="/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制/event-loop-60fps.png" width="50%">
 
-先貼一張 <a href="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制#event-loop-的全貌" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> 來複習 **event loop** 循環的全貌，以上程式使用到的 `requestAnimationFrame` 會在每一幀渲染畫面 **之前** 執行，所以我們會認為它執行的順序是：
+先貼一張 <a href="/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制#event-loop-的全貌" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> 來複習 **event loop** 循環的全貌，以上程式使用到的 `requestAnimationFrame` 會在每一幀渲染畫面 **之前** 執行，所以我們會認為它執行的順序是：
 
 **步驟：**
 1. 第 1 行的 `setTimeout` `callback` 會放入 **宏任務佇列 (macrotask queue)** 裡，等待之後執行
@@ -269,7 +269,7 @@ document.body.innerHTML = 'D';
 **結果：**
 由以上步驟來看最後執行的應該是第 13 行，所以最後畫面會顯示的是 C，但當你把這段程式碼多次執行時，會發現最後顯示的不一定是 C，有時候畫面上顯示的會是 B，這是為什麼呢？
 
-關鍵就在於瀏覽器什麼時候渲染畫面，上一篇文章 <a href="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制/#event-loop-如何安排任務的執行順序" target="_blank" rel="noreferrer noopenner">event loop 如何安排任務的執行順序</a> 中提到在 **微任務 (microtask)** 都執行完後，下一步會判斷**是否需要渲染 UI 畫面**，而這就是所謂的關鍵點了
+關鍵就在於瀏覽器什麼時候渲染畫面，上一篇文章 <a href="/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制/#event-loop-如何安排任務的執行順序" target="_blank" rel="noreferrer noopenner">event loop 如何安排任務的執行順序</a> 中提到在 **微任務 (microtask)** 都執行完後，下一步會判斷**是否需要渲染 UI 畫面**，而這就是所謂的關鍵點了
 > [瀏覽器可能出於各種原因，盡量高效的渲染畫面，只在必要的時候才進行渲染][1]
 
 因此當瀏覽器判斷第一輪執行 **event loop** 後，如果還不需要渲染畫面，那麼也就不會執行步驟 2. `requestAnimationFrame` 裡的 `callback`，這種狀況下，步驟 9. 及步驟 11. 就會先被執行，最後瀏覽器判斷需要渲染畫面時才會執行步驟 2.，因此就會看到畫面上最後顯示的是 B

@@ -7,15 +7,15 @@ tags:
 
 ###### 此為 **CORS Debug** 系列文章 - 第 2 篇： 
 
-1. <a href="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">CORS Debug (1) - 網頁快取導致的 CORS 問題</a>
-2. <a href="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/" target="_blank">CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</a>
+1. <a href="/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">CORS Debug (1) - 網頁快取導致的 CORS 問題</a>
+2. <a href="/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/" target="_blank">CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error</a>
 
 ## 簡介
 
-在上一篇文章 - <a href="/blog/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">網頁快取導致的 CORS 問題</a> 中，最終採用了 `crossOrigin='anonymous'` 這樣的方式解決網頁快取導致的 CORS 錯誤，原本以為這樣已經萬無一失，但沒想到更悲劇的事情發生了 => 在 Safari 瀏覽器有時候會發現網頁上的圖片都不見了
+在上一篇文章 - <a href="/2025/04/13/cors-debug-1-網頁快取導致的-cors-問題/" target="_blank">網頁快取導致的 CORS 問題</a> 中，最終採用了 `crossOrigin='anonymous'` 這樣的方式解決網頁快取導致的 CORS 錯誤，原本以為這樣已經萬無一失，但沒想到更悲劇的事情發生了 => 在 Safari 瀏覽器有時候會發現網頁上的圖片都不見了
 
 <div style="display: flex; justify-content: center;">
-  <img src="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/safari-image-disappear.png" />
+  <img src="/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/safari-image-disappear.png" />
 </div>
 
 <!--more-->
@@ -128,7 +128,7 @@ tags:
 - react - [crossOrigin attribute needs to be applied before `<img src>` attribute](https://github.com/facebook/react/issues/14035)
 - vue - [Safari loads image twice if crossorigin attribute goes after src](https://github.com/vuejs/core/issues/4680)
 
-P.S. 在後面 [研究 React 原始碼的過程中](/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/#React-JSX-編譯結果)，我發現 React 其實已經修復此 Safari 特定的 CORS 問題了
+P.S. 在後面 [研究 React 原始碼的過程中](/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/#React-JSX-編譯結果)，我發現 React 其實已經修復此 Safari 特定的 CORS 問題了
 
 ## 排除前端框架的影響
 
@@ -255,7 +255,7 @@ Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：
 
 #### 4. 非常好的寫法
 
-只是想強調這個寫法跟上面 [3. 非常糟的寫法](/blog/2025/04/17/cors-debug-系列文-2-crossorigin-anonymous-的順序導致-cors-error/#3-非常糟的寫法) 很類似，差別只在把 `crossOrigin='anonymous'` 的順序提前到 `src` 之前，但結果會跟 [1. 正常寫法](/blog/2025/04/17/cors-debug-系列文-2-crossorigin-anonymous-的順序導致-cors-error/#1-正常寫法) 一樣，每張圖片只會送出一個 **跨域請求**，並且請求完後的圖片也**會**被快取
+只是想強調這個寫法跟上面 [3. 非常糟的寫法](/2025/04/17/cors-debug-系列文-2-crossorigin-anonymous-的順序導致-cors-error/#3-非常糟的寫法) 很類似，差別只在把 `crossOrigin='anonymous'` 的順序提前到 `src` 之前，但結果會跟 [1. 正常寫法](/2025/04/17/cors-debug-系列文-2-crossorigin-anonymous-的順序導致-cors-error/#1-正常寫法) 一樣，每張圖片只會送出一個 **跨域請求**，並且請求完後的圖片也**會**被快取
 
 <a href="https://bcjohnblue.github.io/browser-cors-error/safari-very-good-1" target="_blank">範例 - safari-very-good-1</a>
 
@@ -518,7 +518,7 @@ img.setAttribute('crossOrigin', 'anonymous');
 
 在研究 React 原始碼的過程中意外發現原來 19.0.0 版本就特別為 `img` 元素 `crossorigin` 的順序做了特殊處理，所以目前的 React 即使你把 `crossorigin` 放在 `src` 前面也不會遇到我們今天這篇文章 Safari 圖片消失不見的問題
 
-但 Vue 中並沒有對 `img` 元素進行特殊處理，最終是以 `setAttribute` 的方式將 `props` 依序設置在 `img` 元素上，而這種方式就如同 <a href="/blog/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/#3-非常糟的寫法" target="_blank">3. 非常糟的寫法</a>，最終出現 Safari 圖片偶然消失不見的問題
+但 Vue 中並沒有對 `img` 元素進行特殊處理，最終是以 `setAttribute` 的方式將 `props` 依序設置在 `img` 元素上，而這種方式就如同 <a href="/2025/04/17/cors-debug-2-src-與-crossorigin-在-img-元素中的順序導致-cors-error/#3-非常糟的寫法" target="_blank">3. 非常糟的寫法</a>，最終出現 Safari 圖片偶然消失不見的問題
 
 ## 後續
 
@@ -652,5 +652,3 @@ img.crossOrigin = 'anonymous';
 [React 源码解析-虚拟 DOM](https://juejin.cn/post/6965462394286014471)
 [React 源码分析 1-jsx 转换及 React.createElement](https://juejin.cn/post/7177517711486877756)
 [Vue3 源码解析之 runtime](https://juejin.cn/post/7308289054029250599)
-
-<!-- [揭开 JSX 面纱 ： jsx 代码是如何一步步解析变成最后的 html 元素的](https://blog.csdn.net/Dou_Hua6/article/details/142518814) -->
