@@ -1,6 +1,7 @@
 ---
 title: 使用原生的 queueMicrotask 處理微任務
 date: 2024-02-04 11:52:47
+updated: 2025-05-11 02:06:00
 categories: Javascript
 tags:
 ---

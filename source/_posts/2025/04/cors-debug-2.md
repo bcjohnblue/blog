@@ -1,6 +1,7 @@
 ---
 title: CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error
 date: 2025-04-17 20:26:00
+updated: 2025-05-11 02:06:00
 categories: Javascript
 tags:
 ---

@@ -1,6 +1,7 @@
 ---
 title: Javascript 中的 event loop 及瀏覽器渲染機制
 date: 2024-01-20 17:40:10
+updated: 2025-05-11 02:06:00
 categories: Javascript
 tags:
 ---

@@ -1,6 +1,7 @@
 ---
 title: Vue.nextTick() 中的 event loop
 date: 2024-02-05 09:47:51
+updated: 2025-05-11 02:06:00
 categories: Javascript
 tags:
 ---

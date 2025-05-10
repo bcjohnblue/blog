@@ -1,6 +1,7 @@
 ---
 title: 理解 Three.js 中 texture 的 offset, repeat 及 wrap
 date: 2024-02-18 21:21:13
+updated: 2025-05-11 02:06:00
 categories: Three.js
 tags:
 ---
@@ -11,7 +12,7 @@ Threejs 中的 texture(貼圖) 可以設置 offset, repeat 及 wrap 屬性，但
 
 ##### [Demo](https://codesandbox.io/p/devbox/threejs-texture-nds6mp?file=%2Fsrc%2FExperience%2FWorld%2Fobjects%2FPlane.js%3A3%2C21)
 圖片渲染在 (x,y) 平面上，右方橘色線為 x 軸，上方綠色線為 y 軸
-<img src="/blog/2024/02/18/理解-three-js-中-texture-的-offset-repeat-及-wrap/default.png" width="50%" height="50%">
+<img src="/2024/02/18/理解-three-js-中-texture-的-offset-repeat-及-wrap/default.png" width="50%" height="50%">
 
 <!--more-->
 
