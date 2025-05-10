@@ -7,10 +7,10 @@ tags:
 
 此為 **event loop** 系列文章 - 第 1 篇：
 
-1. <a href="/blog/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> 
-2. <a href="/blog/2024/01/27/從程式碼角度來看-event-loop" target="_blank" rel="noreferrer noopenner">從程式碼角度來看 event loop</a> 
-3. <a href="/blog/2024/02/04/使用原生的-queuemicrotask-處理微任務/" target="_blank" rel="noreferrer noopenner">使用原生的 queueMicrotask 處理微任務</a>
-3. <a href="/blog/2024/02/05/vue-nexttick-中的-event-loop/" target="_blank" rel="noreferrer noopenner">Vue.nextTick() 中的 event loop</a>
+1. <a href="/2024/01/20/javascript-中的-event-loop-及瀏覽器渲染機制" target="_blank" rel="noreferrer noopenner">Javascript 中的 event loop 及瀏覽器渲染機制</a> 
+2. <a href="/2024/01/27/從程式碼角度來看-event-loop" target="_blank" rel="noreferrer noopenner">從程式碼角度來看 event loop</a> 
+3. <a href="/2024/02/04/使用原生的-queuemicrotask-處理微任務/" target="_blank" rel="noreferrer noopenner">使用原生的 queueMicrotask 處理微任務</a>
+3. <a href="/2024/02/05/vue-nexttick-中的-event-loop/" target="_blank" rel="noreferrer noopenner">Vue.nextTick() 中的 event loop</a>
 
 ## 前言
 **event loop** 是 **js** 中一個蠻重要的概念，雖然以前知道 **宏任務 (macrotask)** 及 **微任務 (microtask)** 優先級上的差別，但似乎一直不知道 **event loop** 與瀏覽器渲染間的關係，而大部分的文章都只單獨介紹 **event loop** 或是 瀏覽器渲染流程，所以寫了這篇文章統整 **event loop** 與 瀏覽器渲染 間的關聯性

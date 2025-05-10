@@ -7,7 +7,7 @@ tags:
 
 ## 前言
 
-繼上一篇 [使用 Three.js 操作 shader 畫出國旗](https://bcjohnblue.github.io/blog/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/) 後，這一篇文章希望了解 Three.js 裡的 shader 架構
+繼上一篇 [使用 Three.js 操作 shader 畫出國旗](https://bcjohnblue.github.io/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/) 後，這一篇文章希望了解 Three.js 裡的 shader 架構
 
 ## WebGL 裡的 shader 綁定
 
@@ -114,7 +114,7 @@ if (parameters.isRawShaderMaterial) {
 
 而另一個狀況是 `parameters.isRawShaderMaterial = false`，可以看到相比上面這邊定義了很多 `#define` 開頭的數值，全部大約有一兩百多個吧，因為太多的關係所以下面的程式碼只節錄了前面的幾個
 
-目前為止會發現在 `isRawShaderMaterial = false` 的狀況下，Three.js 偷偷在 shader 程式碼的開頭塞了很多東西，這也是前一篇文章提出的疑問 - [THREE.RawShaderMaterial 與 THREE.ShaderMaterial 的差別](https://bcjohnblue.github.io/blog/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/#:~:text=THREE.RawShaderMaterial%20%E8%88%87%20THREE.ShaderMaterial%20%E7%9A%84%E5%B7%AE%E5%88%A5) ，當使用 [RawShaderMaterial](https://threejs.org/docs/#api/en/materials/RawShaderMaterial) 時 `isRawShaderMaterial` 會設成 `true`，前面就不會偷塞一堆 `#define` 的東西，但當使用 [ShaderMaterial](https://threejs.org/docs/#api/en/materials/ShaderMaterial) 時 Three.js 偷塞入的東西就是下面這一堆
+目前為止會發現在 `isRawShaderMaterial = false` 的狀況下，Three.js 偷偷在 shader 程式碼的開頭塞了很多東西，這也是前一篇文章提出的疑問 - [THREE.RawShaderMaterial 與 THREE.ShaderMaterial 的差別](https://bcjohnblue.github.io/2024/12/06/%E4%BD%BF%E7%94%A8-three-js-%E6%93%8D%E4%BD%9C-shader-%E7%95%AB%E5%87%BA%E5%9C%8B%E6%97%97/#:~:text=THREE.RawShaderMaterial%20%E8%88%87%20THREE.ShaderMaterial%20%E7%9A%84%E5%B7%AE%E5%88%A5) ，當使用 [RawShaderMaterial](https://threejs.org/docs/#api/en/materials/RawShaderMaterial) 時 `isRawShaderMaterial` 會設成 `true`，前面就不會偷塞一堆 `#define` 的東西，但當使用 [ShaderMaterial](https://threejs.org/docs/#api/en/materials/ShaderMaterial) 時 Three.js 偷塞入的東西就是下面這一堆
 
 ```js
 prefixVertex = [

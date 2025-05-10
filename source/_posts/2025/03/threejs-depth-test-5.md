@@ -7,12 +7,12 @@ tags:
 
 ###### 此為 **Three.js 中物體的遠近關係** 系列文章 - 第 5 篇：
 
-1. <a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a>
-2. <a href="/blog/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標</a>
-3. <a href="/blog/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a>
-4. <a href="/blog/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a>
-5. <a href="/blog/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a>
-6. <a href="/blog/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a>
+1. <a href="/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/" target="_blank">Three.js 中物體的遠近關係 (1) - 什麼是深度測試？</a>
+2. <a href="/2025/02/28/three-js-中物體的遠近關係-2-左手-右手座標系與齊次座標/" target="_blank">Three.js 中物體的遠近關係 (2) - 左手/右手座標系與齊次座標</a>
+3. <a href="/2025/02/28/three-js-中物體的遠近關係-3-深度值的計算方式/" target="_blank">Three.js 中物體的遠近關係 (3) - 深度值的計算方式</a>
+4. <a href="/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a>
+5. <a href="/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a>
+6. <a href="/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a>
 
 ## 前言
 
@@ -22,7 +22,7 @@ tags:
 
 ## 渲染物體的順序
 
-在 <a href="/blog/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/#Case-1-切換深度測試的開關" target="_blank">切換深度測試的開關</a> 中我們將紅色平面的 `depthTest` 設為 `false`，最終藍色平面中的 **像素(fragment)** 都通過深度測試，覆蓋紅色平面繪製到螢幕上
+在 <a href="/2025/02/13/three-js-中物體的遠近關係-1-什麼是深度測試？/#Case-1-切換深度測試的開關" target="_blank">切換深度測試的開關</a> 中我們將紅色平面的 `depthTest` 設為 `false`，最終藍色平面中的 **像素(fragment)** 都通過深度測試，覆蓋紅色平面繪製到螢幕上
 
 <img src="./depth-test-red-disabled.png" style="width: 100%" />
 
