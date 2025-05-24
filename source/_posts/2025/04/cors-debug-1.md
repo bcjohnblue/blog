@@ -1,7 +1,7 @@
 ---
 title: CORS Debug (1) - 網頁快取導致的 CORS 問題
 date: 2025-04-13 22:41:49
-updated: 2025-05-11 02:06:00
+updated: 2025-05-25 12:31:00
 categories: Javascript
 tags:
 ---
@@ -70,7 +70,7 @@ const downloadImage = async (image: Image) => {
 
 ```html
 <img
-  src="https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg"
+  src="https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg"
   alt="building"
 />
 ```
@@ -81,7 +81,7 @@ const downloadImage = async (image: Image) => {
 
 ```html
 <img
-  src="https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg"
+  src="https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg"
   crossorigin="anonymous"
   alt="building"
 />
@@ -111,8 +111,6 @@ const downloadImage = async (image: Image) => {
   <img src="./origin-star.png" />
 </div>
 
-P.S. 在這篇文章中，`img.src` 圖片資源的網址都是 `https://rjzdhlvuuafqvgoyticm.supabase.co/` 開頭的，實際上我遇到無法下載圖片問題的時候後端伺服器是 Amazon S3，但這裡改用 [supabase](https://supabase.com/) 模擬 Amazon S3 Response headers 回傳的行為，主要是考慮到這樣可以更靈活的根據前端傳遞的 url，設置不同的 Response headers 來做測試
-
 #### 2. Amazon S3 上的快取機制 (cache)
 
 圖片下載失敗的原因之一除了 Amazon S3 上的 **CORS** 規範外，另外一個重點是 [網頁的快取機制(cache)](https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Guides/Caching)
@@ -141,7 +139,7 @@ P.S. 在這篇文章中，`img.src` 圖片資源的網址都是 `https://rjzdhlv
 
 ```html
 <img
-  src="https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg"
+  src="https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg"
   alt="building"
 />
 ```
@@ -218,7 +216,7 @@ Response headers 中的 [Vary](https://developer.mozilla.org/en-US/docs/Web/HTTP
 
 ```html
 <img
-  src="https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg"
+  src="https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg"
   crossorigin="anonymous"
   alt="building"
 />
