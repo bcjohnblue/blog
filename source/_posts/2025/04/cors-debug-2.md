@@ -1,7 +1,7 @@
 ---
 title: CORS Debug (2) - src 與 crossOrigin 在 img 元素中的順序導致 CORS error
 date: 2025-04-17 20:26:00
-updated: 2025-05-11 02:06:00
+updated: 2025-05-25 12:31:00
 categories: Javascript
 tags:
 ---
@@ -103,7 +103,7 @@ tags:
 
 ```html
 <img
-  src="https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg"
+  src="https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg"
   crossorigin="anonymous"
   alt="building"
 />
@@ -116,7 +116,7 @@ tags:
 ```html
 <img
   crossorigin="anonymous"
-  src="https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg"
+  src="https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg"
   alt="building"
 />
 ```
@@ -148,7 +148,7 @@ P.S. 在後面 [研究 React 原始碼的過程中](/2025/04/17/cors-debug-2-src
       const img = document.createElement('img');
       img.setAttribute(
         'src',
-        'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg'
+        'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg'
       );
       img.setAttribute('crossOrigin', 'anonymous');
       document.body.appendChild(img);
@@ -170,7 +170,7 @@ Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：
 ```html
 <body>
   <img
-    src="https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg"
+    src="https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg"
     crossorigin="anonymous"
   />
 </body>
@@ -191,7 +191,7 @@ Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：
   window.onload = function () {
     const img = document.createElement('img');
     img.src =
-      'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg';
+      'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg';
     img.crossOrigin = 'anonymous';
     document.body.appendChild(img);
   };
@@ -206,7 +206,7 @@ Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：
     const img = document.createElement('img');
     img.setAttribute(
       'src',
-      'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg'
+      'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg'
     );
     img.setAttribute('crossOrigin', 'anonymous');
     document.body.appendChild(img);
@@ -228,7 +228,7 @@ Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：
     setTimeout(() => {
       const img = document.createElement('img');
       img.src =
-        'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg';
+        'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg';
       img.crossOrigin = 'anonymous';
       document.body.appendChild(img);
     }, 0);
@@ -245,7 +245,7 @@ Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：
       const img = document.createElement('img');
       img.setAttribute(
         'src',
-        'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg'
+        'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg'
       );
       img.setAttribute('crossOrigin', 'anonymous');
       document.body.appendChild(img);
@@ -267,7 +267,7 @@ Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：
       const img = document.createElement('img');
       img.crossOrigin = 'anonymous';
       img.src =
-        'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg';
+        'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg';
       document.body.appendChild(img);
     }, 0);
   };
@@ -284,7 +284,7 @@ Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：
       img.setAttribute('crossOrigin', 'anonymous');
       img.setAttribute(
         'src',
-        'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg'
+        'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg'
       );
       document.body.appendChild(img);
     }, 0);
@@ -300,7 +300,7 @@ Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：
 
 ```html
 <img
-  src="https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg"
+  src="https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg"
   crossorigin="anonymous"
   alt="building"
 />
@@ -312,7 +312,7 @@ Safari 瀏覽器就真的是莫名其妙了，以下我們來看看：
 
 ```js
 React.createElement('img', {
-  src: 'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg',
+  src: 'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg',
   crossOrigin: 'anonymous',
   alt: 'building'
 });
@@ -390,7 +390,7 @@ Vue 的類 JSX 語法叫做 [模板语法](https://cn.vuejs.org/guide/essentials
 import { h } from 'vue';
 
 const vnode = h('img', {
-  src: 'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg',
+  src: 'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg',
   crossorigin: 'anonymous',
   alt: 'building'
 });
@@ -498,7 +498,7 @@ export function patchAttr(
 
 ```html
 <img
-  src="https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg"
+  src="https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg"
   crossorigin="anonymous"
   alt="building"
 />
@@ -510,7 +510,7 @@ export function patchAttr(
 const img = document.createElement('img');
 img.setAttribute(
   'src',
-  'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg'
+  'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg'
 );
 img.setAttribute('crossOrigin', 'anonymous');
 ```
@@ -566,7 +566,7 @@ img.setAttribute('crossOrigin', 'anonymous');
       const img = document.createElement('img');
       img.setAttribute(
         'src',
-        'https://rjzdhlvuuafqvgoyticm.supabase.co/functions/v1/getCORSImage?image=building.jpg'
+        'https://bcjohn-cors-static.s3.ap-southeast-2.amazonaws.com/building.jpg'
       );
       img.setAttribute('crossOrigin', 'anonymous');
       document.body.appendChild(img);
