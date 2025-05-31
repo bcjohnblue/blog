@@ -14,6 +14,7 @@ tags:
 4. <a href="/2025/03/17/three-js-中物體的遠近關係-4-對數深度值/" target="_blank">Three.js 中物體的遠近關係 (4) - 對數深度值</a>
 5. <a href="/2025/03/31/three-js-中物體的遠近關係-5-渲染物體的順序/" target="_blank">Three.js 中物體的遠近關係 (5) - 渲染物體的順序</a>
 6. <a href="/2025/05/04/three-js-中物體的遠近關係-6-如何正確的渲染透明粒子？/" target="_blank">Three.js 中物體的遠近關係 (6) - 如何正確的渲染透明粒子？</a>
+7. <a href="/2025/05/29/three-js-中物體的遠近關係-7-使用-polygonoffset-動態改變深度值/" target="_blank">Three.js 中物體的遠近關係 (7) - 使用 polygonOffset 動態改變深度值</a>
 
 ## 前言
 
