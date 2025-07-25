@@ -1,0 +1,51 @@
+---
+description: 支援 Hexo + MathJax 的 Markdown 編輯規則
+globs: '**/*.md'
+alwaysApply: false
+---
+
+## 🧩 規則內容
+
+### 🧠 認知重點
+
+- 這是 Hexo 專案中的 Markdown 檔案。
+- Front Matter (`---` 區塊) 是 YAML，不要將其當作內容編輯。
+- `{% ... %}` 是 Hexo tag plugins 語法，應保留原樣。
+- `<%= ... %>` 是 EJS 語法，勿轉換為普通 HTML。
+- 支援 MathJax 語法，包含：
+  - 行內公式：`$...$`
+  - 區塊公式：`$$...$$`
+
+### ✍️ 建議 AI 行為
+
+- 不應破壞 `{% %}`、EJS、或 LaTeX 語法。
+- 可適度美化數學公式的前後空白或上下文文字。
+- 保持程式碼區塊與 Markdown 格式完整（不要將 `$` 誤判為貨幣符號）。
+- 不自動格式化公式區塊內部內容。
+- 勿自動調整 Front Matter 內容。
+
+### ✅ 示例片段
+
+```md
+---
+title: "支援數學公式"
+date: 2025-07-24
+tags: [mathjax, hexo]
+---
+
+## 行內公式
+
+這是一個行內公式 $E=mc^2$ 的範例。
+
+## 區塊公式
+
+$$
+\int_{-\infty}^\infty e^{-x^2} dx = \sqrt{\pi}
+$$
+
+## 插圖與 EJS
+
+{% asset_img example.png %}
+
+<img src="<%= url_for('/images/icon.svg') %>">
+```
