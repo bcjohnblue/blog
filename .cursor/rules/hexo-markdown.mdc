@@ -1,6 +1,6 @@
 ---
 description: 支援 Hexo + MathJax 的 Markdown 編輯規則
-globs: '**/*.md'
+globs: **/*.md
 alwaysApply: false
 ---
 
@@ -11,7 +11,6 @@ alwaysApply: false
 - 這是 Hexo 專案中的 Markdown 檔案。
 - Front Matter (`---` 區塊) 是 YAML，不要將其當作內容編輯。
 - `{% ... %}` 是 Hexo tag plugins 語法，應保留原樣。
-- `<%= ... %>` 是 EJS 語法，勿轉換為普通 HTML。
 - 支援 MathJax 語法，包含：
   - 行內公式：`$...$`
   - 區塊公式：`$$...$$`
@@ -30,7 +29,7 @@ alwaysApply: false
 ---
 title: "支援數學公式"
 date: 2025-07-24
-tags: [mathjax, hexo]
+mathjax: true
 ---
 
 ## 行內公式
@@ -45,7 +44,7 @@ $$
 
 ## 插圖與 EJS
 
-{% asset_img example.png %}
+![](./example.png)
 
-<img src="<%= url_for('/images/icon.svg') %>">
+<img src="example.png">
 ```
