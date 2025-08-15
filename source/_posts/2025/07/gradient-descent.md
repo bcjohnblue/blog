@@ -1,14 +1,26 @@
 ---
-title: Gradient descent 梯度下降的三種變形
+title: 機器學習中的優化器 (1) - Gradient descent 梯度下降與其變體
 date: 2025-07-29 22:49:28
-updated: 2025-08-03 23:03:28
+updated: 2025-08-15 22:49:28
 categories: AI
 mathjax: true
 ---
 
+###### 此為 **機器學習中的優化器** 系列文章 - 第 1 篇：
+
+1. <a href="/2025/07/29/機器學習中的優化器-1-gradient-descent-梯度下降與其變體/" target="_blank">機器學習中的優化器 (1) - Gradient descent 梯度下降與其變體</a>
+2. <a href="/2025/08/05/機器學習中的優化器-2-從梯度下降問題到動量優化/" target="_blank">機器學習中的優化器 (2) - 從梯度下降問題到動量優化</a>
+3. <a href="/2025/08/15/機器學習中的優化器-3-adagrad、rmsprop-與-adam/" target="_blank">機器學習中的優化器 (3) - AdaGrad、RMSProp 與 Adam</a>
+
+## 什麼是優化器 Optimizer？
+
+在機器學習和深度學習中，**優化器（Optimizer）** 是訓練模型的核心組件。它的主要任務是找到一組最佳的模型參數，使得損失函數達到最小值，從而讓模型能夠做出最準確的預測，此篇文章所要介紹的 Gradient descent 就是其中一種優化器
+
 ## 為什麼需要 Gradient descent？
 
-在機器學習與深度學習中，我們常要找到一組最佳的模型參數，使 **損失函數 (Loss function)** 達到最小值，此時找到最佳的權重參數 $w$ 使得預測值 $\hat{y}$ 與實際值 $y$ 之間的誤差最小，這代表模型在預測時的誤差最小，預測效果最佳。而 **梯度下降 (Gradient descent)** 則是在尋找 **損失函數 (Loss function)** 最小值過程中的關鍵技術。
+在機器學習與深度學習中，我們常要找到一組最佳的模型參數，使 **損失函數 (Loss function)** 達到最小值，此時找到最佳的權重參數 $w$ 使得預測值 $\hat{y}$ 與實際值 $y$ 之間的誤差最小，這代表模型在預測時的誤差最小，預測效果最佳。而 **梯度下降 (Gradient descent)** 則是在尋找 **損失函數 (Loss function)** 最小值過程中的一個關鍵技術。
+
+<!-- more -->
 
 ## Gradient descent 扮演的角色
 
@@ -24,8 +36,6 @@ mathjax: true
 
 - 透過反覆迭代這個過程，可以自動化尋找最佳模型參數，讓模型的預測誤差最小。
 
-<!-- more -->
-
 ## 核心思想
 
 梯度下降的基本思想是：
@@ -39,7 +49,7 @@ $$w_{t+1} = w_t - \eta \nabla L(w_t)$$
 
 其中：
 
-- $w_t$ 是第 $t$ 步的參數值
+- $w_t$ 是第 $t$ 步的權重
 - $\eta$ 是學習率（步長）
 - $\nabla L(w_t)$ 是損失函數在 $w_t$ 處的梯度
 
@@ -149,7 +159,7 @@ $$w_{t+1} = w_t - \eta \cdot \frac{1}{B} \sum_{i \in \mathcal{B}} \nabla L(w_t, 
 
 ---
 
-<b>以下藉由計算 Batch Gradient descent 跟 Stochastic Gradient Descent 來感受使用不同 Gradient descent 之間處理資料的差別</b>
+<b>以下藉由計算 Batch Gradient descent 跟 Stochastic Gradient Descent 來體會使用不同 Gradient descent 處理資料的差別</b>
 
 ## Batch Gradient Descent 範例
 
