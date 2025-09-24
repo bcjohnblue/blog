@@ -1,5 +1,5 @@
 ---
-title: 特徵向量(Eigenvector) 與 特徵值(Eigenvalue)
+title: 特徵向量與特徵值
 date: 2025-09-20 23:22:38
 updated: 2025-09-20 23:22:38
 categories: Math
