@@ -2,7 +2,7 @@
 title: 特徵向量與特徵值
 date: 2025-09-20 23:22:38
 updated: 2025-09-20 23:22:38
-categories: Math
+categories: 線性代數
 mathjax: true
 ---
 
