@@ -2,7 +2,7 @@
 title: 奇異矩陣 - Singular matrix
 date: 2025-09-20 22:58:06
 updated: 2025-09-20 22:58:06
-categories: Math
+categories: 線性代數
 mathjax: true
 ---
 

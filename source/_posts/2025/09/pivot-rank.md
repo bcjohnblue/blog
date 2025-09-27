@@ -2,7 +2,7 @@
 title: 矩陣中的軸元與秩
 date: 2025-09-24 23:03:41
 updated: 2025-09-24 23:03:41
-categories: Math
+categories: 線性代數
 mathjax: true
 ---
 
