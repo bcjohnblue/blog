@@ -1,7 +1,7 @@
 ---
 title: 奇異矩陣 - Singular matrix
 date: 2025-09-20 22:58:06
-updated: 2025-09-20 22:58:06
+updated: 2025-09-29 22:58:06
 categories: 線性代數
 mathjax: true
 ---
@@ -140,6 +140,10 @@ $$
 
 - 對任意 $b$ 都有 **唯一解** $x = A^{-1}b$
 
-## Reference
+## 相關連結
+
+[特徵向量與特徵值](/2025/09/20/特徵向量與特徵值/)
+
+## 參考資料
 
 [奇异矩阵](https://baike.baidu.com/item/%E5%A5%87%E7%95%B0%E7%9F%A9%E9%99%A3/9658459)
