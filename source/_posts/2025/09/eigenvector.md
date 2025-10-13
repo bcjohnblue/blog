@@ -1,7 +1,7 @@
 ---
 title: 特徵向量與特徵值
 date: 2025-09-20 23:22:38
-updated: 2025-09-20 23:22:38
+updated: 2025-10-12 23:22:38
 categories: 線性代數
 mathjax: true
 ---
@@ -179,6 +179,14 @@ $$A\mathbf{v}_2 = \begin{pmatrix} 1 & 2 \\ 3 & 2 \end{pmatrix} \begin{pmatrix} 2
 
 - $x_1 + x_2 = 0$ 上的特徵向量，$(1, -1)$、$(-1, 1)$、$(2, -2)$ 等，都只相差一個常數倍數
 
+## 相關連結
+
+[奇異矩陣](/2025/09/20/奇異矩陣-singular-matrix/)
+[零空間 - Null space](/2025/10/13/零空間-null-space/)
+[代數重數與幾何重數](/2025/10/13/代數重數與幾何重數/)
+
 ## 參考資料
 
 - [特徵向量(Eigenvector) 及 特徵值(Eigenvalue) 的定義及求法](https://silverwind1982.pixnet.net/blog/post/154593170)
+
+- [Linear Algebra Lecture 25: Eigenvalues and Eigenvectors](https://www.youtube.com/watch?v=1RyHRIP8QGg&list=PLJV_el3uVTsNmr39gwbyV-0KjULUsN7fW&index=25)
