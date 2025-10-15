@@ -1,7 +1,7 @@
 ---
 title: 正交矩陣
 date: 2025-10-06 23:04:35
-updated: 2025-10-06 23:04:35
+updated: 2025-10-15 23:04:35
 categories: 線性代數
 mathjax: true
 ---
@@ -151,13 +151,19 @@ $$Q\mathbf{u} \cdot Q\mathbf{v} = (Q\mathbf{u})^T (Q\mathbf{v}) = \mathbf{u}^T Q
 **例子：**
 
 1. **二維標準正交基：**
+   {% raw %}
    $$\mathbf{e}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}, \\ \mathbf{e}_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$$
+   {% endraw %}
 
 2. **三維標準正交基：**
+   {% raw %}
    $$\mathbf{e}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \\ \mathbf{e}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}, \\ \mathbf{e}_3 = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}$$
+   {% endraw %}
 
 3. **旋轉後的標準正交基：**
+   {% raw %}
    $$\mathbf{e}_1 = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix}, \\ \mathbf{e}_2 = \begin{bmatrix} -\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix}$$
+   {% endraw %}
 
 ## 相關連結
 
