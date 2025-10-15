@@ -1,7 +1,7 @@
 ---
 title: 矩陣對角化
 date: 2025-10-07 11:20:35
-updated: 2025-10-07 11:20:35
+updated: 2025-10-14 11:20:35
 categories: 線性代數
 mathjax: true
 ---
@@ -154,7 +154,7 @@ $$(B - I)\mathbf{v} = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}\begin{bmatrix
 - $0 \cdot x + 1 \cdot y = 0$，即 $y = 0$
 - $0 \cdot x + 0 \cdot y = 0$，即 $0 = 0$（恆等式）
 
-因此，特徵向量為 $\mathbf{v} = \begin{bmatrix} x \\ 0 \end{bmatrix} = x\begin{bmatrix} 1 \\ 0 \end{bmatrix}$
+因此，特徵向量為 {% raw %} $\mathbf{v} = \begin{bmatrix} x \\ 0 \end{bmatrix} = x\begin{bmatrix} 1 \\ 0 \end{bmatrix}$ {% endraw %}
 
 **為什麼不可對角化**：
 
