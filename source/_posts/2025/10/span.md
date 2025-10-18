@@ -1,7 +1,7 @@
 ---
 title: 線性生成空間 - span
 date: 2025-10-13 21:53:16
-updated: 2025-10-13 21:53:16
+updated: 2025-10-18 21:53:16
 categories: 線性代數
 mathjax: true
 ---
@@ -53,7 +53,22 @@ $$\text{span}\{\mathbf{v}_1, \mathbf{v}_2\} = \text{span}\{\mathbf{v}_1\} = \{c\
 
 這是一個通過原點的直線
 
-## 範例 3：三維空間中的平面
+## 範例 3：三維空間的 span
+
+{% raw %}
+
+考慮向量 $\mathbf{v}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$，$\mathbf{v}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}$，$\mathbf{v}_3 = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}$
+
+$$\text{span}\{\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3\} = \{c_1\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix} + c_2\begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix} + c_3\begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} : c_1, c_2, c_3 \in \mathbb{R}\}$$
+
+$$= \{\begin{bmatrix} c_1 \\ c_2 \\ c_3 \end{bmatrix} : c_1, c_2, c_3 \in \mathbb{R}\}$$
+
+{% endraw %}
+
+這個 span 就是整個三維空間 $\mathbb{R}^3$，因為這三個向量是線性無關的，且構成了 $\mathbb{R}^3$ 的一組基底
+
+
+## 範例 4：三維空間中的平面
 
 {% raw %}
 考慮向量 $\mathbf{v}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$ 和 $\mathbf{v}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}$

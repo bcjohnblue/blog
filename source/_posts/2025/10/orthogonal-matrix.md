@@ -1,7 +1,7 @@
 ---
 title: 正交矩陣
 date: 2025-10-06 23:04:35
-updated: 2025-10-15 23:04:35
+updated: 2025-10-18 23:04:35
 categories: 線性代數
 mathjax: true
 ---
@@ -88,7 +88,7 @@ $$\|Q\mathbf{x}\| = \|\mathbf{x}\|$$
 
 **證明：**
 
-根據內積的矩陣形式：
+根據 [內積的矩陣乘法形式](/2025/10/18/向量內積/#定義二：矩陣乘法形式)：
 
 $$
 x \cdot y = x^Ty \quad\Rightarrow\quad |x|^2 = x^Tx
@@ -168,6 +168,7 @@ $$Q\mathbf{u} \cdot Q\mathbf{v} = (Q\mathbf{u})^T (Q\mathbf{v}) = \mathbf{u}^T Q
 ## 相關連結
 
 [轉置矩陣](/2025/09/27/轉置矩陣/)
+[向量內積](/2025/10/18/向量內積/)
 
 ## 參考資料
 
