@@ -1,7 +1,7 @@
 ---
 title: 子式 - minor
 date: 2025-10-19 00:21:46
-updated: 2025-10-19 00:21:46
+updated: 2025-11-03 00:21:46
 categories: 線性代數
 mathjax: true
 ---
@@ -134,7 +134,7 @@ $$M_{\{1,2,3\}}(A) = \det(A) = 0$$
 
 ## 順序主子式
 
-**順序主子式(Leading Principal Minor)** 是主子式的一個特殊子類別，它要求 **選取的行和列索引必須是連續的**，且從第 1 行第 1 列開始
+**順序主子式(Sequential Principal Minor)**，或者英文也叫做 **Leading Principal Minor** 是主子式的一個特殊子類別，它要求 **選取的行和列索引必須是連續的**，且從第 1 行第 1 列開始
 
 對於 $n \times n$ 矩陣 $A$，其 $k$ 階順序主子式記為 $D_k(A)$，定義為：
 

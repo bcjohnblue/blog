@@ -1,7 +1,7 @@
 ---
 title: 矩陣對角化
 date: 2025-10-07 11:20:35
-updated: 2025-10-14 11:20:35
+updated: 2025-11-03 11:20:35
 categories: 線性代數
 mathjax: true
 ---
@@ -198,3 +198,4 @@ $$\text{tr}(A) = \text{tr}(D) = \lambda_1 + \lambda_2 + \cdots + \lambda_n$$
 [wiki - 跡](https://zh.wikipedia.org/zh-tw/%E8%B7%A1)
 [通俗易懂：矩阵对角化](https://zhuanlan.zhihu.com/p/684220530)
 [Linear Algebra Lecture 26: Diagonalization](https://www.youtube.com/watch?v=TsB5_BiMFoo&list=PLJV_el3uVTsNmr39gwbyV-0KjULUsN7fW&index=27)
+[【無痛線代】特徵值的本質究竟反映了什麼特徵？](https://www.youtube.com/watch?v=OdP2l2VNWOc)

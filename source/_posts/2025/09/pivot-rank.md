@@ -1,7 +1,7 @@
 ---
 title: 矩陣中的軸元與秩
 date: 2025-09-24 23:03:41
-updated: 2025-09-24 23:03:41
+updated: 2025-11-03 23:03:41
 categories: 線性代數
 mathjax: true
 ---
@@ -36,10 +36,6 @@ $$A = \begin{bmatrix} 2 & 1 & 3 \\ 0 & 4 & 1 \\ 0 & 0 & 5 \end{bmatrix}$$
 
 - 如果矩陣有 $r$ 個軸元，則 $\text{rank}(A) = r$
 - 如果矩陣沒有軸元（零矩陣），則 $\text{rank}(A) = 0$
-
-### 2. 軸元與線性獨立性
-
-軸元所在的行向量是線性獨立的，這提供了判斷向量組線性獨立性的有效方法
 
 ## 計算
 
@@ -114,6 +110,111 @@ $$\begin{bmatrix} 1 & -1 & 1 \\ 0 & 2 & -3 \\ 0 & 0 & -2 \end{bmatrix}$$
 {% endraw %}
 
 **最終結果**：有三個軸元 $a_{11} = 1$，$a_{22} = 2$，$a_{33} = -2$，因此 $\text{rank}(A) = 3$
+
+## 滿秩矩陣
+
+### 定義
+
+對於 $m \times n$ 矩陣 $A$，如果其秩等於矩陣的列數或行數中的較小值，則稱該矩陣為 **滿秩矩陣(full rank matrix)**
+
+具體來說：
+
+- 如果 $m \leq n$ 且 $\text{rank}(A) = m$，則 $A$ 是 **列滿秩(row full rank)**
+- 如果 $n \leq m$ 且 $\text{rank}(A) = n$，則 $A$ 是 **行滿秩(column full rank)**
+- 對於 $n \times n$ 方陣，如果 $\text{rank}(A) = n$，則 $A$ 是 **滿秩方陣**
+
+### 滿秩方陣與線性獨立性
+
+對於 $n \times n$ 的方陣 $A$，若 $\text{rank}(A) = n$，其為 **滿秩方陣**
+
+此時：
+
+- 行向量線性獨立
+- 列向量線性獨立
+- $\det(A) \ne 0$
+- $A$ 可逆（invertible）
+
+### 範例 1：滿秩方陣
+
+考慮 $3 \times 3$ 矩陣：
+
+{% raw %}
+
+$$A = \begin{bmatrix} 1 & 2 & 0 \\ 0 & 1 & 1 \\ 1 & 0 & 1 \end{bmatrix}$$
+
+{% endraw %}
+
+通過高斯消去法得到：
+
+{% raw %}
+
+$$\begin{bmatrix} 1 & 2 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 3 \end{bmatrix}$$
+
+{% endraw %}
+
+此矩陣有三個軸元：$a_{11} = 1$，$a_{22} = 1$，$a_{33} = 3$
+
+- $\text{rank}(A) = 3 = n$，因此 $A$ 是**滿秩方陣**
+- **列向量線性獨立**：$\begin{bmatrix} 1 & 2 & 0 \end{bmatrix}$，$\begin{bmatrix} 0 & 1 & 1 \end{bmatrix}$，$\begin{bmatrix} 1 & 0 & 1 \end{bmatrix}$ 彼此線性獨立
+- **行向量線性獨立**：$\begin{bmatrix} 1 & 0 & 1 \end{bmatrix}^T$，$\begin{bmatrix} 2 & 1 & 0 \end{bmatrix}^T$，$\begin{bmatrix} 0 & 1 & 1 \end{bmatrix}^T$ 彼此線性獨立
+- $\det(A) = 3 \ne 0$，因此 $A$ 可逆
+
+### 範例 2：列滿秩矩陣
+
+考慮 $2 \times 3$ 矩陣（列數大於行數）：
+
+{% raw %}
+
+$$B = \begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \end{bmatrix}$$
+
+{% endraw %}
+
+此矩陣有兩個軸元：$b_{11} = 1$，$b_{22} = 1$
+
+- $\text{rank}(B) = 2 = m$（列數），因此 $B$ 是**列滿秩**
+- 列向量 {% raw %} $\begin{bmatrix} 1 & 0 & 1 \end{bmatrix}$ 和 $\begin{bmatrix} 0 & 1 & 1 \end{bmatrix}$ {% endraw %} 線性獨立
+
+### 範例 3：行滿秩矩陣
+
+考慮 $3 \times 2$ 矩陣（列數大於行數）：
+
+{% raw %}
+
+$$C = \begin{bmatrix} 1 & 2 \\ 0 & 1 \\ 0 & 0 \end{bmatrix}$$
+
+{% endraw %}
+
+此矩陣有兩個軸元：$c_{11} = 1$，$c_{22} = 1$
+
+- $\text{rank}(C) = 2 = n$（行數），因此 $C$ 是**行滿秩**
+- 行向量 {% raw %} $\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$ 和 $\begin{bmatrix} 2 \\ 1 \\ 0 \end{bmatrix}$ {% endraw %} 線性獨立
+
+### 範例 4：非滿秩矩陣
+
+考慮 $3 \times 3$ 矩陣：
+
+{% raw %}
+
+$$D = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 3 & 6 & 9 \end{bmatrix}$$
+
+{% endraw %}
+
+通過高斯消去法：
+
+{% raw %}
+
+$$\begin{bmatrix} 1 & 2 & 3 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}$$
+
+{% endraw %}
+
+- 只有一個軸元 $d_{11} = 1$，因此 $\text{rank}(D) = 1 < 3$
+- $D$ **不是滿秩矩陣**
+- 列向量線性相關：$\begin{bmatrix} 2 \\ 4 \\ 6 \end{bmatrix} = 2\begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}$，$\begin{bmatrix} 3 \\ 6 \\ 9 \end{bmatrix} = 3\begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}$
+- $D$ 不可逆
+
+## 相關連結
+
+[奇異矩陣](/2025/09/20/奇異矩陣-singular-matrix/)
 
 ## 參考資料
 
