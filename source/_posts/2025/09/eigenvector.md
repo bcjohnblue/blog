@@ -1,7 +1,7 @@
 ---
 title: 特徵向量與特徵值
 date: 2025-09-20 23:22:38
-updated: 2025-10-12 23:22:38
+updated: 2025-11-03 23:22:38
 categories: 線性代數
 mathjax: true
 ---
@@ -187,6 +187,6 @@ $$A\mathbf{v}_2 = \begin{pmatrix} 1 & 2 \\ 3 & 2 \end{pmatrix} \begin{pmatrix} 2
 
 ## 參考資料
 
-- [特徵向量(Eigenvector) 及 特徵值(Eigenvalue) 的定義及求法](https://silverwind1982.pixnet.net/blog/post/154593170)
-
-- [Linear Algebra Lecture 25: Eigenvalues and Eigenvectors](https://www.youtube.com/watch?v=1RyHRIP8QGg&list=PLJV_el3uVTsNmr39gwbyV-0KjULUsN7fW&index=25)
+[特徵向量(Eigenvector) 及 特徵值(Eigenvalue) 的定義及求法](https://silverwind1982.pixnet.net/blog/post/154593170)
+[Linear Algebra Lecture 25: Eigenvalues and Eigenvectors](https://www.youtube.com/watch?v=1RyHRIP8QGg&list=PLJV_el3uVTsNmr39gwbyV-0KjULUsN7fW&index=25)
+[【無痛線代】特徵值的本質究竟反映了什麼特徵？](https://www.youtube.com/watch?v=OdP2l2VNWOc)
