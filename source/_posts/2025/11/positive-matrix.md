@@ -267,7 +267,7 @@ $$
 - $a \leq 0$
 - $ac \geq b^2$
 
-假設 $a=0, b=0, c=1$ 畫出來的是形似拱橋的圖，最大值位在 y 軸等於 0 的地方：
+假設 $a=0, b=0, c=-1$ 畫出來的是形似拱橋的圖，最大值位在 y 軸等於 0 的地方：
 
 <img src="quadratic_inverted_bowl_semidefinite.png" width="500">
 
