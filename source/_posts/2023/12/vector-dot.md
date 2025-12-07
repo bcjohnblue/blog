@@ -1,9 +1,8 @@
 ---
 title: 向量內積
 date: 2023-12-11 20:55:55
-updated: 2025-05-11 02:06:00
+updated: 2025-12-07 02:06:00
 categories: Math
-tags:
 ---
 
 ## 說明
@@ -23,6 +22,9 @@ tags:
 <img src="三角形.png" width="80%" />
 <br />
 <img src="證明.png" width="60%" />
+
+## 相關連結
+1. [向量的內積與外積](/2025/10/18/向量的內積與外積/)
 
 ## 參考資料
 1. [維基百科-內積](https://zh.wikipedia.org/zh-tw/%E7%82%B9%E7%A7%AF)
