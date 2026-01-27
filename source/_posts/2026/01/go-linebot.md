@@ -10,7 +10,9 @@ tags:
 
 最近花了半個月的時間開發了 [go-linebot](https://github.com/bcjohnblue/go-linebot)，是一款能夠在 line 上面進行圍棋對弈，以及串接 KataGo 進行 AI 對弈和 AI 覆盤的服務
 
-<img src="./play.jpg" style="max-width: 300px;">
+<img src="/2026/01/28/go-linebot-開發心得/play.jpg" style="max-width: 300px;">
+
+<!-- more -->
 
 一開始是徐老師在圍棋社的群組裡寫了一個 **@NTUGoBot** 的 line 機器人，只要輸入 **"@NTUGoBot 棋盤座標"** 就會自動回傳一張下棋後的全盤圖片，一群三十幾歲的社畜們不像以前可以隨時坐在社辦裡一天下個兩三盤棋，改成在 line 上面的非即時對弈反而可以輕鬆的享受下棋的樂趣
 
@@ -40,7 +42,7 @@ tags:
 
 目前為止終於把想做的事情做到一個段落了！時間已經過去了兩個禮拜真是累，隔天馬上跟徐老師確認他下棋功能搬到雲端後是否正常運作，結果發現了一個小 bug，那就是手機版的 line 是可以提及 "@NTUGoBot" 官方帳號的，但電腦版的 line 不知道為什麼只能提及人而無法提及官方帳號... 之前有很多人都是用電腦版的 line 下棋比較方便，所以還需要做一點小修改，將單純的 "@NTUGoBot" 文字也要提取出來，並執行後面的指令
 
-之後終於將 NTUGoBot 加入到群組中了，覆盤功能我覺得看起來是蠻酷的，但不知道是不是 AI 太強分析出來的 PV 變化幾乎都令人看不太懂XD 但可以知道哪幾步棋的下法造成勝率大幅變化還是蠻好玩的，而且最後額外做的全盤勝率變化圖也可以看出整盤的優勢是如何 90% => 50% => 3% => 70%，這樣跳動改變的
+之後終於將 NTUGoBot 加入到群組中了，覆盤功能我覺得看起來是蠻酷的，但不知道是不是 AI 太強分析出來的 PV 變化幾乎都令人看不太懂 XD 但可以知道哪幾步棋的下法造成勝率大幅變化還是蠻好玩的，而且最後額外做的全盤勝率變化圖也可以看出整盤的優勢是如何 90% => 50% => 3% => 70%，這樣跳動改變的
 
 試用過覆盤功能後的王博士提出了一個新的需求 - AI 對下，原因是有些局部太複雜、或是最近流行的 AI 大型定石，根本不知道要如何下才是正確的手順，如果讓 AI 來下的話或許就可以了解這個局部的最佳下法，拜之前花許多時間將 katago 部署到 modal 上的努力，進一步實作出 AI 對弈的功能只花費了一天，當初覆盤用的是 `katago analysis` 而現在要讓 AI 下下一手是使用 `katago gtp` 讀取 katago 輸出的座標再畫回去棋盤上就可以了
 
@@ -124,7 +126,7 @@ image = (
 )
 ```
 
-#### 4-3. python 執行環境指向問題 
+#### 4-3. python 執行環境指向問題
 
 在本機開發時，執行 katawrap 所使用的 python 執行環境是自己用 virtual env 建出來的，所以運行指令類似這樣
 
@@ -140,7 +142,7 @@ ls /*.sgf \
 而在部署到 modal 上時，並沒有 virtual env 環境，取而代之的是直接用 system 的 python 執行，再問了 AI 多次嘗試後才知道可以用 `sys.executable` 這個寫法取得 python 的執行環境而解決這個問題
 
 ```python
-os.environ["VENV_PY"] = sys.executable 
+os.environ["VENV_PY"] = sys.executable
 print(f"Set VENV_PY to: {sys.executable}")
 ```
 
@@ -148,7 +150,8 @@ print(f"Set VENV_PY to: {sys.executable}")
 
 將 katago 部署到 modal 上時需要挑選用哪個 GPU，所以以下測試了幾種不同 GPU 搭配 katago 不同的設定檔參數做了一些 benchmark 的測試，最終結果是 L4 GPU 的性價比最高
 
-#### 第 1 組 katago 參數 
+#### 第 1 組 katago 參數
+
 nnCacheSizePowerOfTwo = 23
 nnMaxBatchSize = 128
 nnMutexPoolSizePowerOfTwo = 17
@@ -157,21 +160,22 @@ numAnalysisThreads = 32
 numSearchThreads = 1
 
 gpu="T4"
-visits: 100 01:17 = 0.000164 x  77 = 0.012628
+visits: 100 01:17 = 0.000164 x 77 = 0.012628
 visits: 400 04:33 = 0.000164 x 273 = 0.044772
 
 gpu="L4" **(win!)**
-visits: 100 00:46 = 0.000222 x  46 = 0.010212
+visits: 100 00:46 = 0.000222 x 46 = 0.010212
 visits: 400 02:10 = 0.000222 x 130 = 0.028860
 
 gpu="A10"
-visits: 100 00:39 = 0.000306 x  39 = 0.011934
+visits: 100 00:39 = 0.000306 x 39 = 0.011934
 visits: 400 02:16 = 0.000306 x 136 = 0.041616
 
 gpu="A100"
-visits: 100 00:31 = 0.000583 x  31 = 0.018073
+visits: 100 00:31 = 0.000583 x 31 = 0.018073
 
-#### 第 2 組 katago 參數 
+#### 第 2 組 katago 參數
+
 nnCacheSizePowerOfTwo = 23
 nnMaxBatchSize = 256
 nnMutexPoolSizePowerOfTwo = 17
@@ -180,10 +184,11 @@ numAnalysisThreads = 1
 numSearchThreads = 16
 
 gpu="L4"
-visits: 100 01:09 = 0.000222 x  69 = 0.015318
+visits: 100 01:09 = 0.000222 x 69 = 0.015318
 visits: 400 02:31 = 0.000222 x 151 = 0.033522
 
-#### 第 3 組 katago 參數 
+#### 第 3 組 katago 參數
+
 nnCacheSizePowerOfTwo = 23
 nnMaxBatchSize = 512
 nnMutexPoolSizePowerOfTwo = 17
@@ -194,7 +199,8 @@ numSearchThreads = 1
 gpu="L4"
 visits: 400 02:31 = 0.000222 x 151 = 0.033522
 
-#### 第 4 組 katago 參數 
+#### 第 4 組 katago 參數
+
 nnCacheSizePowerOfTwo = 23
 nnMaxBatchSize = 256
 nnMutexPoolSizePowerOfTwo = 17
@@ -238,7 +244,7 @@ RAM - 每月前 360,000 GiB-秒免費
 
 #### 4. linebot 費用
 
-linebot 傳送訊息分為兩種，一個是 reply message 另一個是 push message，reply message 是使用者傳送訊息後可以在一定時間內免費回覆訊息回去，而 push message 是主動推播機制，隨時可以由 linebot 傳送給使用者，而 linebot 每個月的免費方案 (輕用量) 是 200 則訊息，這 200 則訊息其實指的就是 push message，reply message 由於是即時回覆給使用者所以並不會被計算在內，所以像是使用者使用 "@NTUGoBot d4" 下棋後回傳棋盤圖片由於時間很短，可以發送免費的 reply message 回去，但請 katago 執行 AI 覆盤時因為時間太長，可能無法使用 reply message，所以這裡使用的是 push message，為了避免傳送 20 筆關鍵手數耗費到太多訊息數 (實際上計算訊息的次數是 20 * 群組人數)，最終採用的是 flex carousel message 方案，每 10 筆關鍵手數為一組發送，這樣的話實際上會被計算的訊息次數就變成 2 * 群組人數，覆盤次數不多的話可以控制在每個月 200 則訊息內，但實際上發現如果真的用到每個月超出 200 則，其實只要額外再申請一個 linebot 就可以繞過這個限制
+linebot 傳送訊息分為兩種，一個是 reply message 另一個是 push message，reply message 是使用者傳送訊息後可以在一定時間內免費回覆訊息回去，而 push message 是主動推播機制，隨時可以由 linebot 傳送給使用者，而 linebot 每個月的免費方案 (輕用量) 是 200 則訊息，這 200 則訊息其實指的就是 push message，reply message 由於是即時回覆給使用者所以並不會被計算在內，所以像是使用者使用 "@NTUGoBot d4" 下棋後回傳棋盤圖片由於時間很短，可以發送免費的 reply message 回去，但請 katago 執行 AI 覆盤時因為時間太長，可能無法使用 reply message，所以這裡使用的是 push message，為了避免傳送 20 筆關鍵手數耗費到太多訊息數 (實際上計算訊息的次數是 20 x 群組人數)，最終採用的是 flex carousel message 方案，每 10 筆關鍵手數為一組發送，這樣的話實際上會被計算的訊息次數就變成 2 x 群組人數，覆盤次數不多的話可以控制在每個月 200 則訊息內，但實際上發現如果真的用到每個月超出 200 則，其實只要額外再申請一個 linebot 就可以繞過這個限制
 
 #### 5. ChatGPT 費用
 
@@ -246,7 +252,7 @@ linebot 傳送訊息分為兩種，一個是 reply message 另一個是 push mes
 
 #### 6. modal
 
-modal starter 的免費方案每月就有 $30 塊美金的運算資源，每覆盤一局棋用到 L4 GPU 5分鐘的運算資源大概也才花 $0.02 美金吧，所以目前倒是可以盡情揮霍一番
+modal starter 的免費方案每月就有 $30 塊美金的運算資源，每覆盤一局棋用到 L4 GPU 5 分鐘的運算資源大概也才花 $0.02 美金吧，所以目前倒是可以盡情揮霍一番
 
 <img src="./modal-pricing.png">
 
