@@ -1,10 +1,20 @@
 ---
-title: 共變異數矩陣
-date: 2025-12-10 22:33:35
-updated: 2025-12-10 22:33:35
-categories: 線性代數
+title: 高斯分布 (1) - 從共變異數矩陣出發
+date: 2026-03-18 21:33:35
+updated: 2026-03-18 21:33:35
+categories: Math
 mathjax: true
 ---
+
+###### 此為 **高斯分布** 系列文章 - 第 1 篇：
+
+1. <a href="/2026/03/18/高斯分布-1-從共變異數矩陣出發/" target="_blank">高斯分布 (1) - 從共變異數矩陣出發</a>
+2. <a href="/2026/03/18/高斯分布-2-一維到多維的分布形式/" target="_blank">高斯分布 (2) - 一維到多維的分布形式</a>
+3. <a href="/2026/03/18/高斯分布-3-仿射變換後的性質變化/" target="_blank">高斯分布 (3) - 仿射變換後的性質變化</a>
+
+## 序
+
+這一系列文章的目的是研究高斯分布相關的數學性質，在 [高斯分布 (2) - 一維到多維的分布形式](/2026/03/18/高斯分布-2-一維到多維的分布形式/) 文章中會學習到高斯分布的多維形式，基本上就是由**平均值**及**共變異數矩陣**所決定的，因此在正式介紹高斯分布數學式之前，我們需要先了解什麼是**共變異數矩陣**
 
 ## 前言
 
@@ -12,15 +22,16 @@ mathjax: true
 
 最基本的概念是 **變異數 (Variance)**，它告訴我們某個數據本身的波動有多大；但只看單一變數就像只看一個角色，很難了解整個故事。當我們把兩個變數放在一起，就可以用**共變異數**判斷它們是同方向動（一起變大或變小）、還是相互拉扯（一个變大、一个變小），或是根本沒什麼關聯
 
-而當資料裡的變數不只兩個，而是三個、十個、甚至上百個時，我們就需要把所有變數之間的「一起變動關係」整理成一張表，那就是 **共變異數矩陣 (Covariance Matrix)**。這張矩陣像是一個地圖，描繪出每個變數之間的連動方式，幫助我們看出資料的真正結構。許多強大的資料分析方法（像 PCA）都是以它為核心，從中找出資料最重要的變化方向
+而當資料裡的變數不只兩個，而是三個、十個、甚至上百個時，我們就需要把所有變數之間的「一起變動關係」整理成一張表，那就是 **共變異數矩陣 (Covariance Matrix)**。這張矩陣像是一個地圖，描繪出每個變數之間的連動方式，幫助我們看出資料的真正結構
 
 <!-- more -->
 
 ## 變異數 (Variance)
 
-變異數的公式可用來衡量資料的分散程度，其定義是每個觀測值與平均值之差的平方的平均。簡單而言，變異數等於所有數據點與其平均值差距的平方後的平均值
+變異數的公式可用來衡量資料的分散程度，其定義是每個觀測值與平均值之差的平方的平均。對於一組數據 $X = \{x_1, x_2, ..., x_n\}$，其變異數定義為：
 
-對於一組數據 $X = \{x_1, x_2, ..., x_n\}$，其變異數定義為：
+### 定義
+
 $$\text{Var}(X) = \frac{1}{n} \sum_{i=1}^{n} (x_i - \mu)^2$$
 
 其中：
@@ -29,7 +40,67 @@ $$\text{Var}(X) = \frac{1}{n} \sum_{i=1}^{n} (x_i - \mu)^2$$
 - $\mu$ 是數據的平均值
 - $n$ 是數據點的個數
 
-幾何意義：
+### 期望值表示
+
+對於隨機變數 $X$，變異數也可以用 [期望值](https://zh.wikipedia.org/zh-tw/%E6%9C%9F%E6%9C%9B%E5%80%BC) 表示：
+
+{% raw %}
+
+$$\text{Var}(X) = E(X^2) - (E(X))^2$$
+
+{% endraw %}
+
+**證明**
+
+變異數的原始定義是衡量隨機變數 $X$ 的值與其期望值 $\mu = E(X)$ 之差的平方的平均：
+
+{% raw %}
+
+$$\text{Var}(X) = E((X - \mu)^2) = E((X - E(X))^2)$$
+
+{% endraw %}
+
+先展開平方項
+
+{% raw %}
+
+$$E((X - \mu)^2) = E(X^2 - 2X\mu + \mu^2)$$
+
+{% endraw %}
+
+根據期望值的線性性質，將期望值運算子應用於每一項
+
+{% raw %}
+
+$$E(X^2 - 2X\mu + \mu^2) = E(X^2) - E(2X\mu) + E(\mu^2)$$
+
+{% endraw %}
+
+由於 $\mu$ (即 $E(X)$) 是一個常數，可以將其移出期望值運算子
+
+{% raw %}
+
+$$E(X^2) - 2\mu E(X) + \mu^2$$
+
+{% endraw %}
+
+將 $\mu$ 替換回 $E(X)$
+
+{% raw %}
+
+$$E(X^2) - 2E(X)E(X) + (E(X))^2$$
+
+{% endraw %}
+
+簡化後得到最終公式
+
+{% raw %}
+
+$$\text{Var}(X) = E(X^2) - (E(X))^2$$
+
+{% endraw %}
+
+### 幾何意義
 
 - 變異數衡量數據點相對於平均值的「分散程度」
 - 較大的變異數表示數據點較為分散
@@ -60,9 +131,10 @@ $$
 
 ## 共變異數 (Covariance)
 
-[共變異數](https://zh.wikipedia.org/zh-tw/%E5%8D%8F%E6%96%B9%E5%B7%AE) 在大陸稱做 [協方差](https://zh.wikipedia.org/zh-cn/%E5%8D%8F%E6%96%B9%E5%B7%AE)，用以衡量兩個變數同時變動的方向與程度。它的定義是兩變數偏離各自平均數的乘積的平均
+[共變異數](https://zh.wikipedia.org/zh-tw/%E5%8D%8F%E6%96%B9%E5%B7%AE) 在大陸又被稱爲 [協方差](https://zh.wikipedia.org/zh-cn/%E5%8D%8F%E6%96%B9%E5%B7%AE)，用以衡量兩個變數同時變動的方向與程度。它的定義是兩變數偏離各自平均數的乘積的平均
 
-共變異數公式為：
+### 定義
+
 $$\text{Cov}(X,Y) = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})$$
 
 其中：
@@ -71,7 +143,67 @@ $$\text{Cov}(X,Y) = \frac{1}{n - 1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}
 - $\bar{x}, \bar{y}$ 分別是兩變數的平均值
 - $n$ 是資料對數
 
-幾何意義：
+#### 期望值表示
+
+對於隨機變數 $X$ 和 $Y$，共變異數也可以用期望值表示：
+
+{% raw %}
+
+$$\text{Cov}(X,Y) = E(XY) - E(X)E(Y)$$
+
+{% endraw %}
+
+**證明**
+
+共變異數的原始定義是衡量兩個隨機變數 $X$ 和 $Y$ 與各自期望值 $\mu_x = E(X)$ 和 $\mu_y = E(Y)$ 偏差乘積的平均：
+
+{% raw %}
+
+$$\text{Cov}(X,Y) = E((X - \mu_x)(Y - \mu_y)) = E((X - E(X))(Y - E(Y)))$$
+
+{% endraw %}
+
+先展開乘積
+
+{% raw %}
+
+$$E((X - \mu_x)(Y - \mu_y)) = E(XY - X\mu_y - Y\mu_x + \mu_x\mu_y)$$
+
+{% endraw %}
+
+根據期望值的線性性質，將期望值運算子應用於每一項
+
+{% raw %}
+
+$$E(XY - X\mu_y - Y\mu_x + \mu_x\mu_y) = E(XY) - E(X\mu_y) - E(Y\mu_x) + E(\mu_x\mu_y)$$
+
+{% endraw %}
+
+由於 $\mu_x$ 和 $\mu_y$ (即 $E(X)$ 和 $E(Y)$) 是常數，可以將其移出期望值運算子
+
+{% raw %}
+
+$$E(XY) - \mu_y E(X) - \mu_x E(Y) + \mu_x\mu_y$$
+
+{% endraw %}
+
+將 $\mu_x$ 和 $\mu_y$ 替換回 $E(X)$ 和 $E(Y)$
+
+{% raw %}
+
+$$E(XY) - E(Y)E(X) - E(X)E(Y) + E(X)E(Y)$$
+
+{% endraw %}
+
+簡化後得到最終公式
+
+{% raw %}
+
+$$\text{Cov}(X,Y) = E(XY) - E(X)E(Y)$$
+
+{% endraw %}
+
+### 幾何意義
 
 - **正值**：兩變數同向變動（正相關）
 - **負值**：兩變數反向變動（負相關）
@@ -112,7 +244,7 @@ $$
 
 ## 共變異數矩陣 (Covariance Matrix)
 
-共變異數可以描述兩個變數間的相關性，但當需要處理多維變數時，單純的共變異數已不足以描述其分布特性，我們需要一個矩陣來同時描述各維度變數之間的關係，而這就是 **共變異數矩陣 (Covariance Matrix)**
+共變異數可以描述兩個變數間的相關性，但當變數超過兩個時，單純的共變異數已不足以描述其分布特性，此時我們可以使用一個矩陣同時描述各維度變數之間的關係，而這就是 **共變異數矩陣 (Covariance Matrix)**
 
 ### 定義
 
@@ -122,23 +254,23 @@ $$
 
 $$
 \Sigma =
-\begin{pmatrix}
+\begin{bmatrix}
 \text{Var}(X_1) & \text{Cov}(X_1, X_2) & \text{Cov}(X_1, X_3) \\
 \text{Cov}(X_2, X_1) & \text{Var}(X_2) & \text{Cov}(X_2, X_3) \\
 \text{Cov}(X_3, X_1) & \text{Cov}(X_3, X_2) & \text{Var}(X_3)
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 {% endraw %}
 
 其中：
 
-- 對角線：各變數的變異數
-- 非對角線：變數之間的共變異數
+- **對角線**：各變數的變異數
+- **非對角線**：各變數之間的共變異數
 
 ### 內積定義
 
-共變異數矩陣可以用 [矩陣內積](/2025/10/18/向量的內積與外積/#定義二：矩陣乘法形式) 的形式簡潔表示：
+另一個常用來表示共變異數矩陣的方式是 [矩陣內積](/2025/10/18/向量的內積與外積/#定義二：矩陣乘法形式)，這種表示形式的優點是極為簡潔：
 
 {% raw %}
 
@@ -146,16 +278,10 @@ $$\Sigma = \frac{1}{n-1}(\tilde{X}^T \tilde{X})$$
 
 {% endraw %}
 
-其中 $\tilde{X}$ 是**中心化後的資料矩陣**（每一列減去其均值）
-
-#### 矩陣結構
-
-在資料矩陣 $\tilde{X}$ 中：
+其中 $\tilde{X}$ 是**中心化後的資料矩陣**（每一列減去其平均值），在資料矩陣 $\tilde{X}$ 中：
 
 - **列 (row)**：代表每一筆資料樣本
 - **行 (column)**：代表每一個特徵變數
-
-#### 內積的幾何意義
 
 當我們計算 $\tilde{X}^T \tilde{X}$ 時：
 
@@ -169,12 +295,12 @@ $$\Sigma = \frac{1}{n-1}(\tilde{X}^T \tilde{X})$$
 {% raw %}
 
 $$
-\tilde{X} = \begin{pmatrix}
+\tilde{X} = \begin{bmatrix}
 \tilde{x}_{11} & \tilde{x}_{12} & \cdots & \tilde{x}_{1p} \\
 \tilde{x}_{21} & \tilde{x}_{22} & \cdots & \tilde{x}_{2p} \\
 \vdots & \vdots & \ddots & \vdots \\
 \tilde{x}_{n1} & \tilde{x}_{n2} & \cdots & \tilde{x}_{np}
-\end{pmatrix}_{n \times p}
+\end{bmatrix}_{n \times p}
 $$
 
 {% endraw %}
@@ -184,11 +310,11 @@ $$
 {% raw %}
 
 $$
-\tilde{X}^T \tilde{X} = \begin{pmatrix}
+\tilde{X}^T \tilde{X} = \begin{bmatrix}
 \sum_{k=1}^n \tilde{x}_{k1}^2 & \sum_{k=1}^n \tilde{x}_{k1}\tilde{x}_{k2} & \cdots \\
 \sum_{k=1}^n \tilde{x}_{k2}\tilde{x}_{k1} & \sum_{k=1}^n \tilde{x}_{k2}^2 & \cdots \\
 \vdots & \vdots & \ddots
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 {% endraw %}
@@ -207,6 +333,54 @@ $$\Sigma = \frac{1}{n-1}(\tilde{X}^T \tilde{X})$$
 {% endraw %}
 
 這個形式自然地給出了共變異數矩陣的所有元素，是計算共變異數矩陣最簡潔的方式
+
+#### 期望值表示
+
+對於隨機向量 $\mathbf{X} = (X_1, X_2, ..., X_p)^T$，共變異數矩陣也可以用期望值表示：
+
+{% raw %}
+
+$$\Sigma = E[(\mathbf{X} - E[\mathbf{X}])(\mathbf{X} - E[\mathbf{X}])^T]$$
+
+{% endraw %}
+
+其中 $E[\mathbf{X}]$ 是隨機向量的期望值向量。這個形式將共變異數矩陣視為「隨機向量與其期望值偏差的外積」的期望值
+
+**證明**
+
+共變異數矩陣 $\Sigma$ 的第 $(i,j)$ 個元素是 $\text{Cov}(X_i, X_j)$。根據共變異數的期望值表示：
+
+{% raw %}
+
+$$\text{Cov}(X_i, X_j) = E((X_i - E(X_i))(X_j - E(X_j)))$$
+
+{% endraw %}
+
+考慮矩陣 $(\mathbf{X} - E[\mathbf{X}])(\mathbf{X} - E[\mathbf{X}])^T$ 的第 $(i,j)$ 個元素：
+
+{% raw %}
+
+$$[(\mathbf{X} - E[\mathbf{X}])(\mathbf{X} - E[\mathbf{X}])^T]_{ij} = (X_i - E(X_i))(X_j - E(X_j))$$
+
+{% endraw %}
+
+對該矩陣取期望值，得到第 $(i,j)$ 個元素：
+
+{% raw %}
+
+$$E[(\mathbf{X} - E[\mathbf{X}])(\mathbf{X} - E[\mathbf{X}])^T]_{ij} = E((X_i - E(X_i))(X_j - E(X_j))) = \text{Cov}(X_i, X_j)$$
+
+{% endraw %}
+
+因此，矩陣 $E[(\mathbf{X} - E[\mathbf{X}])(\mathbf{X} - E[\mathbf{X}])^T]$ 的第 $(i,j)$ 個元素等於 $\Sigma$ 的第 $(i,j)$ 個元素，故：
+
+{% raw %}
+
+$$\Sigma = E[(\mathbf{X} - E[\mathbf{X}])(\mathbf{X} - E[\mathbf{X}])^T]$$
+
+{% endraw %}
+
+證畢
 
 ### 範例
 
@@ -230,13 +404,13 @@ $$\bar{X}_3 = \frac{1 + 5 + 2 + 6}{4} = 3.5$$
 以樣本 1 為例：
 $$(X_1 - \bar{X}_1, X_2 - \bar{X}_2, X_3 - \bar{X}_3) = (2-5, 3-6, 1-3.5) = (-3, -3, -2.5)$$
 
-**步驟 3：計算共變異數**
+**步驟 3：計算變異數**
 使用公式：
 
 {% raw %}
 
 $$
-\text{Cov}(X_i, X_j) = \frac{1}{n-1} \sum_{k=1}^{n} (X_{i,k} - \bar{X}_i)(X_{j,k} - \bar{X}_j)
+\text{Var}(X_i) = \frac{1}{n-1} \sum_{k=1}^{n} (X_{i,k} - \bar{X}_i)^2
 $$
 
 {% endraw %}
@@ -256,6 +430,17 @@ $$
 
 {% endraw %}
 
+**步驟 4：計算共變異數**
+使用公式：
+
+{% raw %}
+
+$$
+\text{Cov}(X_i, X_j) = \frac{1}{n-1} \sum_{k=1}^{n} (X_{i,k} - \bar{X}_i)(X_{j,k} - \bar{X}_j)
+$$
+
+{% endraw %}
+
 以 $\text{Cov}(X_1, X_2)$ 為例：
 
 {% raw %}
@@ -271,17 +456,17 @@ $$
 
 {% endraw %}
 
-**步驟 4：完成矩陣計算**
+**步驟 5：完成矩陣計算**
 經過類似計算，最終的共變異數矩陣為：
 
 {% raw %}
 
 $$
-\Sigma \approx \begin{pmatrix}
+\Sigma \approx \begin{bmatrix}
 6.67 & 5.33 & 5.83 \\
 5.33 & 6.67 & 5.50 \\
 5.83 & 5.50 & 5.67
-\end{pmatrix}
+\end{bmatrix}
 $$
 
 {% endraw %}
@@ -302,12 +487,12 @@ $$
 {% raw %}
 
 $$
-\tilde{X} = \begin{pmatrix}
+\tilde{X} = \begin{bmatrix}
 -3 & -3 & -2.5 \\
 -1 & 1 & 1.5 \\
 1 & -1 & -1.5 \\
 3 & 3 & 2.5
-\end{pmatrix}_{4 \times 3}
+\end{bmatrix}_{4 \times 3}
 $$
 
 {% endraw %}
@@ -318,21 +503,21 @@ $$
 
 $$
 \begin{align*}
-\tilde{X}^T \tilde{X} &= \begin{pmatrix}
+\tilde{X}^T \tilde{X} &= \begin{bmatrix}
 -3 & -1 & 1 & 3 \\
 -3 & 1 & -1 & 3 \\
 -2.5 & 1.5 & -1.5 & 2.5
-\end{pmatrix} \begin{pmatrix}
+\end{bmatrix} \begin{bmatrix}
 -3 & -3 & -2.5 \\
 -1 & 1 & 1.5 \\
 1 & -1 & -1.5 \\
 3 & 3 & 2.5
-\end{pmatrix} \\
-&= \begin{pmatrix}
+\end{bmatrix} \\
+&= \begin{bmatrix}
 20 & 16 & 17.5 \\
 16 & 20 & 16.5 \\
 17.5 & 16.5 & 17
-\end{pmatrix}
+\end{bmatrix}
 \end{align*}
 $$
 
@@ -346,21 +531,21 @@ $$
 
 $$
 \begin{align*}
-\Sigma &= \frac{1}{3} \begin{pmatrix}
+\Sigma &= \frac{1}{3} \begin{bmatrix}
 20 & 16 & 17.5 \\
 16 & 20 & 16.5 \\
 17.5 & 16.5 & 17
-\end{pmatrix} \\
-&= \begin{pmatrix}
+\end{bmatrix} \\
+&= \begin{bmatrix}
 \frac{20}{3} & \frac{16}{3} & \frac{17.5}{3} \\
 \frac{16}{3} & \frac{20}{3} & \frac{16.5}{3} \\
 \frac{17.5}{3} & \frac{16.5}{3} & \frac{17}{3}
-\end{pmatrix} \\
-&\approx \begin{pmatrix}
+\end{bmatrix} \\
+&\approx \begin{bmatrix}
 6.67 & 5.33 & 5.83 \\
 5.33 & 6.67 & 5.50 \\
 5.83 & 5.50 & 5.67
-\end{pmatrix}
+\end{bmatrix}
 \end{align*}
 $$
 
@@ -414,7 +599,9 @@ $$\Sigma = Q \Lambda Q^T$$
 ## 參考資料
 
 [機器學習 Lesson 13 — 特徵工程中的奇異值分解與共變異數的關係](https://flag-editors.medium.com/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92lesson-13-%E7%89%B9%E5%BE%B5%E5%B7%A5%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A5%87%E7%95%B0%E5%80%BC%E5%88%86%E8%A7%A3%E8%88%87%E5%85%B1%E8%AE%8A%E7%95%B0%E6%95%B8%E7%9A%84%E9%97%9C%E4%BF%82-21cf2b7a063a)
+[Covariance and the regression line | Regression | Probability and Statistics | Khan Academy](https://www.youtube.com/watch?v=ualmyZiPs9w)
 [統計課從沒搞清楚的事：算變異量為什麼要除以 n-1？什麼是「自由度」？](https://pansci.asia/archives/115065)
+[共變異數矩陣的性質](https://ccjou.wordpress.com/2014/06/03/%E5%85%B1%E8%AE%8A%E7%95%B0%E6%95%B8%E7%9F%A9%E9%99%A3%E7%9A%84%E6%80%A7%E8%B3%AA/)
 
 <style>
 table {
