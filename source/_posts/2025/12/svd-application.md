@@ -1,7 +1,7 @@
 ---
 title: 奇異值分解 SVD (2) - 實際應用
 date: 2025-12-07 23:48:40
-updated: 2025-12-07 23:48:40
+updated: 2025-12-26 23:48:40
 categories: 線性代數
 mathjax: true
 ---
@@ -539,3 +539,5 @@ $$\langle \mathbf{u}_i \mathbf{v}_i^T, \mathbf{u}_j \mathbf{v}_j^T \rangle_F = (
 [陳晏笙老師開放課程：單元 15．奇異值分解-線性代數的大一統理論](https://youtu.be/gH6cVt8_m9I?si=bEDdr-VhSUx-w0jv&t=6633)
 [【深度学习数学基础 06】奇异值分解与低秩近似](https://zhuanlan.zhihu.com/p/29739527565)
 [矩陣的極分解](https://zh.wikipedia.org/wiki/%E6%9E%81%E5%88%86%E8%A7%A3#%E7%9F%A9%E9%98%B5%E7%9A%84%E6%9E%81%E5%88%86%E8%A7%A3)
+[世上最生動的 PCA：直觀理解並應用主成分分析](https://leemeng.tw/essence-of-principal-component-analysis.html)
+[ML Lecture 13: Unsupervised Learning - Linear Methods](https://www.youtube.com/watch?v=iwh5o_M4BNU)

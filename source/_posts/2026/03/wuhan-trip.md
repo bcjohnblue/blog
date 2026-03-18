@@ -11,9 +11,9 @@ categories: Life
 
 &emsp;&emsp;趁著過年前的空檔，出發的兩週前才突發奇想的去辦台胞證，還好很快的一週後就拿到了，接著上網訂購中國東方航空的機票剛好只剩一個空位，出發！
 
-<!-- more -->
+<img src="/2026/03/15/武漢天門尋根之旅/address.jpg" style="max-width: 600px;">
 
-<img src="./address.jpg" style="max-width: 600px;">
+<!-- more -->
 
 #### 2/5 抵達武漢天河機場
 
