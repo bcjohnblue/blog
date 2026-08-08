@@ -14,10 +14,12 @@ alwaysApply: false
 - 支援 MathJax 語法，包含：
   - 行內公式：`$...$`
   - 區塊公式：`$$...$$`
+  - 若公式內容可能與 Hexo 模板引擎衝突（例如包含連續大括號 `{{` 或 `}}`），需在公式前後加上 `{% raw %}` 與 `{% endraw %}` 進行保護。
 
 ### ✍️ 建議 AI 行為
 
 - 不應破壞 `{% %}`、EJS、或 LaTeX 語法。
+- 輸出 MathJax 公式時，請主動判斷內容是否包含易與 Hexo tag 衝突的語法，必要時使用 `{% raw %}` 和 `{% endraw %}` 將公式區塊包覆。
 - 可適度美化數學公式的前後空白或上下文文字。
 - 保持程式碼區塊與 Markdown 格式完整（不要將 `$` 誤判為貨幣符號）。
 - 不自動格式化公式區塊內部內容。
@@ -27,7 +29,7 @@ alwaysApply: false
 
 ```md
 ---
-title: "支援數學公式"
+title: '支援數學公式'
 date: 2025-07-24
 mathjax: true
 ---
@@ -38,9 +40,13 @@ mathjax: true
 
 ## 區塊公式
 
+{% raw %}
+
 $$
 \int_{-\infty}^\infty e^{-x^2} dx = \sqrt{\pi}
 $$
+
+{% endraw %}
 
 ## 插圖與 EJS
 
